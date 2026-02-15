@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recursos y Guías - Etapa Productiva SENA</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-green: #39A900;
+            --neon-orange: #FF6B00;
+            --bg-deep: #05050a;
+            --card-bg: rgba(15, 15, 25, 0.85);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+            --text-main: #e0e0e0;
+            --text-glow: 0 0 10px rgba(57, 169, 0, 0.5);
+
+            /* Legacy Sync */
+            --sena-verde: var(--neon-green);
+            --sena-azul: #00324D;
+            --sena-naranja: var(--neon-orange);
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Scanline Effect */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05));
+            z-index: 9999;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .header {
+            background: #0a0a0f;
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-bottom: 2px solid var(--neon-green);
+            position: relative;
+        }
+
+        .header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 0;
+            font-size: 2.22rem;
+            filter: drop-shadow(0 0 10px var(--neon-green));
+        }
+
+        .header p {
+            font-family: 'Share Tech Mono', monospace;
+            margin-top: 1rem;
+            color: var(--neon-green);
+            text-shadow: var(--text-glow);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 2rem;
+            color: var(--neon-green);
+            text-decoration: none;
+            border: 1px solid var(--neon-green);
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            font-family: 'Share Tech Mono', monospace;
+            text-transform: uppercase;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: var(--neon-green);
+            color: black;
+            box-shadow: 0 0 20px var(--neon-green);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .guide-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: var(--glass-border);
+            border-radius: 4px;
+            margin-bottom: 2.5rem;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .guide-header {
+            background: rgba(255, 255, 255, 0.02);
+            color: white;
+            padding: 1.5rem 2rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            border-left: 3px solid var(--neon-green);
+            transition: 0.3s;
+        }
+
+        .guide-header:hover {
+            background: rgba(57, 169, 0, 0.1);
+        }
+
+        .guide-body {
+            padding: 2.5rem 2rem;
+            display: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .guide-body.show {
+            display: block;
+        }
+
+        .example-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-btn {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            font-weight: 700;
+            color: #666;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            text-transform: uppercase;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            color: var(--neon-green);
+            border-bottom-color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        th {
+            background: rgba(57, 169, 0, 0.2);
+            color: var(--neon-green);
+            font-weight: 700;
+            font-family: 'Share Tech Mono', monospace;
+            text-transform: uppercase;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .download-zone {
+            margin-top: 2rem;
+            text-align: right;
+        }
+
+        .btn-download {
+            background: transparent;
+            border: 2px solid var(--neon-orange);
+            color: var(--neon-orange);
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            font-family: 'Share Tech Mono', monospace;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .btn-download:hover {
+            background: var(--neon-orange);
+            color: black;
+            box-shadow: 0 0 20px var(--neon-orange);
+        }
+
+        .toggle-icon {
+            transition: transform 0.3s;
+            color: var(--neon-green);
+        }
+
+        .guide-header.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1><i class="fas fa-book"></i> Guías y Ejemplos Prácticos</h1>
+        <p>Modelos de referencia visual para construir tu plan de trabajo y bitácora sin errores.</p>
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Volver al Portal</a>
+    </div>
+
+    <div class="container">
+
+        <!-- Guía F-023 Concertación -->
+        <div class="guide-card">
+            <div class="guide-header" onclick="toggleGuide(this)">
+                <span><i class="fas fa-handshake"></i> Guía para Plan de Trabajo (F-023)</span>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="guide-body show">
+                <p>Este formato define qué vas a hacer. Debe concertarse con tu jefe inmediato y tu instructor al inicio
+                    de la etapa.</p>
+
+                <div class="example-tabs">
+                    <button class="tab-btn active" onclick="openTab(event, 'f023-ejemplo')">Ejemplo Guiado</button>
+                    <button class="tab-btn" onclick="openTab(event, 'f023-consejos')">Recomendaciones</button>
+                </div>
+
+                <div id="f023-ejemplo" class="tab-content active">
+                    <div style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Actividad</th>
+                                    <th>Competencia / Resultado</th>
+                                    <th>Evidencias</th>
+                                    <th>Tiempo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Desarrollar módulo de autenticación segura para el sistema interno.</td>
+                                    <td>Implementar soluciones de software aplicando principios de seguridad.</td>
+                                    <td>Código fuente, informe de pruebas, manual de usuario.</td>
+                                    <td>6 semanas</td>
+                                </tr>
+                                <tr>
+                                    <td>Documentar procedimientos de despliegue en ambiente de pruebas.</td>
+                                    <td>Gestionar versiones de software y despliegue controlado.</td>
+                                    <td>Guía paso a paso, script de automatización.</td>
+                                    <td>4 semanas</td>
+                                </tr>
+                                <tr>
+                                    <td>Realizar mantenimiento preventivo a equipos de cómputo de la oficina.</td>
+                                    <td>Realizar mantenimiento de hardware según manuales técnicos.</td>
+                                    <td>Hoja de vida de equipos, reporte de mantenimiento.</td>
+                                    <td>Permanente</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="download-zone">
+                        <a href="Documentacion/FORMATOS%20GENERALES/02.%20FORMATOS%20ETAPA%20PRODUCTIVA/GFPI-F-023_Formato_planeación_seguimiento_y_evaluación_etapa_productiva_V4.zip"
+                            class="btn-download" download><i class="fas fa-file-download"></i> Descargar Formato
+                            F-023</a>
+                    </div>
+                </div>
+
+                <div id="f023-consejos" class="tab-content">
+                    <ul style="line-height: 1.8;">
+                        <li><strong>Verbos en Infinitivo:</strong> Inicia siempre con verbos como <em>Analizar, Diseñar,
+                                Construir, Verificar</em>.</li>
+                        <li><strong>Alineación:</strong> Asegúrate que la actividad tenga relación directa con lo que
+                            estudiaste. Un desarrollador de software no debería poner "Servir cafés" o "Mensajería".
+                        </li>
+                        <li><strong>Firmas:</strong> Es vital que este documento tenga las 3 firmas (Tú, Jefe,
+                            Instructor) desde el primer mes.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guía F-147 Bitácora -->
+        <div class="guide-card">
+            <div class="guide-header" onclick="toggleGuide(this)">
+                <span><i class="fas fa-file-alt"></i> Guía para Bitácora (F-147)</span>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="guide-body">
+                <p>Tu diario de campo quincenal o mensual. Sé descriptivo y honesto con el tiempo reportado.</p>
+
+                <div class="example-tabs">
+                    <button class="tab-btn active" onclick="openTab(event, 'f147-ejemplo')">Ejemplo de Bitácora</button>
+                    <button class="tab-btn" onclick="openTab(event, 'f147-errores')">Errores Comunes</button>
+                </div>
+
+                <div id="f147-ejemplo" class="tab-content active">
+                    <h4>Registro quincenal (extracto):</h4>
+                    <div style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Actividad realizada</th>
+                                    <th>Horas</th>
+                                    <th>Observaciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>05/04/2026</td>
+                                    <td>Configuración de entorno local y revisión de historias de usuario asignadas para
+                                        el sprint 1.</td>
+                                    <td>8</td>
+                                    <td>Se acordó estándar de ramas en Git con el equipo.</td>
+                                </tr>
+                                <tr>
+                                    <td>12/04/2026</td>
+                                    <td>Desarrollo inicial del formulario de registro y pruebas unitarias.</td>
+                                    <td>8</td>
+                                    <td>Se identificaron mejoras en validaciones de campos obligatorios.</td>
+                                </tr>
+                                <tr>
+                                    <td>15/04/2026</td>
+                                    <td>Reunión de seguimiento (Daily) y ajuste de estilos CSS en módulo de usuarios.
+                                    </td>
+                                    <td>4</td>
+                                    <td>Permiso de 4 horas en la tarde por cita médica (Soporte adjunto).</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="download-zone">
+                        <a href="Documentacion/FORMATOS%20GENERALES/02.%20FORMATOS%20ETAPA%20PRODUCTIVA/GFPI-F-147_Bitácora_seguimiento_etapa_productiva%20v3.zip"
+                            class="btn-download" download><i class="fas fa-file-download"></i> Descargar Formato
+                            F-147</a>
+                    </div>
+                </div>
+
+                <div id="f147-errores" class="tab-content">
+                    <ul style="line-height: 1.8;">
+                        <li><strong>Vagueza:</strong> Evita "Hacer lo que me dijo el jefe". Sé técnico: "Migración de
+                            base de datos SQL".</li>
+                        <li><strong>Periodos Inconsistentes:</strong> Si tu bitácora dice "Del 1 al 15", no puedes
+                            reportar una actividad del día 16.</li>
+                        <li><strong>Sin Evidencias:</strong> Siempre guarda pantallazos, correos o fotos que respalden
+                            lo que escribes.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleGuide(header) {
+            header.classList.toggle('active');
+            const body = header.nextElementSibling;
+            body.classList.toggle('show');
+        }
+
+        function openTab(evt, tabName) {
+            // Find parent guide-body to scope the tabs, preventing conflict between multiple sets of tabs
+            const parent = evt.target.closest('.guide-body');
+
+            // Hide all tab content in this parent
+            const tabContents = parent.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].style.display = "none";
+            }
+
+            // Deactivate all tab buttons in this parent
+            const tabBtns = parent.getElementsByClassName("tab-btn");
+            for (let i = 0; i < tabBtns.length; i++) {
+                tabBtns[i].className = tabBtns[i].className.replace(" active", "");
+            }
+
+            // Show current tab and activate button
+            parent.querySelector(`#${tabName}`).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+</body>
+
+</html>

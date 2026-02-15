@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Fechas - Etapa Productiva SENA</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        :root {
+            --neon-green: #39A900;
+            --neon-orange: #FF6B00;
+            --bg-deep: #05050a;
+            --card-bg: rgba(15, 15, 25, 0.8);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+            --text-glow: 0 0 10px rgba(57, 169, 0, 0.5);
+
+            /* Legacy Sync */
+            --sena-verde: var(--neon-green);
+            --sena-naranja: var(--neon-orange);
+            --sena-azul: #0080ff;
+            --sena-verde-oscuro: #1d5500;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: var(--bg-deep);
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* Scanline Effect */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05));
+            z-index: 9999;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: var(--glass-border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 2rem;
+            position: relative;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            background: #0a0a0f;
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 2px solid var(--neon-green);
+            position: relative;
+        }
+
+        .header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 0;
+            font-size: 2.22rem;
+            filter: drop-shadow(0 0 10px var(--neon-green));
+        }
+
+        .header p {
+            font-family: 'Share Tech Mono', monospace;
+            margin-top: 0.8rem;
+            color: var(--neon-green);
+            text-shadow: var(--text-glow);
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neon-green);
+            text-decoration: none;
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            text-shadow: 0 0 10px var(--neon-green);
+            transform: translateY(-50%) translateX(-5px);
+        }
+
+        .content {
+            padding: 3rem 2rem;
+        }
+
+        .input-group {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: var(--neon-green);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        input[type="date"],
+        select {
+            padding: 1rem;
+            border: 1px solid var(--neon-green);
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            font-size: 1.1rem;
+            color: white;
+            width: 100%;
+            max-width: 400px;
+            transition: 0.3s;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        input[type="date"]:focus,
+        select:focus {
+            outline: none;
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+
+        .btn-calc {
+            background: transparent;
+            border: 2px solid var(--neon-orange);
+            color: var(--neon-orange);
+            padding: 1.2rem 3rem;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.4s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Share Tech Mono', monospace;
+            margin-top: 1rem;
+        }
+
+        .btn-calc:hover {
+            background: var(--neon-orange);
+            color: black;
+            box-shadow: 0 0 30px var(--neon-orange);
+            transform: translateY(-3px);
+        }
+
+        .results {
+            display: none;
+            margin-top: 2rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2.5rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--neon-green), var(--neon-orange));
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -2.3rem;
+            top: 5px;
+            width: 14px;
+            height: 14px;
+            background: #000;
+            border: 2px solid var(--neon-green);
+            border-radius: 0;
+            transform: rotate(45deg);
+            box-shadow: 0 0 10px var(--neon-green);
+            transition: 0.3s;
+            z-index: 2;
+        }
+
+        .timeline-item:hover .timeline-dot {
+            background: var(--neon-green);
+            box-shadow: 0 0 20px var(--neon-green);
+        }
+
+        .card-result {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            padding: 1.5rem;
+            transition: 0.3s;
+            cursor: pointer;
+            border-left: 3px solid var(--neon-green);
+        }
+
+        .card-result:hover {
+            background: rgba(57, 169, 0, 0.1);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(57, 169, 0, 0.2);
+        }
+
+        .date-badge {
+            display: inline-block;
+            background: transparent;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            font-family: 'Share Tech Mono', monospace;
+            text-transform: uppercase;
+        }
+
+        .doc-tag {
+            background: rgba(57, 169, 0, 0.15);
+            color: var(--neon-green);
+            border: 1px solid var(--neon-green);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+            display: inline-block;
+            font-family: 'Share Tech Mono', monospace;
+            text-transform: uppercase;
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--sena-verde);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(57, 169, 0, 0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 100;
+            font-size: 1.5rem;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: absolute;
+            background: #333;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            white-space: nowrap;
+        }
+
+        .timeline-item:hover .tooltip {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Volver</a>
+            <h1><i class="fas fa-calendar-alt"></i> Calculadora de Etapa Productiva</h1>
+            <p>Planifica tu éxito: Genera tu cronograma de entregas al instante</p>
+        </div>
+
+        <div class="content">
+            <div class="input-group">
+                <label for="programType">Tipo de Programa:</label>
+                <select id="programType">
+                    <option value="tecnico">Programa Técnico (6 Meses)</option>
+                    <option value="tecnologo">Programa Tecnólogo (9 Meses)</option>
+                </select>
+                <br>
+                <label for="startDate">¿Cuándo inicia tu Etapa Productiva?</label>
+                <input type="date" id="startDate">
+                <br>
+                <button class="btn-calc" onclick="calculateDates()">
+                    <i class="fas fa-magic"></i> Generar Mi Cronograma
+                </button>
+            </div>
+
+            <div id="resultsArea" class="results">
+                <h3 style="color: var(--sena-azul); text-align: center; margin-bottom: 2rem;">Tu Ruta de Navegación
+                    Personalizada</h3>
+                <div class="timeline" id="timelineContainer">
+                    <!-- JS will populate this -->
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn-calc" style="background: var(--sena-azul);" onclick="window.print()">
+                        <i class="fas fa-print"></i> Imprimir / Guardar PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fab" onclick="showHelp()">
+        <i class="fas fa-question"></i>
+    </div>
+
+    <script>
+        function calculateDates() {
+            const dateInput = document.getElementById('startDate').value;
+            const type = document.getElementById('programType').value;
+
+            if (!dateInput) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '¡Espera!',
+                    text: 'Por favor selecciona una fecha de inicio para poder generar tu plan.',
+                    confirmButtonColor: '#39A900'
+                });
+                return;
+            }
+
+            const start = new Date(dateInput);
+            // Adjust for timezone offset
+            const userTimezoneOffset = start.getTimezoneOffset() * 60000;
+            const startDate = new Date(start.getTime() + userTimezoneOffset);
+
+            const timeline = document.getElementById('timelineContainer');
+            timeline.innerHTML = ''; // Clear previous
+
+            // Helper to add days
+            const addDays = (date, days) => {
+                const result = new Date(date);
+                result.setDate(result.getDate() + days);
+                return result;
+            };
+
+            // Helper to add months
+            const addMonths = (date, months) => {
+                const result = new Date(date);
+                result.setMonth(result.getMonth() + months);
+                return result;
+            };
+
+            let milestones = [];
+
+            // Common Milestones
+            milestones.push({
+                title: "Inicio de Etapa Productiva",
+                date: startDate,
+                desc: "Tu primer día. Asegúrate de estar afiliado a la ARL.",
+                doc: "F-165 Selección Alternativa",
+                icon: "fa-flag-checkered",
+                color: "var(--sena-naranja)"
+            });
+
+            milestones.push({
+                title: "Visita de Concertación",
+                date: addDays(startDate, 15),
+                desc: "Tu instructor te visitará para acordar el plan de trabajo.",
+                doc: "F-023 Concertación",
+                icon: "fa-handshake",
+                color: "var(--sena-verde)"
+            });
+
+            // Logic for Bitácoras
+            if (type === 'tecnologo') {
+                // 9 Bitácoras logic for 9 MONTHS
+                for (let i = 1; i <= 9; i++) {
+                    milestones.push({
+                        title: `Entrega Bitácora Mes ${i}`,
+                        date: addMonths(startDate, i),
+                        desc: `Reporte mensual número ${i} de 9.`,
+                        doc: `F-147 Bitácora ${i}`,
+                        icon: "fa-file-alt",
+                        color: "var(--sena-azul)"
+                    });
+                }
+
+                // Parcial Visit (Month 4-5 approx)
+                milestones.push({
+                    title: "Visita Parcial (Seguimiento)",
+                    date: addMonths(startDate, 4),
+                    desc: "Evaluación de medio término. Identifica mejoras.",
+                    doc: "F-023 Parcial",
+                    icon: "fa-chart-line",
+                    color: "var(--sena-verde)"
+                });
+
+                // Final Visit (Month 9)
+                milestones.push({
+                    title: "Visita Final y Cierre",
+                    date: addDays(addMonths(startDate, 9), 5),
+                    desc: "Evaluación final para certificar tu etapa.",
+                    doc: "F-023 Final + Paz y Salvo",
+                    icon: "fa-graduation-cap",
+                    color: "var(--sena-naranja)"
+                });
+
+            } else {
+                // Técnico: Standard monthly (6 Bitácoras)
+                for (let i = 1; i <= 6; i++) {
+                    milestones.push({
+                        title: `Entrega Bitácora Mes ${i}`,
+                        date: addMonths(startDate, i),
+                        desc: `Reporte mensual número ${i}.`,
+                        doc: `F-147 Bitácora ${i}`,
+                        icon: "fa-file-alt",
+                        color: "var(--sena-azul)"
+                    });
+                }
+                // Parcial Visit (Month 3)
+                milestones.push({
+                    title: "Visita Parcial (Seguimiento)",
+                    date: addMonths(startDate, 3),
+                    desc: "Evaluación de medio término. Identifica mejoras.",
+                    doc: "F-023 Parcial",
+                    icon: "fa-chart-line",
+                    color: "var(--sena-verde)"
+                });
+
+                // Final Visit
+                milestones.push({
+                    title: "Visita Final y Cierre",
+                    date: addDays(addMonths(startDate, 6), 5), // 5 days after end
+                    desc: "Evaluación final para certificar tu etapa.",
+                    doc: "F-023 Final + Paz y Salvo",
+                    icon: "fa-graduation-cap",
+                    color: "var(--sena-naranja)"
+                });
+            }
+
+            // Sort by date
+            milestones.sort((a, b) => a.date - b.date);
+
+            // Render
+            milestones.forEach((m, index) => {
+                const dateStr = m.date.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+                const html = `
+                    <div class="timeline-item" style="animation-delay: ${index * 0.1}s">
+                        <div class="timeline-dot"></div>
+                        <div class="card-result" onclick="showDetails('${m.title}', '${m.desc}')">
+                            <span class="date-badge"><i class="far fa-calendar"></i> ${dateStr}</span>
+                            <h3><i class="fas ${m.icon}" style="color: ${m.color}"></i> ${m.title}</h3>
+                            <p>${m.desc}</p>
+                            <span class="doc-tag"><i class="fas fa-paperclip"></i> ${m.doc}</span>
+                        </div>
+                    </div>
+                `;
+                timeline.innerHTML += html;
+            });
+
+            document.getElementById('resultsArea').style.display = 'block';
+
+            // Scroll to results
+            document.getElementById('resultsArea').scrollIntoView({ behavior: 'smooth' });
+
+            Swal.fire({
+                icon: 'success',
+                title: '¡Cronograma Listo!',
+                text: 'Aquí tienes tu ruta de navegación. Puedes hacer clic en cada tarjeta para más detalles.',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        }
+
+        function showDetails(title, desc) {
+            Swal.fire({
+                title: title,
+                text: desc,
+                icon: 'info',
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#39A900'
+            });
+        }
+
+        function showHelp() {
+            Swal.fire({
+                title: '¿Necesitas ayuda?',
+                html: 'Esta herramienta calcula automáticamente las fechas clave de tu etapa productiva.<br><br>Solo ingresa tu <strong>fecha de inicio</strong> y nosotros generamos el plan de entregas de bitácoras y visitas.',
+                icon: 'question',
+                confirmButtonColor: '#39A900'
+            });
+        }
+    </script>
+</body>
+
+</html>
