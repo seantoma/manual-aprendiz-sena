@@ -271,15 +271,20 @@
         <!-- Guía F-023 Concertación -->
         <div class="guide-card">
             <div class="guide-header" onclick="toggleGuide(this)">
-                <span><i class="fas fa-handshake"></i> Guía para Plan de Trabajo (F-023)</span>
+                <span><i class="fas fa-handshake"></i> Guía para Plan de Trabajo (F-023) Visitas</span>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="guide-body show">
-                <p>Este formato define qué vas a hacer. Debe concertarse con tu jefe inmediato y tu instructor al inicio
-                    de la etapa.</p>
+                <p>Este formato define tus actividades concertadas. Se diligencia en diferentes momentos clave:</p>
+                <ul style="margin-left: 20px; margin-bottom: 20px; color: #aaa;">
+                    <li><strong>Visita 1 (Concertación):</strong> Inicio de la etapa.</li>
+                    <li><strong>Visita 2 (Y visita 3 Parcial):</strong> Seguimiento al 40-50% de avance.</li>
+                    <li><strong>Visita Final:</strong> Cierre y evaluación.</li>
+                    <li><strong>Extraordinaria:</strong> En caso de novedades o incumplimientos.</li>
+                </ul>
 
                 <div class="example-tabs">
-                    <button class="tab-btn active" onclick="openTab(event, 'f023-ejemplo')">Ejemplo Guiado</button>
+                    <button class="tab-btn active" onclick="openTab(event, 'f023-ejemplo')">Ejemplo y Descarga</button>
                     <button class="tab-btn" onclick="openTab(event, 'f023-consejos')">Recomendaciones</button>
                 </div>
 
@@ -296,30 +301,49 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Desarrollar módulo de autenticación segura para el sistema interno.</td>
-                                    <td>Implementar soluciones de software aplicando principios de seguridad.</td>
-                                    <td>Código fuente, informe de pruebas, manual de usuario.</td>
-                                    <td>6 semanas</td>
+                                    <td>Desarrollar módulo de autenticación segura.</td>
+                                    <td>Implementar soluciones de software.</td>
+                                    <td>Código fuente, Informes.</td>
+                                    <td>Semana 1-6</td>
                                 </tr>
                                 <tr>
-                                    <td>Documentar procedimientos de despliegue en ambiente de pruebas.</td>
-                                    <td>Gestionar versiones de software y despliegue controlado.</td>
-                                    <td>Guía paso a paso, script de automatización.</td>
-                                    <td>4 semanas</td>
+                                    <td>Documentar manuales de usuario.</td>
+                                    <td>Validar requisitos del software.</td>
+                                    <td>Manual PDF, Guías.</td>
+                                    <td>Semana 7-8</td>
                                 </tr>
                                 <tr>
-                                    <td>Realizar mantenimiento preventivo a equipos de cómputo de la oficina.</td>
-                                    <td>Realizar mantenimiento de hardware según manuales técnicos.</td>
-                                    <td>Hoja de vida de equipos, reporte de mantenimiento.</td>
-                                    <td>Permanente</td>
+                                    <td>Ejecutar plan de pruebas unitarias.</td>
+                                    <td>Verificar calidad del software.</td>
+                                    <td>Log de pruebas, matriz de errores.</td>
+                                    <td>Semana 9-12</td>
+                                </tr>
+                                <tr>
+                                    <td>Migración de base de datos a producción.</td>
+                                    <td>Administrar bases de datos.</td>
+                                    <td>Script SQL, Backup.</td>
+                                    <td>Semana 15</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div class="download-zone">
-                        <a href="Documentacion/FORMATOS%20GENERALES/02.%20FORMATOS%20ETAPA%20PRODUCTIVA/GFPI-F-023_Formato_planeación_seguimiento_y_evaluación_etapa_productiva_V4.zip"
-                            class="btn-download" download><i class="fas fa-file-download"></i> Descargar Formato
-                            F-023</a>
+
+                    <!-- Dropdown Download Zone -->
+                    <div class="download-zone"
+                        style="display: flex; justify-content: flex-end; align-items: center; gap: 10px; background: rgba(57, 169, 0, 0.1); padding: 15px; border-radius: 8px;">
+                        <label for="f023-select"
+                            style="font-family: 'Share Tech Mono'; color: var(--neon-green);">SELECCIONAR
+                            FORMATO:</label>
+                        <select id="f023-select"
+                            style="background: #000; color: white; border: 1px solid var(--neon-green); padding: 8px; border-radius: 4px; font-family: 'Montserrat';">
+                            <option value="Formatos/Visita 1 GFPI-F023.xlsx">Visita 1 - Concertación</option>
+                            <option value="Formatos/Visita 2 GFPI-F023.xlsx">Visita 2 - Seguimiento Parcial</option>
+                            <option value="Formatos/Visita 3 GFPI-F023.xlsx">Visita 3 - Seguimiento Final</option>
+                            <option value="Formatos/Visita Extraordinaria GFPI-F023.xlsx">Visita Extraordinaria</option>
+                        </select>
+                        <a href="#" id="f023-btn" onclick="downloadSelectedF023(event)" class="btn-download">
+                            <i class="fas fa-file-download"></i> Descargar
+                        </a>
                     </div>
                 </div>
 
@@ -410,6 +434,19 @@
     </div>
 
     <script>
+        function downloadSelectedF023(event) {
+            event.preventDefault();
+            const select = document.getElementById('f023-select');
+            const url = select.value;
+            // Create a temporary link to force download
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = url.split('/').pop(); // Set filename
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
         function toggleGuide(header) {
             header.classList.toggle('active');
             const body = header.nextElementSibling;
