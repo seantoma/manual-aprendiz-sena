@@ -351,13 +351,16 @@
 
         .qr-hologram-container {
             position: relative;
-            padding: 20px;
+            padding: 15px;
+            /* Reduced padding for image */
             border: 2px solid var(--neon-green);
             border-radius: 10px;
             background: rgba(57, 169, 0, 0.05);
             box-shadow: 0 0 30px rgba(57, 169, 0, 0.2);
             backdrop-filter: blur(5px);
             margin-bottom: 1rem;
+            display: inline-block;
+            /* Keep tight to image */
         }
 
         .qr-hologram-container::before {
@@ -374,11 +377,12 @@
             animation: hologram-pulse 4s infinite alternate;
         }
 
-        .qr-hologram-container i {
-            font-size: 8rem;
-            /* Big QR */
-            color: var(--neon-green);
-            filter: drop-shadow(0 0 10px var(--neon-green));
+        .hero-qr-img {
+            width: 150px;
+            height: 150px;
+            display: block;
+            border-radius: 4px;
+            filter: drop-shadow(0 0 5px var(--neon-green));
         }
 
         .scan-line {
@@ -391,6 +395,8 @@
             box-shadow: 0 0 15px var(--neon-green);
             animation: scan 3s infinite linear;
             opacity: 0.7;
+            pointer-events: none;
+            /* Let clicks pass through if needed */
         }
 
         .hero-text {
@@ -417,6 +423,13 @@
             border-top: 4px solid var(--neon-green);
             /* Top Accent */
             background: linear-gradient(180deg, rgba(16, 32, 20, 0.9) 0%, rgba(5, 5, 10, 0.95) 100%);
+            grid-column: 1 / -1;
+            /* FORCE FULL WIDTH TO CENTER */
+            max-width: 800px;
+            /* Max width for readability */
+            margin: 0 auto;
+            /* Center the card itself in the grid space */
+            width: 100%;
         }
 
         .calendar-content {
@@ -507,7 +520,7 @@
     <section class="hero-qr-section">
         <div class="qr-hologram-container">
             <div class="scan-line"></div>
-            <i class="fas fa-qrcode"></i>
+            <img src="img/portal-qr.png" alt="Portal QR Code" class="hero-qr-img">
         </div>
         <h2 class="hero-text">Acceso Móvil Seguro</h2>
         <p class="hero-subtext">Escanea para sincronizar tu dispositivo</p>
