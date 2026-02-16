@@ -59,15 +59,21 @@
         .cyber-header {
             background: var(--nav-bg);
             border-bottom: 2px solid var(--neon-green);
-            padding: 2rem;
+            padding: 2.5rem 1rem;
             position: relative;
             z-index: 3;
             box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* CENTERED HEADER */
+            text-align: center;
         }
 
         .terminal-bar {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 0.5rem;
             margin-bottom: 1rem;
             opacity: 0.7;
@@ -94,10 +100,11 @@
         .cyber-header h1 {
             font-family: 'Share Tech Mono', monospace;
             color: var(--neon-green);
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px var(--neon-green);
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px var(--neon-green);
+            margin: 0;
         }
 
         .cyber-header p {
@@ -106,412 +113,450 @@
             margin-top: 0.5rem;
         }
 
-        /* Dashboard Grid */
+        /* Dashboard Grid - CENTERED */
         .dashboard-container {
             flex: 1;
-            padding: 3rem;
+            padding: 4rem 2rem;
             max-width: 1400px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            /* CENTERED ITEMS */
+            gap: 2.5rem;
             position: relative;
             z-index: 3;
         }
 
-        /* Cyber Cards */
+        /* Cyber Cards - ROUNDED CORNERS */
         .cyber-card {
             background: var(--card-bg);
             border: var(--glass-border);
-            border-radius: 4px;
-            padding: 2rem;
+            border-radius: 20px;
+            /* ROUNDED CORNERS AS REQUESTED */
+            padding: 2.5rem;
+            width: 350px;
+            min-height: 280px;
             position: relative;
             overflow: hidden;
             transition: all 0.3s ease;
             text-decoration: none;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            min-height: 250px;
-            border-left: 4px solid transparent;
-            /* Highlight strip */
-        }
-
-        .cyber-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.05) 50%, transparent 60%);
-            background-size: 200% 200%;
-            transition: 0.5s;
-            opacity: 0;
-        }
-
-        .cyber-card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 0 20px rgba(57, 169, 0, 0.2);
-            border-left-color: var(--neon-green);
-            /* Activate strip */
-        }
-
-        .cyber-card:hover::before {
-            opacity: 1;
-            background-position: 100% 100%;
-        }
-
-        .cyber-card.orange:hover {
-            border-left-color: var(--neon-orange);
-            box-shadow: 0 0 20px rgba(255, 107, 0, 0.2);
-        }
-
-        .card-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            color: var(--neon-green);
-            text-shadow: 0 0 10px var(--neon-green);
-        }
-
-        .orange .card-icon {
-            color: var(--neon-orange);
-            text-shadow: 0 0 10px var(--neon-orange);
-        }
-
-        .cyber-card h2 {
-            font-family: 'Share Tech Mono', monospace;
-            color: white;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-        }
-
-        .cyber-card p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-
-        .btn-launch {
-            align-self: flex-start;
-            background: transparent;
-            border: 1px solid var(--neon-green);
-            color: var(--neon-green);
-            padding: 0.8rem 1.5rem;
-            font-family: 'Share Tech Mono', monospace;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .orange .btn-launch {
-            border-color: var(--neon-orange);
-            color: var(--neon-orange);
-        }
-
-        .btn-launch::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--neon-green);
-            transition: all 0.3s ease;
-            z-index: -1;
-        }
-
-        .orange .btn-launch::after {
-            background: var(--neon-orange);
-        }
-
-        .btn-launch:hover {
-            color: black;
-            box-shadow: 0 0 15px var(--neon-green);
-        }
-
-        .btn-launch:hover::after {
-            left: 0;
-        }
-
-        .orange .btn-launch:hover {
-            box-shadow: 0 0 15px var(--neon-orange);
-        }
-
-
-        /* Calendar Widget */
-        .calendar-widget {
-            grid-column: span 2;
-            /* Span wider on larger screens */
-            background: radial-gradient(circle at center, #0a1a0f, #05050a);
-            border: 1px solid var(--neon-green);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 3rem;
-        }
-
-        .calendar-content {
-            flex: 1;
-            padding-right: 2rem;
-        }
-
-        .date-display {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 4rem;
-            color: var(--neon-green);
-            margin-bottom: 0.5rem;
-            line-height: 1;
-        }
-
-        .qr-placeholder {
-            width: 150px;
-            height: 150px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px dashed var(--neon-green);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            color: var(--neon-green);
-            text-align: center;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.8rem;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(57, 169, 0, 0.4);
-            }
-
-            70% {
-                box-shadow: 0 0 0 10px rgba(57, 169, 0, 0);
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(57, 169, 0, 0);
-            }
-        }
-
-        /* Footer */
-        .cyber-footer {
-            background: var(--nav-bg);
-            border-top: 1px solid var(--neon-green);
-            padding: 2rem;
-            text-align: center;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: auto;
-            z-index: 3;
-        }
-
-        @media (max-width: 768px) {
-            .dashboard-container {
-                grid-template-columns: 1fr;
-                padding: 1.5rem;
-            }
 
             .calendar-widget {
-                grid-column: span 1;
-                flex-direction: column;
                 text-align: center;
-                gap: 2rem;
-                padding: 1.5rem;
+                justify-content: center;
+                flex-direction: column;
+                border-top: 4px solid var(--neon-green);
+                background: linear-gradient(180deg, rgba(16, 32, 20, 0.9) 0%, rgba(5, 5, 10, 0.95) 100%);
+                /* Override Orb Styles for this specific card */
+                width: 100%;
+                max-width: 900px;
+                height: auto;
+                border-radius: 20px;
+                /* ROUNDED CORNERS */
+                margin: 3rem auto 0 auto;
+                /* CENTERED MARGIN */
+                aspect-ratio: auto;
+            }
+
+            .cyber-card::before {
+                content: '';
+                position: absolute;
+                top: -5px;
+                left: -5px;
+                right: -5px;
+                bottom: -5px;
+                background: transparent;
+                border-radius: 50%;
+                border: 2px dashed var(--neon-green);
+                animation: spin 10s infinite linear;
+                opacity: 0.3;
+            }
+
+            .cyber-card::after {
+                content: '';
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+                border-radius: 50%;
+                box-shadow: inset 0 0 30px rgba(57, 169, 0, 0.2);
+                pointer-events: none;
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+            .cyber-card:hover {
+                transform: scale(1.05);
+                box-shadow: 0 0 40px rgba(57, 169, 0, 0.4);
+                background: radial-gradient(circle at 30% 30%, rgba(30, 50, 40, 0.95), #050505);
+            }
+
+            .cyber-card.orange {
+                border-color: var(--neon-orange);
+                background: radial-gradient(circle at 30% 30%, rgba(40, 20, 5, 0.9), #000);
+                box-shadow: 0 0 20px rgba(255, 107, 0, 0.1), inset 0 0 20px rgba(255, 107, 0, 0.05);
+            }
+
+            .cyber-card.orange::before {
+                border-color: var(--neon-orange);
+                animation: spin 12s infinite linear reverse;
+                /* Spin other way */
+            }
+
+            .cyber-card.orange:hover {
+                box-shadow: 0 0 40px rgba(255, 107, 0, 0.4);
+            }
+
+            .card-icon {
+                font-size: 3.5rem;
+                margin-bottom: 1rem;
+                color: var(--neon-green);
+                text-shadow: 0 0 15px var(--neon-green);
+                z-index: 2;
+            }
+
+            .orange .card-icon {
+                color: var(--neon-orange);
+                text-shadow: 0 0 15px var(--neon-orange);
+            }
+
+            .cyber-card h2 {
+                font-family: 'Share Tech Mono', monospace;
+                color: white;
+                font-size: 1.4rem;
+                margin-bottom: 0.5rem;
+                text-transform: uppercase;
+                z-index: 2;
+            }
+
+            .cyber-card p {
+                color: var(--text-muted);
+                font-size: 0.85rem;
+                line-height: 1.4;
+                margin-bottom: 1.5rem;
+                max-width: 90%;
+                z-index: 2;
+            }
+
+            .btn-launch {
+                background: rgba(0, 0, 0, 0.5);
+                border: 1px solid var(--neon-green);
+                color: var(--neon-green);
+                padding: 0.6rem 1.2rem;
+                font-family: 'Share Tech Mono', monospace;
+                font-weight: bold;
+                text-transform: uppercase;
+                border-radius: 20px;
+                /* Pill shape for orb */
+                transition: all 0.3s ease;
+                z-index: 2;
+            }
+
+            .orange .btn-launch {
+                border-color: var(--neon-orange);
+                color: var(--neon-orange);
+            }
+
+            .btn-launch:hover {
+                background: var(--neon-green);
+                color: black;
+                box-shadow: 0 0 20px var(--neon-green);
+            }
+
+            .orange .btn-launch:hover {
+                background: var(--neon-orange);
+                color: black;
+                box-shadow: 0 0 20px var(--neon-orange);
+            }
+
+            /* Message for wide/mobile screens */
+            @media (max-width: 768px) {
+                .cyber-card {
+                    width: 280px;
+                    height: 280px;
+                }
+            }
+
+            /* Calendar Widget */
+            .calendar-widget {
+                grid-column: span 2;
+                /* Span wider on larger screens */
+                background: radial-gradient(circle at center, #0a1a0f, #05050a);
+                border: 1px solid var(--neon-green);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 3rem;
+            }
+
+            .calendar-content {
+                flex: 1;
+                padding-right: 2rem;
+            }
+
+            .date-display {
+                font-family: 'Share Tech Mono', monospace;
+                font-size: 4rem;
+                color: var(--neon-green);
+                margin-bottom: 0.5rem;
+                line-height: 1;
+            }
+
+            .qr-placeholder {
+                width: 150px;
+                height: 150px;
+                background: rgba(255, 255, 255, 0.05);
+                border: 2px dashed var(--neon-green);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                color: var(--neon-green);
+                text-align: center;
+                font-family: 'Share Tech Mono', monospace;
+                font-size: 0.8rem;
+                animation: pulse 2s infinite;
+            }
+
+            @keyframes pulse {
+                0% {
+                    box-shadow: 0 0 0 0 rgba(57, 169, 0, 0.4);
+                }
+
+                70% {
+                    box-shadow: 0 0 0 10px rgba(57, 169, 0, 0);
+                }
+
+                100% {
+                    box-shadow: 0 0 0 0 rgba(57, 169, 0, 0);
+                }
+            }
+
+            /* Footer */
+            .cyber-footer {
+                background: var(--nav-bg);
+                border-top: 1px solid var(--neon-green);
+                padding: 2rem;
+                text-align: center;
+                font-family: 'Share Tech Mono', monospace;
+                font-size: 0.8rem;
+                color: var(--text-muted);
+                margin-top: auto;
+                z-index: 3;
+            }
+
+            @media (max-width: 768px) {
+                .dashboard-container {
+                    grid-template-columns: 1fr;
+                    padding: 1.5rem;
+                }
+
+                .calendar-widget {
+                    grid-column: span 1;
+                    flex-direction: column;
+                    text-align: center;
+                    gap: 2rem;
+                    padding: 1.5rem;
+                }
+
+                .calendar-content {
+                    padding-right: 0;
+                }
+
+                .cyber-header h1 {
+                    font-size: 1.8rem;
+                }
+            }
+
+            /* --- HERO QR SECTION --- */
+            .hero-qr-section {
+                background: linear-gradient(180deg, var(--nav-bg) 0%, var(--bg-deep) 100%);
+                padding: 2rem;
+                text-align: center;
+                position: relative;
+                border-bottom: 1px solid var(--glass-border);
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+            }
+
+            .qr-hologram-container {
+                position: relative;
+                padding: 15px;
+                /* Reduced padding for image */
+                border: 2px solid var(--neon-green);
+                border-radius: 10px;
+                background: rgba(57, 169, 0, 0.05);
+                box-shadow: 0 0 30px rgba(57, 169, 0, 0.2);
+                backdrop-filter: blur(5px);
+                margin-bottom: 1rem;
+                display: inline-block;
+                /* Keep tight to image */
+            }
+
+            .qr-hologram-container::before {
+                content: '';
+                position: absolute;
+                top: -2px;
+                left: -2px;
+                right: -2px;
+                bottom: -2px;
+                background: linear-gradient(45deg, var(--neon-green), transparent, var(--neon-green));
+                z-index: -1;
+                filter: blur(10px);
+                opacity: 0.5;
+                animation: hologram-pulse 4s infinite alternate;
+            }
+
+            .hero-qr-img {
+                width: 150px;
+                height: 150px;
+                display: block;
+                border-radius: 4px;
+                filter: drop-shadow(0 0 5px var(--neon-green));
+            }
+
+            .scan-line {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 4px;
+                background: var(--neon-green);
+                box-shadow: 0 0 15px var(--neon-green);
+                animation: scan 3s infinite linear;
+                opacity: 0.7;
+                pointer-events: none;
+                /* Let clicks pass through if needed */
+            }
+
+            .hero-text {
+                font-family: 'Share Tech Mono', monospace;
+                color: var(--text-main);
+                margin-top: 1rem;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                font-size: 1.2rem;
+            }
+
+            .hero-subtext {
+                color: var(--neon-green);
+                font-size: 0.9rem;
+                opacity: 0.8;
+                margin-top: 0.5rem;
+            }
+
+            /* --- REFINED CALENDAR WIDGET (Console Style) --- */
+            .calendar-widget {
+                text-align: center;
+                justify-content: center;
+                flex-direction: column;
+                border-top: 4px solid var(--neon-green);
+                background: linear-gradient(180deg, rgba(16, 32, 20, 0.9) 0%, rgba(5, 5, 10, 0.95) 100%);
+                /* Override Orb Styles for this specific card */
+                width: 100%;
+                max-width: 900px;
+                height: auto;
+                border-radius: 10px;
+                /* Rectangular again */
+                margin-top: 2rem;
+                aspect-ratio: auto;
+                /* Remove orb aspect */
+            }
+
+            .calendar-widget::before {
+                display: none;
+                /* No spinner for the console */
+            }
+
+            .calendar-widget .btn-launch {
+                border-radius: 4px;
+                /* Rectangular button for console */
             }
 
             .calendar-content {
                 padding-right: 0;
+                /* Remove side padding specifically */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
             }
 
-            .cyber-header h1 {
-                font-size: 1.8rem;
-            }
-        }
-
-        /* --- HERO QR SECTION --- */
-        .hero-qr-section {
-            background: linear-gradient(180deg, var(--nav-bg) 0%, var(--bg-deep) 100%);
-            padding: 2rem;
-            text-align: center;
-            position: relative;
-            border-bottom: 1px solid var(--glass-border);
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        .qr-hologram-container {
-            position: relative;
-            padding: 15px;
-            /* Reduced padding for image */
-            border: 2px solid var(--neon-green);
-            border-radius: 10px;
-            background: rgba(57, 169, 0, 0.05);
-            box-shadow: 0 0 30px rgba(57, 169, 0, 0.2);
-            backdrop-filter: blur(5px);
-            margin-bottom: 1rem;
-            display: inline-block;
-            /* Keep tight to image */
-        }
-
-        .qr-hologram-container::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, var(--neon-green), transparent, var(--neon-green));
-            z-index: -1;
-            filter: blur(10px);
-            opacity: 0.5;
-            animation: hologram-pulse 4s infinite alternate;
-        }
-
-        .hero-qr-img {
-            width: 150px;
-            height: 150px;
-            display: block;
-            border-radius: 4px;
-            filter: drop-shadow(0 0 5px var(--neon-green));
-        }
-
-        .scan-line {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--neon-green);
-            box-shadow: 0 0 15px var(--neon-green);
-            animation: scan 3s infinite linear;
-            opacity: 0.7;
-            pointer-events: none;
-            /* Let clicks pass through if needed */
-        }
-
-        .hero-text {
-            font-family: 'Share Tech Mono', monospace;
-            color: var(--text-main);
-            margin-top: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 1.2rem;
-        }
-
-        .hero-subtext {
-            color: var(--neon-green);
-            font-size: 0.9rem;
-            opacity: 0.8;
-            margin-top: 0.5rem;
-        }
-
-        /* --- REFINED CALENDAR WIDGET (Console Style) --- */
-        .calendar-widget {
-            text-align: center;
-            justify-content: center;
-            flex-direction: column;
-            border-top: 4px solid var(--neon-green);
-            background: linear-gradient(180deg, rgba(16, 32, 20, 0.9) 0%, rgba(5, 5, 10, 0.95) 100%);
-            /* Override Orb Styles for this specific card */
-            width: 100%;
-            max-width: 900px;
-            height: auto;
-            border-radius: 10px;
-            /* Rectangular again */
-            margin-top: 2rem;
-            aspect-ratio: auto;
-            /* Remove orb aspect */
-        }
-
-        .calendar-widget::before {
-            display: none;
-            /* No spinner for the console */
-        }
-
-        .calendar-widget .btn-launch {
-            border-radius: 4px;
-            /* Rectangular button for console */
-        }
-
-        .calendar-content {
-            padding-right: 0;
-            /* Remove side padding specifically */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
-        .calendar-widget h2 {
-            font-size: 2rem;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
-        }
-
-        .calendar-widget p {
-            max-width: 600px;
-            margin: 0 auto 1.5rem auto;
-            font-size: 1rem;
-        }
-
-        .calendar-widget .btn-launch {
-            align-self: center;
-            /* Center the button */
-            font-size: 1.1rem;
-            padding: 1rem 2.5rem;
-            background: rgba(57, 169, 0, 0.1);
-            border: 1px solid var(--neon-green);
-            box-shadow: 0 0 20px rgba(57, 169, 0, 0.1);
-        }
-
-        .calendar-widget .btn-launch:hover {
-            background: var(--neon-green);
-            color: black;
-            box-shadow: 0 0 40px rgba(57, 169, 0, 0.6);
-        }
-
-        /* ANIMATIONS */
-        @keyframes scan {
-            0% {
-                top: 0%;
-                opacity: 0;
+            .calendar-widget h2 {
+                font-size: 2rem;
+                letter-spacing: 1px;
+                margin-bottom: 0.5rem;
             }
 
-            10% {
-                opacity: 1;
+            .calendar-widget p {
+                max-width: 600px;
+                margin: 0 auto 1.5rem auto;
+                font-size: 1rem;
             }
 
-            90% {
-                opacity: 1;
+            .calendar-widget .btn-launch {
+                align-self: center;
+                /* Center the button */
+                font-size: 1.1rem;
+                padding: 1rem 2.5rem;
+                background: rgba(57, 169, 0, 0.1);
+                border: 1px solid var(--neon-green);
+                box-shadow: 0 0 20px rgba(57, 169, 0, 0.1);
             }
 
-            100% {
-                top: 100%;
-                opacity: 0;
-            }
-        }
-
-        @keyframes hologram-pulse {
-            0% {
-                opacity: 0.3;
-                filter: blur(5px);
+            .calendar-widget .btn-launch:hover {
+                background: var(--neon-green);
+                color: black;
+                box-shadow: 0 0 40px rgba(57, 169, 0, 0.6);
             }
 
-            100% {
-                opacity: 0.7;
-                filter: blur(15px);
+            /* ANIMATIONS */
+            @keyframes scan {
+                0% {
+                    top: 0%;
+                    opacity: 0;
+                }
+
+                10% {
+                    opacity: 1;
+                }
+
+                90% {
+                    opacity: 1;
+                }
+
+                100% {
+                    top: 100%;
+                    opacity: 0;
+                }
             }
-        }
+
+            @keyframes hologram-pulse {
+                0% {
+                    opacity: 0.3;
+                    filter: blur(5px);
+                }
+
+                100% {
+                    opacity: 0.7;
+                    filter: blur(15px);
+                }
+            }
     </style>
 </head>
 
@@ -596,6 +641,299 @@
         const now = new Date();
         const options = { weekday: 'short', month: 'short', day: 'numeric' };
         dateDisplay.textContent = now.toLocaleDateString('es-ES', options).toUpperCase();
+    </script>
+    <!-- AI AGENT WIDGET -->
+    <div id="ai-widget-container">
+        <!-- Floating Toggle Button -->
+        <button id="ai-toggle-btn" class="ai-fab">
+            <i class="fas fa-robot"></i>
+        </button>
+
+        <!-- Chat Window -->
+        <div id="ai-chat-window" class="ai-window hidden">
+            <div class="ai-header">
+                <div class="ai-title">
+                    <i class="fas fa-brain"></i> SENA_BOT v1.0
+                </div>
+                <button id="ai-close-btn" class="ai-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="ai-messages" class="ai-body">
+                <div class="ai-msg bot">
+                    <p>¡Hola! Soy tu asistente virtual de Etapa Productiva. 🤖</p>
+                    <p>Puedo ayudarte a encontrar formatos (F-023), guías o fechas. ¿Qué necesitas?</p>
+                </div>
+            </div>
+            <div class="ai-input-area">
+                <input type="text" id="ai-input" placeholder="Escribe tu duda env..." autocomplete="off">
+                <button id="ai-send-btn"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* AI WIDGET STYLES */
+        .ai-fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--nav-bg);
+            border: 2px solid var(--neon-green);
+            color: var(--neon-green);
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(57, 169, 0, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ai-fab:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 0 30px var(--neon-green);
+            background: var(--neon-green);
+            color: black;
+        }
+
+        .ai-window {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            height: 500px;
+            background: rgba(10, 15, 20, 0.95);
+            border: 1px solid var(--neon-green);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            transform-origin: bottom right;
+            backdrop-filter: blur(10px);
+        }
+
+        .ai-window.hidden {
+            transform: scale(0);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .ai-header {
+            background: rgba(57, 169, 0, 0.1);
+            padding: 15px;
+            border-bottom: 1px solid var(--neon-green);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ai-title {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--neon-green);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ai-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 16px;
+            transition: color 0.2s;
+        }
+
+        .ai-close:hover {
+            color: #ff5f56;
+        }
+
+        .ai-body {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .ai-msg {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .ai-msg.bot {
+            align-self: flex-start;
+            background: rgba(57, 169, 0, 0.1);
+            border-left: 2px solid var(--neon-green);
+            color: var(--text-main);
+        }
+
+        .ai-msg.user {
+            align-self: flex-end;
+            background: rgba(255, 255, 255, 0.05);
+            border-right: 2px solid var(--text-muted);
+            color: white;
+            text-align: right;
+        }
+
+        .ai-input-area {
+            padding: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 10px;
+        }
+
+        #ai-input {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        #ai-input:focus {
+            outline: none;
+            border-color: var(--neon-green);
+        }
+
+        #ai-send-btn {
+            background: var(--neon-green);
+            border: none;
+            color: black;
+            width: 40px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        #ai-send-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* Loading dots */
+        .typing-indicator span {
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            background-color: var(--text-muted);
+            border-radius: 50%;
+            animation: typing 1s infinite;
+            margin: 0 2px;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+    </style>
+
+    <script>
+        // AI WIDGET LOGIC
+        const toggleBtn = document.getElementById('ai-toggle-btn');
+        const closeBtn = document.getElementById('ai-close-btn');
+        const chatWindow = document.getElementById('ai-chat-window');
+        const input = document.getElementById('ai-input');
+        const sendBtn = document.getElementById('ai-send-btn');
+        const messages = document.getElementById('ai-messages');
+
+        toggleBtn.addEventListener('click', () => chatWindow.classList.toggle('hidden'));
+        closeBtn.addEventListener('click', () => chatWindow.classList.add('hidden'));
+
+        function addMessage(text, sender) {
+            const div = document.createElement('div');
+            div.className = `ai-msg ${sender}`;
+            // Allow basic HTML for links
+            div.innerHTML = text;
+            messages.appendChild(div);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function showTyping() {
+            const div = document.createElement('div');
+            div.className = 'ai-msg bot typing-indicator';
+            div.id = 'typing';
+            div.innerHTML = '<span></span><span></span><span></span>';
+            messages.appendChild(div);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function removeTyping() {
+            const typing = document.getElementById('typing');
+            if (typing) typing.remove();
+        }
+
+        function getBotResponse(query) {
+            const q = query.toLowerCase();
+
+            // KNOWLEDGE BASE (Reglas simples basadas en documentación)
+            if (q.includes('f023') || q.includes('f-023') || q.includes('bitacora') || q.includes('bitácora')) {
+                return `El formato <b>F-023 (Planeación, Seguimiento y Evaluación)</b> es vital. <br><br>👉 <a href="recursos_etapa_productiva.html" style="color:var(--neon-green)">Descarga la Guía y Formatos aquí</a>. Recuerda que hay uno para cada visita (1, 2, 3).`;
+            }
+            if (q.includes('fecha') || q.includes('calculadora') || q.includes('fin')) {
+                return `Para saber cuándo termina tu etapa productiva, usa nuestra <a href="calculadora_fechas.html" style="color:var(--neon-green)">Calculadora de Fechas</a>. Necesitarás tu fecha de inicio.`;
+            }
+            if (q.includes('concertacion') || q.includes('concertación')) {
+                return `La concertación es la primera reunión. Debes llevar el F-023 impreso y diligenciado en la parte de Planeación. Agenda tu cita en el panel de abajo. 👇`;
+            }
+            if (q.includes('agendar') || q.includes('cita') || q.includes('instructor')) {
+                return `Puedes agendar tu cita de seguimiento con el instructor usando el widget de "Agendamiento" en la parte inferior de este tablero.`;
+            }
+            if (q.includes('hola') || q.includes('buenos')) {
+                return `¡Hola! Soy SENA_BOT. Pregúntame sobre formatos, fechas o procesos de etapa productiva.`;
+            }
+
+            return `No estoy seguro de eso, pero puedes consultar el <a href="manual_aprendiz.html" style="color:var(--neon-green)">Manual Completo</a> para más detalles o escribirle a ta tu instructor.`;
+        }
+
+        function handleSend() {
+            const text = input.value.trim();
+            if (!text) return;
+
+            addMessage(text, 'user');
+            input.value = '';
+
+            showTyping();
+
+            // Simulate thinking delay
+            setTimeout(() => {
+                removeTyping();
+                const response = getBotResponse(text);
+                addMessage(response, 'bot');
+            }, 1000);
+        }
+
+        sendBtn.addEventListener('click', handleSend);
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSend();
+        });
     </script>
 </body>
 
