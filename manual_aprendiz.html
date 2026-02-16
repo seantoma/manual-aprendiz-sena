@@ -1,0 +1,3344 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual del Aprendiz - Etapa Productiva SENA</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Cyberpunk Palette */
+            --neon-green: #39A900;
+            --neon-orange: #FF6B00;
+            --bg-deep: #05050a;
+            --card-bg: rgba(15, 15, 25, 0.85);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+            --text-main: #e0e0e0;
+            --text-muted: #b0b0b0;
+            --shadow: 0 0 20px rgba(57, 169, 0, 0.1);
+            --nav-bg: #0a0a14;
+
+            /* Legacy Sync */
+            --sena-verde: var(--neon-green);
+            --sena-naranja: var(--neon-orange);
+            --sena-azul: #00324D;
+            --bg-body: var(--bg-deep);
+        }
+
+        [data-theme='dark'] {
+            /* Already deep, just enhance glow */
+            --shadow: 0 0 30px rgba(57, 169, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.7;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Scanline Effect */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 9999;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        /* Search and Theme Toggle */
+        .top-controls {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            padding: 0.6rem 1rem 0.6rem 2.5rem;
+            border-radius: 4px;
+            border: 1px solid var(--neon-green);
+            background: rgba(15, 15, 25, 0.8);
+            color: white;
+            outline: none;
+            width: 200px;
+            transition: all 0.3s ease;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .search-input:focus {
+            width: 300px;
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+
+        .search-input::placeholder {
+            color: rgba(57, 169, 0, 0.5);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            color: var(--neon-green);
+        }
+
+        .theme-toggle {
+            background: rgba(57, 169, 0, 0.1);
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--neon-green);
+            color: black;
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+
+        /* Header */
+        .header {
+            background: #0a0a0f;
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-bottom: 2px solid var(--neon-green);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 0.5rem;
+            filter: drop-shadow(0 0 10px var(--neon-green));
+        }
+
+        .header p {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--neon-green);
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header .version {
+            display: inline-block;
+            background: transparent;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 0.4rem 1.2rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-top: 1.5rem;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        /* Navigation */
+        .nav-container {
+            background: #0a0a14;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--neon-green);
+        }
+
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 0.5rem;
+            gap: 0.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .nav-btn {
+            background: transparent;
+            color: var(--neon-green);
+            border: 1px solid transparent;
+            padding: 0.7rem 1.3rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .nav-btn:hover,
+        .nav-btn.active {
+            background: rgba(57, 169, 0, 0.1);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: radial-gradient(circle at top, rgba(57, 169, 0, 0.05) 0%, transparent 70%);
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+            animation: glitchFade 0.4s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes glitchFade {
+            0% {
+                opacity: 0;
+                transform: translateY(10px) skewX(5deg);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: skewX(-5deg);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) skewX(0);
+            }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: var(--glass-border);
+            border-radius: 4px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--neon-green);
+            color: var(--text-main);
+            position: relative;
+        }
+
+        .card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(45deg, transparent 50%, var(--neon-green) 50%);
+        }
+
+        .card h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--neon-green);
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            filter: drop-shadow(0 0 5px var(--neon-green));
+        }
+
+        .card h3 {
+            color: var(--neon-orange);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem 0;
+            text-transform: uppercase;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .card h4 {
+            color: var(--neon-green);
+            font-size: 1.15rem;
+            margin: 1.5rem 0 0.8rem 0;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        /* Accordion */
+        .accordion {
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .accordion-header {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1.2rem 1.5rem;
+            border-radius: 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+            border-left: 2px solid transparent;
+        }
+
+        .accordion-header:hover {
+            background: rgba(57, 169, 0, 0.05);
+            border-left-color: var(--neon-green);
+        }
+
+        .accordion-header.active {
+            background: rgba(57, 169, 0, 0.1);
+            border-left-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .accordion-content.show {
+            max-height: 3000px;
+            padding: 1.5rem;
+            border-top: 1px solid rgba(57, 169, 0, 0.2);
+        }
+
+        /* Checklist */
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist li {
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.8rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checklist li:hover {
+            background: rgba(57, 169, 0, 0.1);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 10px rgba(57, 169, 0, 0.2);
+        }
+
+        .checklist li.checked {
+            background: rgba(57, 169, 0, 0.2);
+            border-color: var(--neon-green);
+            opacity: 0.8;
+        }
+
+        .checklist li i {
+            color: var(--neon-green);
+            font-size: 1.2rem;
+            margin-top: 0.2rem;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 3px var(--neon-green));
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            height: 30px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, transparent, var(--neon-green));
+            height: 100%;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 15px;
+            color: white;
+            font-weight: 800;
+            font-family: 'Share Tech Mono', monospace;
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 3.5rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 1.2rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--neon-green) 0%, var(--neon-orange) 100%);
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2.5rem;
+            background: var(--card-bg);
+            border: var(--glass-border);
+            padding: 2rem;
+            border-radius: 4px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.7rem;
+            top: 2rem;
+            width: 14px;
+            height: 14px;
+            background: #000;
+            border: 2px solid var(--neon-green);
+            border-radius: 0;
+            transform: rotate(45deg);
+            box-shadow: 0 0 10px var(--neon-green);
+            z-index: 2;
+        }
+
+        .timeline-badge {
+            display: inline-block;
+            padding: 0.4rem 1.2rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: black;
+            margin-bottom: 0.8rem;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .badge-etapa1 {
+            background: var(--neon-orange);
+        }
+
+        .badge-etapa2 {
+            background: var(--neon-green);
+        }
+
+        .badge-etapa3 {
+            background: #00e5ff;
+        }
+
+        .badge-etapa4 {
+            background: #ff00ff;
+        }
+
+        .badge-etapa5 {
+            background: #ffff00;
+        }
+
+        /* Info Boxes */
+        .info-box {
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            background: rgba(15, 15, 25, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-box.info {
+            border-left: 4px solid #00e5ff;
+            color: #00e5ff;
+        }
+
+        .info-box.warning {
+            border-left: 4px solid var(--neon-orange);
+            color: var(--neon-orange);
+        }
+
+        .info-box.success {
+            border-left: 4px solid var(--neon-green);
+            color: var(--neon-green);
+        }
+
+        .info-box.danger {
+            border-left: 4px solid #ff0033;
+            color: #ff0033;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0;
+            overflow: hidden;
+        }
+
+        th {
+            background: rgba(57, 169, 0, 0.2);
+            color: var(--neon-green);
+            padding: 1.2rem;
+            text-align: left;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-family: 'Share Tech Mono', monospace;
+            border-bottom: 2px solid var(--neon-green);
+        }
+
+        td {
+            padding: 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #ccc;
+        }
+
+        tr:hover {
+            background: rgba(57, 169, 0, 0.05);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            text-decoration: none;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .btn-primary {
+            background: transparent;
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+
+        .btn-primary:hover {
+            background: var(--neon-green);
+            color: black;
+            box-shadow: 0 0 20px var(--neon-green);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border-color: var(--neon-orange);
+            color: var(--neon-orange);
+        }
+
+        .btn-secondary:hover {
+            background: var(--neon-orange);
+            color: black;
+            box-shadow: 0 0 20px var(--neon-orange);
+        }
+
+        /* Counter */
+        .counter-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .counter-item {
+            background: rgba(15, 15, 25, 0.8);
+            padding: 2.5rem;
+            border: var(--glass-border);
+            border-bottom: 3px solid var(--neon-green);
+            text-align: center;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .counter-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(57, 169, 0, 0.1);
+        }
+
+        .counter-item .icon {
+            font-size: 2.5rem;
+            color: var(--neon-green);
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 5px var(--neon-green));
+        }
+
+        .counter-item .number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .counter-item .label {
+            font-size: 0.8rem;
+            color: var(--neon-green);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+        }
+
+        /* Step by step */
+        .step-container {
+            counter-reset: step;
+        }
+
+        .step {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            position: relative;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: transparent;
+            border: 2px solid var(--neon-green);
+            color: var(--neon-green);
+            border-radius: 0;
+            transform: rotate(45deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-family: 'Share Tech Mono', monospace;
+            flex-shrink: 0;
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .step-number span {
+            transform: rotate(-45deg);
+            font-size: 1.2rem;
+        }
+
+        .step-content h4 {
+            color: var(--sena-azul);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Process flow */
+        .process-flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .process-step {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            min-width: 150px;
+        }
+
+        .process-step .num {
+            background: var(--sena-verde);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .process-arrow {
+            color: var(--sena-verde);
+            font-size: 1.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--sena-azul);
+            color: white;
+            text-align: center;
+            padding: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .footer p {
+            opacity: 0.9;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .nav {
+                flex-direction: column;
+            }
+
+            .nav-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .timeline {
+                padding-left: 2.5rem;
+            }
+
+            .timeline::before {
+                left: 0.8rem;
+            }
+
+            .timeline-item::before {
+                left: -2.2rem;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+
+            .nav-container,
+            .btn {
+                display: none !important;
+            }
+
+            .section {
+                display: block !important;
+            }
+
+            .card {
+                break-inside: avoid;
+            }
+        }
+
+        /* Highlight */
+        .highlight {
+            background: linear-gradient(120deg, #fff59d 0%, #fff59d 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 88%;
+            padding: 0 4px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--sena-verde);
+            background: white;
+            color: var(--sena-verde);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover,
+        .tab-btn.active {
+            background: var(--sena-verde);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        /* Subsection */
+        .subsection {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin: 1.5rem 0;
+            border-left: 2px solid var(--neon-green);
+        }
+
+        .subsection h5 {
+            color: var(--neon-green);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-family: 'Share Tech Mono', monospace;
+            text-transform: uppercase;
+        }
+
+        .subsection p {
+            color: var(--text-main);
+        }
+
+        /* Note box */
+        .note-box {
+            background: rgba(255, 107, 0, 0.05);
+            border: 1px dashed var(--neon-orange);
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin: 1.5rem 0;
+            color: var(--text-main);
+        }
+
+        .note-box strong {
+            color: var(--neon-orange);
+        }
+
+        /* Two column */
+        .two-col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Rights box */
+        .rights-box {
+            background: rgba(57, 169, 0, 0.05);
+            border: 1px solid rgba(57, 169, 0, 0.2);
+            border-radius: 4px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            border-left: 4px solid var(--neon-green);
+        }
+
+        .rights-box h4 {
+            color: var(--neon-green);
+            margin-bottom: 1.5rem;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .rights-box p {
+            color: var(--text-main);
+        }
+
+        /* Duties box */
+        .duties-box {
+            background: rgba(255, 107, 0, 0.05);
+            border: 1px solid rgba(255, 107, 0, 0.2);
+            border-radius: 4px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            border-left: 4px solid var(--neon-orange);
+        }
+
+        .duties-box h4 {
+            color: var(--neon-orange);
+            margin-bottom: 1.5rem;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .duties-box p {
+            color: var(--text-main);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="top-controls">
+            <a href="index.html" class="nav-btn"
+                style="background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.3);"><i
+                    class="fas fa-home"></i> Volver al Portal</a>
+            <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+        <h1><i class="fas fa-user-graduate"></i> Manual del Aprendiz</h1>
+        <p>Tu Guía Completa para la Etapa Productiva - SENA</p>
+        <span class="version"><i class="fas fa-code-branch"></i> Todo lo que necesitas saber para completar tu Etapa
+            Productiva con éxito</span>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <div class="nav">
+            <button class="nav-btn active" onclick="showSection('inicio')">
+                <i class="fas fa-home"></i> Inicio
+            </button>
+            <button class="nav-btn" onclick="showSection('que-es')">
+                <i class="fas fa-question-circle"></i> ¿Qué es la EP?
+            </button>
+            <button class="nav-btn" onclick="showSection('alternativas')">
+                <i class="fas fa-tasks"></i> Alternativas
+            </button>
+            <button class="nav-btn" onclick="showSection('proceso')">
+                <i class="fas fa-route"></i> Mi Proceso
+            </button>
+            <button class="nav-btn" onclick="showSection('bitacora')">
+                <i class="fas fa-book"></i> La Bitácora
+            </button>
+            <button class="nav-btn" onclick="showSection('derechos')">
+                <i class="fas fa-balance-scale"></i> Derechos y Deberes
+            </button>
+            <button class="nav-btn" onclick="showSection('documentos')">
+                <i class="fas fa-handshake"></i> Visitas
+            </button>
+            <button class="nav-btn" onclick="showSection('quiz')">
+                <i class="fas fa-gamepad"></i> QUIZ
+            </button>
+            <button class="nav-btn" onclick="showSection('checklist')">
+                <i class="fas fa-check-square"></i> Mi Checklist
+            </button>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <!-- Section: Inicio -->
+        <section id="inicio" class="section active">
+            <div class="card">
+                <h2><i class="fas fa-hand-peace"></i> ¡Bienvenido Aprendiz SENA!</h2>
+                <p>Este manual ha sido creado especialmente para ti. Aquí encontrarás toda la información que necesitas
+                    para comprender, planificar y ejecutar con éxito tu <strong>Etapa Productiva</strong>, una de las
+                    fases más importantes de tu formación profesional.</p>
+
+                <div class="info-box success">
+                    <i class="fas fa-star"></i>
+                    <div>
+                        <strong>¿Sabías que...?</strong>
+                        <p>La Etapa Productiva es tu puerta de entrada al mundo laboral. Durante este período aplicarás
+                            todo lo aprendido en el aula en un entorno real, construirás tu red de contactos
+                            profesionales y aumentarás significativamente tus posibilidades de conseguir empleo al
+                            finalizar tu formación.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="counter-box">
+                <div class="counter-item">
+                    <div class="icon"><i class="fas fa-calendar-alt"></i></div>
+                    <div class="number">6-9</div>
+                    <div class="label">Meses de duración</div>
+                </div>
+                <div class="counter-item">
+                    <div class="icon"><i class="fas fa-tasks"></i></div>
+                    <div class="number">7</div>
+                    <div class="label">Alternativas disponibles</div>
+                </div>
+                <div class="counter-item">
+                    <div class="icon"><i class="fas fa-book"></i></div>
+                    <div class="number">6-9</div>
+                    <div class="label">Bitácoras a entregar<br><small>(9 para tecnólogos)</small></div>
+                </div>
+                <div class="counter-item">
+                    <div class="icon"><i class="fas fa-certificate"></i></div>
+                    <div class="number">1</div>
+                    <div class="label">Titulo al finalizar</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-map-signs"></i> ¿Qué encontrarás en este manual?</h2>
+                <div class="two-col">
+                    <div class="subsection">
+                        <h5><i class="fas fa-question-circle"></i> ¿Qué es la Etapa Productiva?</h5>
+                        <p>Entenderás qué es la EP, por qué es importante y cómo se integra a tu formación profesional.
+                        </p>
+                    </div>
+                    <div class="subsection">
+                        <h5><i class="fas fa-tasks"></i> Las 7 Alternativas</h5>
+                        <p>Conocerás todas las opciones disponibles para realizar tu EP y cómo elegir la más adecuada
+                            para ti.</p>
+                    </div>
+                    <div class="subsection">
+                        <h5><i class="fas fa-route"></i> Tu Proceso Paso a Paso</h5>
+                        <p>Una guía detallada de todo lo que debes hacer, desde antes de iniciar hasta tu certificación.
+                        </p>
+                    </div>
+                    <div class="subsection">
+                        <h5><i class="fas fa-book"></i> La Bitácora</h5>
+                        <p>Aprenderás a diligenciar correctamente este documento fundamental para tu seguimiento.</p>
+                    </div>
+                    <div class="subsection">
+                        <h5><i class="fas fa-balance-scale"></i> Tus Derechos y Deberes</h5>
+                        <p>Conocerás qué te corresponde como aprendiz y cuáles son tus responsabilidades.</p>
+                    </div>
+                    <div class="subsection">
+                        <h5><i class="fas fa-folder-open"></i> Documentos</h5>
+                        <p>Lista completa de todos los documentos que necesitas para completar tu proceso.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-exclamation-circle"></i> Tiempos Importantes - ¡No los olvides!</h2>
+                <div class="info-box warning">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <strong>Fechas Clave para tu Proceso:</strong>
+                        <ul style="margin-top: 0.8rem; margin-left: 1.5rem;">
+                            <li><strong>4 meses antes de terminar la etapa lectiva:</strong> Asistir al Taller de Vida
+                                Laboral</li>
+                            <li><strong>15 días antes de terminar la etapa lectiva:</strong> Asistir al Taller de
+                                Bitácoras</li>
+                            <li><strong>Durante tu EP:</strong> Entregar 1-2 bitácoras por mes</li>
+                            <li><strong>Al finalizar:</strong> Entregar todos los documentos de certificación</li>
+                            <li><strong>Límite máximo:</strong> Tienes 2 años desde que terminas la etapa lectiva para
+                                completar tu EP</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: ¿Qué es la EP? -->
+        <section id="que-es" class="section">
+            <div class="card">
+                <h2><i class="fas fa-question-circle"></i> ¿Qué es la Etapa Productiva?</h2>
+                <p>Según el <strong>Acuerdo 009 de 2024</strong> del SENA, la etapa productiva es:</p>
+
+                <div class="info-box info">
+                    <i class="fas fa-quote-left"></i>
+                    <div>
+                        <p style="font-style: italic; font-size: 1.1rem;">"El momento del proceso formativo en la que el
+                            aprendiz SENA <span class="highlight">aplica, complementa, fortalece y consolida sus
+                                competencias</span>, en términos de conocimiento, habilidades, destrezas, actitudes y
+                            valores. La etapa productiva le permite al aprendiz aplicar sus conocimientos en la
+                            resolución de problemas en contextos reales o simulados."</p>
+                    </div>
+                </div>
+
+                <h3>¿Por qué es importante la Etapa Productiva?</h3>
+                <div class="two-col">
+                    <div class="subsection">
+                        <h5><i class="fas fa-briefcase"></i> Experiencia Laboral Real</h5>
+                        <p>Trabajarás en un ambiente real del sector productivo, aplicando tus conocimientos en
+                            situaciones cotidianas de tu profesión.</p>
+                    </div>
+                    <div class="subsection">
+                        <h5><i class="fas fa-network-wired"></i> Red de Contactos</h5>
+                        <p>Conocerás profesionales de tu sector, construirás relaciones que pueden abrirte puertas
+                            laborales en el futuro.</p>
+                    </div>
+                    <div class="subsection">
+                        <h5><i class="fas fa-chart-line"></i> Desarrollo Profesional</h5>
+                        <p>Fortalecerás tus habilidades técnicas y blandas como trabajo en equipo, comunicación y
+                            resolución de problemas.</p>
+                    </div>
+                    <div class="subsection">
+                        <h5><i class="fas fa-award"></i> Certificación</h5>
+                        <p>Es un requisito obligatorio para obtener tu título o certificado como Tecnólogo, Técnico o
+                            Auxiliar del SENA.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-graduation-cap"></i> Tu Formación Profesional Integral</h2>
+                <p>La Formación Profesional Integral (FPI) del SENA se compone de dos etapas fundamentales:</p>
+
+                <div class="process-flow">
+                    <div class="process-step">
+                        <div class="num">1</div>
+                        <div><strong>Etapa Lectiva</strong></div>
+                        <div style="font-size: 0.85rem; color: #666;">Formación teórico-práctica en el Centro</div>
+                    </div>
+                    <div class="process-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="process-step">
+                        <div class="num">2</div>
+                        <div><strong>Etapa Productiva</strong></div>
+                        <div style="font-size: 0.85rem; color: #666;">Práctica en el sector productivo</div>
+                    </div>
+                    <div class="process-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="process-step">
+                        <div class="num">3</div>
+                        <div><strong>Certificación</strong></div>
+                        <div style="font-size: 0.85rem; color: #666;">Obtienes tu título</div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h5><i class="fas fa-book-reader"></i> Etapa Lectiva</h5>
+                    <p>Es donde adquieres los conocimientos teóricos y prácticas básicas de tu profesión. Se desarrolla
+                        en aulas, talleres y laboratorios del Centro de Formación.</p>
+                </div>
+
+                <div class="subsection">
+                    <h5><i class="fas fa-briefcase"></i> Etapa Productiva</h5>
+                    <p>Es donde aplicas todo lo aprendido en un entorno laboral real. Puedes realizarla en empresas,
+                        organizaciones, o mediante proyectos productivos.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-lightbulb"></i> Conceptos que Debes Conocer</h2>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><i class="fas fa-tasks"></i> ¿Qué son las Alternativas de EP?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Son las diferentes opciones autorizadas por el SENA para que desarrolles tu etapa productiva.
+                            Son un <strong>requisito obligatorio</strong> para obtener tu título. Las 7 alternativas
+                            son:</p>
+                        <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>Contrato de Aprendizaje</li>
+                            <li>Contrato de Vínculo Formativo</li>
+                            <li>Monitoría</li>
+                            <li>Proyecto Productivo</li>
+                            <li>Vínculo Laboral</li>
+                            <li>Prácticas en Economía Popular</li>
+                            <li>Prácticas en Economía Campesina</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><i class="fas fa-book"></i> ¿Qué es la Bitácora?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Es un <strong>documento obligatorio</strong> que debes diligenciar periódicamente para
+                            reportar las actividades que desarrollas durante tu etapa productiva. A través de ella,
+                            demuestras cómo estás aplicando las competencias de tu programa de formación.</p>
+                        <p style="margin-top: 0.5rem;"><strong>Debes entregar entre 6 y 8 bitácoras</strong> durante tu
+                            EP, una por mes aproximadamente.</p>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><i class="fas fa-user-tie"></i> ¿Quién es el Instructor de Seguimiento?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Es el profesional del SENA que te acompañará durante toda tu etapa productiva. Sus funciones
+                            son:</p>
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>Realizar visitas a tu lugar de práctica</li>
+                            <li>Revisar y retroalimentar tus bitácoras</li>
+                            <li>Evaluar tu desempeño</li>
+                            <li>Resolver tus dudas sobre el proceso</li>
+                            <li>Emitir el juicio evaluativo final</li>
+                        </ul>
+                        <p style="margin-top: 0.5rem;"><strong>Importante:</strong> Tu instructor debe darte sus datos
+                            de contacto (nombre, correo, teléfono) al inicio del seguimiento.</p>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><i class="fas fa-building"></i> ¿Qué es el Ente Co-formador?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Es la <strong>empresa, organización o institución</strong> donde vas a realizar tu etapa
+                            productiva. Puede ser:</p>
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>Una empresa privada</li>
+                            <li>Una entidad pública</li>
+                            <li>Una ONG</li>
+                            <li>Una unidad productiva familiar</li>
+                            <li>Un ambiente de formación del SENA</li>
+                        </ul>
+                        <p style="margin-top: 0.5rem;">El ente co-formador debe afiliarte a la ARL (Administradora de
+                            Riesgos Laborales) antes de que inicies tu práctica.</p>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><i class="fas fa-gavel"></i> ¿Qué es el Juicio Evaluativo?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Es la calificación final que determina si aprobaste o no tu etapa productiva. Puede ser:</p>
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li><strong>APROBADO:</strong> Cuando alcanzas los resultados de aprendizaje y competencias
+                                establecidas en tu programa de formación.</li>
+                            <li><strong>NO APROBADO:</strong> Cuando no alcanzas los resultados de aprendizaje o
+                                competencias establecidos.</li>
+                        </ul>
+                        <p style="margin-top: 0.5rem;">El instructor debe emitir el juicio en máximo 8 días después de
+                            recibir toda tu documentación.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Section: Perfil del Aprendiz -->
+            <div class="card">
+                <h2><i class="fas fa-user-check"></i> Perfil del Aprendiz en Etapa Productiva</h2>
+                <p>Para tener éxito en tu etapa productiva, se espera que demuestres las siguientes cualidades y
+                    comportamientos, acorde con el <strong>Acuerdo 009 de 2024</strong>:</p>
+
+                <div class="two-col">
+                    <div class="subsection">
+                        <h5><i class="fas fa-brain"></i> Proactividad y Autonomía</h5>
+                        <p>No esperes a que te digan qué hacer todo el tiempo. Propón soluciones, busca aprender más y
+                            gestiona tus propias responsabilidades.</p>
+                    </div>
+                    <div class="subsection">
+                        <h5><i class="fas fa-users-cog"></i> Adaptabilidad</h5>
+                        <p>El mundo laboral cambia rápido. Mantén una actitud abierta al cambio, a nuevas herramientas y
+                            a diferentes formas de trabajar.</p>
+                    </div>
+                    <div class="subsection">
+                        <h5><i class="fas fa-hand-holding-heart"></i> Ética y Responsabilidad</h5>
+                        <p>Cumple con tus horarios, sé honesto en tu bitácora y respeta la confidencialidad de la
+                            información de la empresa.</p>
+                    </div>
+                    <div class="subsection">
+                        <h5><i class="fas fa-comments"></i> Comunicación Asertiva</h5>
+                        <p>Expresa tus ideas y dudas con respeto y claridad. Escucha activamente a tu jefe y compañeros.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Alternativas -->
+        <section id="alternativas" class="section">
+            <div class="card">
+                <h2><i class="fas fa-tasks"></i> Las 7 Alternativas de Etapa Productiva</h2>
+                <p>El SENA te ofrece <strong>7 alternativas</strong> para realizar tu etapa productiva. Puedes elegir la
+                    que mejor se adapte a tu situación, intereses y posibilidades. ¡Conócelas todas!</p>
+
+                <div class="info-box info">
+                    <i class="fas fa-lightbulb"></i>
+                    <div>
+                        <strong>¿Cómo elegir la mejor alternativa?</strong>
+                        <p>Considera: tu situación laboral actual, tus intereses profesionales, las oportunidades
+                            disponibles en tu ciudad, y el tiempo que tienes disponible. Recuerda que puedes cambiar de
+                            alternativa hasta 3 veces si es necesario.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab('alt-contrato')">Contrato de Aprendizaje</button>
+                <button class="tab-btn" onclick="showTab('alt-vinculo')">Vínculo Formativo</button>
+                <button class="tab-btn" onclick="showTab('alt-monitoria')">Monitoría</button>
+                <button class="tab-btn" onclick="showTab('alt-proyecto')">Proyecto</button>
+                <button class="tab-btn" onclick="showTab('alt-laboral')">Vínculo Laboral</button>
+                <button class="tab-btn" onclick="showTab('alt-economia')">Economía Popular</button>
+            </div>
+
+            <!-- Contrato de Aprendizaje -->
+            <div id="alt-contrato" class="tab-content active">
+                <div class="card">
+                    <h3><i class="fas fa-file-contract"></i> Contrato de Aprendizaje</h3>
+
+                    <div class="info-box success">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>¿Qué es?</strong>
+                            <p>Es un contrato laboral especial donde una empresa te contrata para que trabajes y
+                                estudies al mismo tiempo. Recibirás un <strong>apoyo de sostenimiento mensual</strong> y
+                                estarás afiliado a seguridad social.</p>
+                        </div>
+                    </div>
+
+                    <h4>Ventajas:</h4>
+                    <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                        <li>Recibes apoyo económico mensual</li>
+                        <li>Tienes afiliación a seguridad social (salud, pensión, riesgos laborales)</li>
+                        <li>Derecho a prestaciones sociales</li>
+                        <li>Experiencia laboral con contrato formal</li>
+                        <li>Mayor probabilidad de vinculación permanente</li>
+                    </ul>
+
+                    <h4>Requisitos:</h4>
+                    <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                        <li>Tener entre 15 y 28 años (para algunos programas)</li>
+                        <li>Estar matriculado en un programa de formación del SENA</li>
+                        <li>No tener contrato de aprendizaje vigente con otra empresa</li>
+                    </ul>
+
+                    <h4>Paso a Paso:</h4>
+                    <div class="step-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Selecciona la Alternativa</h4>
+                                <p>Diligencia el formato GFPI-F-165 seleccionando "Contrato de Aprendizaje". Puedes
+                                    hacerlo desde la semana de inducción.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Ingresa al SGVA</h4>
+                                <p>Entra al <strong>Sistema de Gestión Virtual de Aprendices (SGVA)</strong> con tus
+                                    datos. Mantén tu información actualizada.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Busca Vacantes</h4>
+                                <p>Revisa las vacantes disponibles en el SGVA y postúlate a las que se ajusten a tu
+                                    programa de formación.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Proceso de Selección</h4>
+                                <p>La empresa te contactará si tu perfil es de su interés. Participa en las entrevistas
+                                    y pruebas de selección.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <h4>Firma del Contrato</h4>
+                                <p>Si eres seleccionado, firma el contrato de aprendizaje con la empresa. ¡Ya puedes
+                                    iniciar!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box warning">
+                        <i class="fas fa-info-circle"></i>
+                        <div>
+                            <strong>Duración:</strong>
+                            <p>Según la Ley 2466 de 2025, el contrato de aprendizaje puede durar <strong>hasta 3
+                                    años</strong> como máximo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vínculo Formativo -->
+            <div id="alt-vinculo" class="tab-content">
+                <div class="card">
+                    <h3><i class="fas fa-handshake"></i> Contrato de Vínculo Formativo</h3>
+
+                    <div class="info-box success">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>¿Qué es?</strong>
+                            <p>Es una práctica formativa que te permite fortalecer tus competencias en una empresa u
+                                organización. <strong>No es una relación laboral</strong>, pero te da experiencia
+                                práctica valiosa.</p>
+                        </div>
+                    </div>
+
+                    <h4>Tipos de Vínculo Formativo:</h4>
+
+                    <div class="subsection">
+                        <h5><i class="fas fa-store"></i> 1. Asesoría a PYMES</h5>
+                        <p>Brindas apoyo a micro, pequeñas y medianas empresas en áreas relacionadas con tu formación.
+                            Puedes recibir un auxilio económico opcional.</p>
+                    </div>
+
+                    <div class="subsection">
+                        <h5><i class="fas fa-home"></i> 2. Unidad Productiva Familiar</h5>
+                        <p>Apoyas en el negocio familiar o de personas cercanas. No puedes ser tu propio ente
+                            co-formador. Se puede acordar un auxilio económico.</p>
+                    </div>
+
+                    <div class="subsection">
+                        <h5><i class="fas fa-landmark"></i> 3. Institución Estatal u ONG</h5>
+                        <p>Realizas prácticas en entidades públicas o organizaciones sin ánimo de lucro. Para entidades
+                            estatales se requiere un acto administrativo.</p>
+                    </div>
+
+                    <h4>Paso a Paso:</h4>
+                    <div class="step-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Selecciona la Alternativa</h4>
+                                <p>Diligencia el GFPI-F-165 seleccionando "Vínculo Formativo".</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Busca tu Escenario</h4>
+                                <p>Encuentra una empresa, organización o unidad productiva relacionada con tu programa
+                                    de formación.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Concerta las Condiciones</h4>
+                                <p>Habla con el responsable sobre tus funciones, horario, y si habrá algún auxilio
+                                    económico o en especie.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Diligencia el F-191</h4>
+                                <p>Completa el formato GFPI-F-191 "Contrato Vínculo Formativo" disponible en CompromISO
+                                    SENA.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <h4>Solicita el Aval</h4>
+                                <p>La Coordinación Académica debe aprobar tu escenario de práctica.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>
+                            <strong>Importante:</strong>
+                            <p>El vínculo formativo <strong>NO es una relación de trabajo</strong> y no tiene
+                                remuneración obligatoria. Cualquier apoyo económico debe ser acordado entre las partes.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monitoría -->
+            <div id="alt-monitoria" class="tab-content">
+                <div class="card">
+                    <h3><i class="fas fa-user-friends"></i> Monitoría</h3>
+
+                    <div class="info-box success">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>¿Qué es?</strong>
+                            <p>Es una alternativa donde apoyas procesos de formación en el SENA o en entidades con
+                                convenio. Fortaleces tus competencias mientras apoyas a otros aprendices.</p>
+                        </div>
+                    </div>
+
+                    <h4>¿Dónde puedes hacerla?</h4>
+                    <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                        <li><strong>En el SENA:</strong> Talleres, laboratorios, aulas, unidades productivas</li>
+                        <li><strong>Entidades externas:</strong> Organizaciones con convenio con el SENA</li>
+                    </ul>
+
+                    <h4>Actividades que puedes realizar:</h4>
+                    <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                        <li>Apoyo en inducción a nuevos aprendices</li>
+                        <li>Acompañamiento en procesos de formación</li>
+                        <li>Gestión documental</li>
+                        <li>Logística de eventos</li>
+                        <li>Apoyo en laboratorios y talleres</li>
+                    </ul>
+
+                    <h4>Paso a Paso:</h4>
+                    <div class="step-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Selecciona la Alternativa</h4>
+                                <p>Diligencia el GFPI-F-165 seleccionando "Monitoría".</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Postúlate</h4>
+                                <p>Aplica a las convocatorias de monitoría que publique tu Centro de Formación.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Designación</h4>
+                                <p>La Coordinación Académica te designará como monitor si cumples con el perfil
+                                    requerido.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Plan de Trabajo</h4>
+                                <p>Se establecerá tu plan de trabajo con actividades, horarios y mecanismos de
+                                    evaluación.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <h4>Tutor Asignado</h4>
+                                <p>Tendrás un instructor o profesional que te orientará durante todo el proceso.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box info">
+                        <i class="fas fa-info-circle"></i>
+                        <div>
+                            <strong>Apoyo de Sostenimiento:</strong>
+                            <p>La monitoría no genera obligaciones prestacionales, pero el SENA puede reconocer un apoyo
+                                de sostenimiento si está dentro de convocatorias especiales.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proyecto Productivo -->
+            <div id="alt-proyecto" class="tab-content">
+                <div class="card">
+                    <h3><i class="fas fa-project-diagram"></i> Proyecto Productivo</h3>
+
+                    <div class="info-box success">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>¿Qué es?</strong>
+                            <p>Es una alternativa donde desarrollas tu propia idea de negocio o gestionas una unidad
+                                productiva. ¡Perfecta si tienes espíritu emprendedor!</p>
+                        </div>
+                    </div>
+
+                    <h4>Tipos de Proyecto:</h4>
+
+                    <div class="subsection">
+                        <h5><i class="fas fa-industry"></i> SENA Empresa</h5>
+                        <p>Unidades productivas del SENA que producen bienes y servicios reales para el mercado.
+                            Trabajas bajo condiciones empresariales reales.</p>
+                    </div>
+
+                    <div class="subsection">
+                        <h5><i class="fas fa-handshake"></i> SENA Proveedor SENA</h5>
+                        <p>Produces bienes o servicios que son adquiridos por dependencias del SENA. Aprendes sobre
+                            procesos de contratación y facturación.</p>
+                    </div>
+
+                    <div class="subsection">
+                        <h5><i class="fas fa-building"></i> Producción de Centros</h5>
+                        <p>Desarrollas tu EP en las unidades productivas de tu Centro de Formación.</p>
+                    </div>
+
+                    <div class="subsection">
+                        <h5><i class="fas fa-flask"></i> Proyecto I+D+i</h5>
+                        <p>Proyectos de investigación, desarrollo e innovación relacionados con tu programa.</p>
+                    </div>
+
+                    <div class="subsection">
+                        <h5><i class="fas fa-rocket"></i> Ruta Emprendedora</h5>
+                        <p>Tu propio proyecto de emprendimiento validado por el SENA.</p>
+                    </div>
+
+                    <h4>Paso a Paso:</h4>
+                    <div class="step-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Selecciona la Alternativa</h4>
+                                <p>Diligencia el GFPI-F-165 seleccionando "Proyecto Productivo".</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Define tu Proyecto</h4>
+                                <p>Desarrolla tu idea de negocio o identifica la unidad productiva donde trabajarás.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Presenta tu Proyecto</h4>
+                                <p>Presenta tu propuesta a la Coordinación Académica incluyendo: descripción, objetivos,
+                                    actividades, recursos y tiempo de ejecución.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Obtén el Aval</h4>
+                                <p>La Coordinación evaluará tu proyecto y te dará el aval para iniciar.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <h4>Ejecuta y Documenta</h4>
+                                <p>Desarrolla tu proyecto y documenta todas las actividades en tus bitácoras.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vínculo Laboral -->
+            <div id="alt-laboral" class="tab-content">
+                <div class="card">
+                    <h3><i class="fas fa-briefcase"></i> Vínculo Laboral</h3>
+
+                    <div class="info-box success">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>¿Qué es?</strong>
+                            <p>Es para aprendices que ya tienen un empleo formal. Puedes usar tu trabajo actual como
+                                etapa productiva si está relacionado con tu programa de formación.</p>
+                        </div>
+                    </div>
+
+                    <h4>Ventajas:</h4>
+                    <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                        <li>No necesitas buscar escenario de práctica</li>
+                        <li>Puedes iniciar durante el último trimestre de etapa lectiva</li>
+                        <li>Recibes salario y prestaciones de tu empleo</li>
+                        <li>Continuidad en tu desarrollo profesional</li>
+                    </ul>
+
+                    <h4>Requisitos para iniciar durante etapa lectiva:</h4>
+                    <ul class="checklist">
+                        <li onclick="toggleCheck(this)"><i class="far fa-square"></i> NO tener planes de mejoramiento
+                            activos</li>
+                        <li onclick="toggleCheck(this)"><i class="far fa-square"></i> NO tener pendiente juicios de RAP
+                            anteriores al último trimestre</li>
+                        <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Estar en estado "En formación" en
+                            Sofia Plus</li>
+                    </ul>
+
+                    <h4>Documentos adicionales requeridos:</h4>
+                    <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                        <li>Correo de aprobación de alternativa</li>
+                        <li>Cámara de comercio de la empresa</li>
+                        <li>RUT (Registro Único Tributario)</li>
+                    </ul>
+
+                    <h4>Paso a Paso:</h4>
+                    <div class="step-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Consigue tu Empleo</h4>
+                                <p>Encuentra un trabajo relacionado con tu programa de formación.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Selecciona la Alternativa</h4>
+                                <p>Diligencia el GFPI-F-165 seleccionando "Vínculo Laboral".</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Reúne Documentos</h4>
+                                <p>Solicita a tu empleador la cámara de comercio y el RUT de la empresa.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Solicita el Aval</h4>
+                                <p>La Coordinación verificará que tu empleo esté alineado con tu formación.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Economía Popular -->
+            <div id="alt-economia" class="tab-content">
+                <div class="card">
+                    <h3><i class="fas fa-seedling"></i> Economía Popular y Campesina</h3>
+
+                    <div class="info-box success">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>¿Qué es?</strong>
+                            <p>Son alternativas para aprendices de programas especiales que fortalecen la economía
+                                popular y campesina de Colombia.</p>
+                        </div>
+                    </div>
+
+                    <div class="two-col">
+                        <div class="subsection">
+                            <h5><i class="fas fa-users"></i> Full Popular</h5>
+                            <p>Para trabajadores de la economía informal, vendedores ambulantes, trabajadores por cuenta
+                                propia y organizaciones comunitarias.</p>
+                            <p style="margin-top: 0.5rem;"><strong>Acuerdo 1-0009 de 2023</strong></p>
+                        </div>
+                        <div class="subsection">
+                            <h5><i class="fas fa-tractor"></i> CampeSENA</h5>
+                            <p>Para pequeños productores agrícolas, comunidades campesinas, organizaciones agrarias y
+                                familias rurales.</p>
+                            <p style="margin-top: 0.5rem;"><strong>Acuerdo 003 de 2023</strong></p>
+                        </div>
+                    </div>
+
+                    <h4>Características:</h4>
+                    <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                        <li>Dirigido a poblaciones vulnerables y económicas populares</li>
+                        <li>Los proyectos deben generar impacto en las comunidades</li>
+                        <li>Puedes usar diferentes alternativas (contrato, vínculo, proyecto)</li>
+                        <li>Promueve el desarrollo sostenible de territorios</li>
+                    </ul>
+
+                    <h4>Paso a Paso:</h4>
+                    <div class="step-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Verifica tu Programa</h4>
+                                <p>Confirma que tu programa hace parte de estas estrategias especiales.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Selecciona tu Alternativa</h4>
+                                <p>Elige entre contrato de aprendizaje, vínculo formativo, vínculo laboral o proyecto
+                                    productivo.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Busca tu Escenario</h4>
+                                <p>Identifica una organización, cooperativa o unidad productiva de tu comunidad.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Solicita el Aval</h4>
+                                <p>La Coordinación validará tu alternativa y te dará el aval.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Mi Proceso -->
+        <section id="proceso" class="section">
+            <div class="card">
+                <h2><i class="fas fa-route"></i> Tu Proceso Paso a Paso</h2>
+                <p>Esta es la ruta completa que debes seguir para completar tu etapa productiva con éxito. Desde antes
+                    de iniciar hasta obtener tu certificación.</p>
+            </div>
+
+            <div class="timeline">
+                <!-- Etapa 1 -->
+                <div class="timeline-item">
+                    <span class="timeline-badge badge-etapa1">ANTES DE INICIAR</span>
+                    <h3>Requisitos Previos</h3>
+                    <p>Antes de comenzar tu etapa productiva, debes cumplir con estos requisitos:</p>
+
+                    <ul class="checklist">
+                        <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Haber aprobado el 100% de los
+                            resultados de aprendizaje (RAP) de la etapa lectiva</li>
+                        <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Verificar que tus RAP estén
+                            cargados en Sofia Plus</li>
+                        <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Estar en estado "En formación" en
+                            Sofia Plus</li>
+                        <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Tener tus datos personales
+                            actualizados (nombre, dirección, teléfono, correo)</li>
+                        <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Haber seleccionado tu alternativa
+                            de EP en el formato GFPI-F-165</li>
+                        <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Haber obtenido el aval de la
+                            Coordinación Académica</li>
+                    </ul>
+
+                    <div class="info-box warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>
+                            <strong>¡Importante!</strong>
+                            <p>Si no cumples con estos requisitos, no podrás iniciar tu etapa productiva. Verifica tu
+                                estado en Sofia Plus o consulta con tu instructor de lectiva.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Etapa 2 -->
+                <div class="timeline-item">
+                    <span class="timeline-badge badge-etapa2">TALLERES OBLIGATORIOS</span>
+                    <h3>Talleres de Preparación</h3>
+                    <p>Debes asistir a dos talleres obligatorios antes de iniciar tu EP:</p>
+
+                    <div class="subsection">
+                        <h5><i class="fas fa-chalkboard-teacher"></i> Taller de Vida Laboral (Momento 1)</h5>
+                        <p><strong>Cuándo:</strong> 4 meses antes de terminar la etapa lectiva</p>
+                        <p><strong>Qué aprenderás:</strong></p>
+                        <ul style="margin-left: 1.5rem;">
+                            <li>Qué es la etapa productiva y cómo funciona</li>
+                            <li>Las 7 alternativas disponibles</li>
+                            <li>Tus derechos y deberes como aprendiz</li>
+                            <li>Cómo buscar escenario de práctica</li>
+                            <li>Consejos para el mundo laboral</li>
+                        </ul>
+                        <p style="margin-top: 0.5rem;"><strong>Evidencia:</strong> Asistencia firmada al taller</p>
+                    </div>
+
+                    <div class="subsection">
+                        <h5><i class="fas fa-book"></i> Taller de Bitácoras (Momento 2)</h5>
+                        <p><strong>Cuándo:</strong> 15 días antes de terminar la etapa lectiva</p>
+                        <p><strong>Qué aprenderás:</strong></p>
+                        <ul style="margin-left: 1.5rem;">
+                            <li>Qué es la bitácora y para qué sirve</li>
+                            <li>Cómo diligenciar correctamente el formato GFPI-F-147</li>
+                            <li>Con qué frecuencia debes entregarla</li>
+                            <li>Cómo relacionar tus actividades con las competencias</li>
+                            <li>Ejercicio práctico de diligenciamiento</li>
+                        </ul>
+                        <p style="margin-top: 0.5rem;"><strong>Evidencia:</strong> Asistencia firmada al taller y
+                            ejercicio práctico</p>
+                    </div>
+                </div>
+
+                <!-- Etapa 3 -->
+                <div class="timeline-item">
+                    <span class="timeline-badge badge-etapa3">INICIO DE TU EP</span>
+                    <h3>Inicio de la Etapa Productiva</h3>
+
+                    <h4>Paso a Paso para Iniciar:</h4>
+                    <div class="step-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Selecciona tu Alternativa</h4>
+                                <p>Diligencia el formato GFPI-F-165 con la alternativa que elegiste. Entrégalo a la
+                                    Coordinación Académica.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Busca tu Escenario</h4>
+                                <p>Según tu alternativa, busca empresa, organización o proyecto donde realizarás tu
+                                    práctica.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Obtén el Aval</h4>
+                                <p>La Coordinación Académica debe aprobar tu escenario de práctica.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Afiliación a ARL</h4>
+                                <p>Tu ente co-formador debe afiliarte a la ARL (Administradora de Riesgos Laborales)
+                                    <strong>mínimo 1 día antes</strong> de iniciar.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <h4>Conoce a tu Instructor</h4>
+                                <p>La Coordinación te asignará un instructor de seguimiento. Anota sus datos de
+                                    contacto.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">6</div>
+                            <div class="step-content">
+                                <h4>Primera Visita (Concertación)</h4>
+                                <p>Tu instructor te visitará en los primeros 15 días hábiles. Diligenciarán juntos el
+                                    formato F023 de concertación.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Etapa 4 -->
+                <div class="timeline-item">
+                    <span class="timeline-badge badge-etapa4">DURANTE TU EP</span>
+                    <h3>Durante tu Etapa Productiva</h3>
+
+                    <h4>Tus Responsabilidades:</h4>
+                    <ul class="checklist">
+                        <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Cumplir con el horario establecido
+                            en tu escenario de práctica</li>
+                        <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Realizar las funciones asignadas
+                            de manera responsable</li>
+                        <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Usar elementos de protección
+                            personal cuando sea necesario</li>
+                        <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Respetar las normas de la empresa
+                            u organización</li>
+                        <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Entregar bitácoras periódicamente
+                            (1-2 por mes)</li>
+                        <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Asistir a las visitas programadas
+                            por tu instructor</li>
+                        <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Mantener comunicación regular con
+                            tu instructor</li>
+                        <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Informar novedades o cambios
+                            oportunamente</li>
+                        <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Solicitar que tu jefe firme las
+                            bitácoras</li>
+                    </ul>
+
+                    <h4>Las Visitas de tu Instructor:</h4>
+                    <div class="subsection">
+                        <h5><i class="fas fa-handshake"></i> Visita de Concertación (Momento 3)</h5>
+                        <p><strong>Cuándo:</strong> Primeros 15 días hábiles de tu EP</p>
+                        <p><strong>Qué se hace:</strong> Se define tu plan de trabajo, se socializan las competencias y
+                            se diligencia el F023 de concertación.</p>
+                    </div>
+
+                    <div class="subsection">
+                        <h5><i class="fas fa-chart-line"></i> Visita de Evaluación Parcial (Momento 4)</h5>
+                        <p><strong>Cuándo:</strong> Aproximadamente a la mitad de tu EP</p>
+                        <p><strong>Qué se hace:</strong> Se evalúa tu desempeño, se identifican fortalezas y áreas de
+                            mejora, se diligencia el F023 parcial.</p>
+                    </div>
+
+                    <div class="subsection">
+                        <h5><i class="fas fa-exclamation-circle"></i> Visitas Extraordinarias</h5>
+                        <p>Pueden realizarse cuando hay cambios de alternativa, novedades de salud, o situaciones
+                            especiales que requieran atención.</p>
+                    </div>
+                </div>
+
+                <!-- Etapa 5 -->
+                <div class="timeline-item">
+                    <span class="timeline-badge badge-etapa5">FINALIZACIÓN</span>
+                    <h3>Finalización y Certificación</h3>
+
+                    <h4>Visita Final (Momento 5):</h4>
+                    <p><strong>Cuándo:</strong> Al finalizar el tiempo de tu etapa productiva</p>
+                    <p><strong>Qué se hace:</strong> Evaluación final, revisión de documentos y emisión del juicio
+                        evaluativo.</p>
+
+                    <h4>Documentos que Debes Entregar:</h4>
+                    <div class="info-box warning">
+                        <i class="fas fa-folder-open"></i>
+                        <div>
+                            <strong>Lista Completa de Documentos:</strong>
+                            <ol style="margin-top: 0.8rem; margin-left: 1.5rem;">
+                                <li><strong>Fotocopia de tu documento de identidad al 150%</strong> - Debe ser legible
+                                </li>
+                                <li><strong>Foto de tu carnet de aprendiz destruido</strong> - Cortado en 4 partes
+                                    mostrando los datos, o carta explicando por qué no lo tienes</li>
+                                <li><strong>Certificado de la Agencia Pública de Empleo SENA</strong> - Registro en el
+                                    sistema</li>
+                                <li><strong>Pantallazo de datos actualizados en Sofia Plus</strong></li>
+                                <li><strong>Resultado de pruebas TyT</strong> - Solo si eres tecnólogo</li>
+                                <li><strong>Certificación de la empresa</strong> - Con fechas exactas de inicio y fin,
+                                    funciones desarrolladas y datos completos</li>
+                                <li><strong>Todas las bitácoras en orden cronológico</strong> - Firmadas por ti y tu
+                                    jefe</li>
+                                <li><strong>3 formatos F-023</strong> - Concertación, parcial y final, firmados</li>
+                                <li><strong>3 actas de visitas</strong> - Firmadas</li>
+                                <li><strong>Correo de aprobación de tu alternativa</strong></li>
+                                <li><strong>Cámara de comercio y RUT</strong> - Solo si tu alternativa fue vínculo
+                                    laboral</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <h4>Proceso de Certificación:</h4>
+                    <div class="step-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Entrega de Documentos</h4>
+                                <p>Entrega todos los documentos requeridos a tu instructor de seguimiento.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Emisión del Juicio Evaluativo</h4>
+                                <p>Tu instructor evaluará tu desempeño y emitirá el juicio en máximo 8 días.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Registro en SenaSofia</h4>
+                                <p>El juicio se registra en el sistema y se verifica que cumplas con todos los
+                                    requisitos.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>¡Certificación!</h4>
+                                <p>Si todo está en orden, ¡recibirás tu título o certificado como Tecnólogo, Técnico o
+                                    Auxiliar del SENA!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-clock"></i> Tiempos Importantes</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Actividad</th>
+                                <th>Tiempo</th>
+                                <th>Importancia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Taller Vida Laboral</td>
+                                <td>4 meses antes de terminar lectiva</td>
+                                <td>Obligatorio</td>
+                            </tr>
+                            <tr>
+                                <td>Taller Bitácoras</td>
+                                <td>15 días antes de terminar lectiva</td>
+                                <td>Obligatorio</td>
+                            </tr>
+                            <tr>
+                                <td>Primera visita (concertación)</td>
+                                <td>Primeros 15 días hábiles de EP</td>
+                                <td>Obligatorio</td>
+                            </tr>
+                            <tr>
+                                <td>Entrega de bitácoras</td>
+                                <td>1-2 por mes</td>
+                                <td>Obligatorio</td>
+                            </tr>
+                            <tr>
+                                <td>Retroalimentación de bitácoras</td>
+                                <td>Máximo 5 días hábiles</td>
+                                <td>Por parte del instructor</td>
+                            </tr>
+                            <tr>
+                                <td>Emisión de juicio evaluativo</td>
+                                <td>Máximo 8 días tras recibir documentos</td>
+                                <td>Por parte del instructor</td>
+                            </tr>
+                            <tr>
+                                <td>Límite para completar EP</td>
+                                <td>2 años desde fin de etapa lectiva</td>
+                                <td>Después de este tiempo se configura deserción</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: La Bitácora -->
+        <section id="bitacora" class="section">
+            <div class="card">
+                <h2><i class="fas fa-book"></i> La Bitácora - Tu Diario de Aprendizaje</h2>
+                <p>La bitácora es uno de los documentos <strong>más importantes</strong> de tu etapa productiva. A
+                    través de ella, demuestras cómo estás aplicando las competencias de tu programa de formación en el
+                    mundo laboral real.</p>
+
+                <div class="info-box info">
+                    <i class="fas fa-lightbulb"></i>
+                    <div>
+                        <strong>¿Qué es la Bitácora?</strong>
+                        <p>Es un <strong>instrumento obligatorio</strong> que debes diligenciar periódicamente para
+                            reportar las actividades que desarrollas durante tu etapa productiva. Es el formato
+                            GFPI-F-147 "Bitácora de Seguimiento Etapa Productiva".</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-info-circle"></i> Información Básica</h2>
+
+                <div class="two-col">
+                    <div class="subsection">
+                        <h5><i class="fas fa-hashtag"></i> ¿Cuántas bitácoras debo entregar?</h5>
+                        <p>Entre <strong>6 y 9 bitácoras</strong>, según tu programa de formación. (6 para técnicos y
+                            auxiliares, <strong>9 para tecnólogos</strong>).</p>
+                    </div>
+                    <div class="subsection">
+                        <h5><i class="fas fa-calendar"></i> ¿Con qué frecuencia?</h5>
+                        <p><strong>1 o 2 bitácoras por mes</strong>, según lo acuerdes con tu instructor de seguimiento.
+                        </p>
+                    </div>
+                    <div class="subsection">
+                        <h5><i class="fas fa-clock"></i> ¿Cuándo me las devuelven?</h5>
+                        <p>Tu instructor debe revisarlas y retroalimentarlas en <strong>máximo 5 días hábiles</strong>
+                            tras recibirlas.</p>
+                    </div>
+                    <div class="subsection">
+                        <h5><i class="fas fa-file-signature"></i> ¿Quién debe firmarlas?</h5>
+                        <p>Tú, tu jefe inmediato (ente co-formador) y tu instructor de seguimiento.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-pen"></i> ¿Cómo Diligenciar la Bitácora?</h2>
+
+                <h4>Paso a Paso:</h4>
+                <div class="step-container">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Datos de Identificación</h4>
+                            <p>Completa tus datos personales: nombre completo, tipo y número de documento, programa de
+                                formación, número de ficha, Centro de Formación y Regional.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Período de la Bitácora</h4>
+                            <p>Indica las fechas que cubre la bitácora (por ejemplo: del 1 al 30 de enero de 2025).</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Descripción de Actividades</h4>
+                            <p>Describe detalladamente las actividades que realizaste durante el período. Sé específico:
+                            </p>
+                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                                <li>Qué hiciste</li>
+                                <li>Cómo lo hiciste</li>
+                                <li>Con quién trabajaste</li>
+                                <li>Qué herramientas o equipos usaste</li>
+                                <li>Dónde lo hiciste</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Relación con Competencias</h4>
+                            <p>Esta es la parte más importante. Explica <strong>cómo las actividades que realizaste
+                                    contribuyen al desarrollo de las competencias de tu programa</strong>. Por ejemplo:
+                            </p>
+                            <div class="note-box">
+                                <em>"Al realizar el mantenimiento preventivo de los equipos de cómputo, estoy aplicando
+                                    la competencia de 'Realizar mantenimiento de hardware' del programa de Tecnología en
+                                    Sistemas."</em>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h4>Reflexión y Aprendizajes</h4>
+                            <p>Escribe una reflexión sobre:</p>
+                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                                <li>Qué aprendiste durante este período</li>
+                                <li>Qué dificultades encontraste</li>
+                                <li>Cómo resolviste los problemas</li>
+                                <li>Qué harías diferente</li>
+                                <li>Cómo esto contribuye a tu formación profesional</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <h4>Evidencias</h4>
+                            <p>Anexa fotografías, documentos, productos o cualquier evidencia que sustente las
+                                actividades descritas. Puedes incluirlas al final de la bitácora o referenciarlas.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">7</div>
+                        <div class="step-content">
+                            <h4>Firmas</h4>
+                            <p>Solicita que tu jefe inmediato revise, firme y selle (si aplica) la bitácora. Luego
+                                entrégala a tu instructor.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-star"></i> Consejos para una Buena Bitácora</h2>
+
+                <div class="info-box success">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <strong>Hazlo bien:</strong>
+                        <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                            <li>Sé claro y específico en tus descripciones</li>
+                            <li>Relaciona SIEMPRE tus actividades con las competencias</li>
+                            <li>Escribe de manera profesional y cuidando la ortografía</li>
+                            <li>Incluye evidencias (fotos, documentos)</li>
+                            <li>Sé honesto sobre tus aprendizajes y dificultades</li>
+                            <li>Entrega en los tiempos acordados</li>
+                            <li>Asegúrate de obtener la firma de tu jefe</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="info-box danger">
+                    <i class="fas fa-times-circle"></i>
+                    <div>
+                        <strong>Evita:</strong>
+                        <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                            <li>Descripciones vagas o muy cortas</li>
+                            <li>No relacionar las actividades con las competencias</li>
+                            <li>Errores de ortografía y redacción</li>
+                            <li>Entregar sin la firma del ente co-formador</li>
+                            <li>Entregar fuera de tiempo</li>
+                            <li>Copiar información de internet</li>
+                            <li>Inventar actividades que no realizaste</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="info-box warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <strong>Valoración "Por Mejorar":</strong>
+                        <p>Tu instructor puede asignarte esta valoración si:</p>
+                        <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                            <li>No entregas la bitácora en los tiempos establecidos</li>
+                            <li>La información está incompleta</li>
+                            <li>No relacionas las actividades con las competencias</li>
+                            <li>La calidad de la información es insuficiente</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-file-alt"></i> Ejemplo de Diligenciamiento</h2>
+
+                <div class="subsection">
+                    <h5>Datos de Identificación:</h5>
+                    <p><strong>Nombre:</strong> Juan Pérez García<br>
+                        <strong>Documento:</strong> CC 1.234.567.890<br>
+                        <strong>Programa:</strong> Tecnología en Análisis y Desarrollo de Sistemas de Información<br>
+                        <strong>Ficha:</strong> 2556789<br>
+                        <strong>Centro:</strong> Centro de Gestión de Mercados, Logística y Tecnologías de la
+                        Información<br>
+                        <strong>Regional:</strong> Distrito Capital
+                    </p>
+                </div>
+
+                <div class="subsection">
+                    <h5>Período:</h5>
+                    <p>Del 1 al 31 de enero de 2025</p>
+                </div>
+
+                <div class="subsection">
+                    <h5>Descripción de Actividades:</h5>
+                    <p>Durante este mes realicé las siguientes actividades en la empresa TechSolutions SAS:</p>
+                    <ul style="margin-left: 1.5rem;">
+                        <li>Participé en el desarrollo del módulo de autenticación de usuarios para la aplicación web de
+                            la empresa, utilizando PHP y MySQL.</li>
+                        <li>Realicé pruebas funcionales del sistema de inventario, identificando y reportando 5 errores
+                            que fueron corregidos.</li>
+                        <li>Asistí a reuniones diarias del equipo de desarrollo (daily stand-ups) donde reporté mi
+                            avance.</li>
+                        <li>Documenté el código desarrollado siguiendo los estándares de la empresa.</li>
+                        <li>Colaboré con el equipo de soporte en la resolución de tickets de usuarios.</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h5>Relación con Competencias:</h5>
+                    <p>Estas actividades contribuyen al desarrollo de las siguientes competencias de mi programa:</p>
+                    <ul style="margin-left: 1.5rem;">
+                        <li><strong>Desarrollar aplicaciones web:</strong> Al crear el módulo de autenticación, apliqué
+                            conocimientos de programación web, manejo de bases de datos y seguridad de la información.
+                        </li>
+                        <li><strong>Realizar pruebas de software:</strong> Las pruebas funcionales me permitieron
+                            aplicar técnicas de testing y aseguramiento de calidad.</li>
+                        <li><strong>Trabajar en equipo:</strong> Las reuniones diarias y la colaboración con otros
+                            departamentos fortalecieron mis habilidades de comunicación y trabajo colaborativo.</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h5>Reflexión y Aprendizajes:</h5>
+                    <p>Durante este primer mes aprendí la importancia de seguir estándares de codificación y
+                        documentación en un entorno profesional. Inicialmente tuve dificultades con el sistema de
+                        control de versiones Git, pero con la ayuda de un compañero logré dominarlo. También comprendí
+                        que el trabajo en equipo es fundamental para el éxito de los proyectos. Mi objetivo para el
+                        próximo mes es mejorar mis habilidades de resolución de problemas y aprender más sobre
+                        metodologías ágiles.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Derechos y Deberes -->
+        <section id="derechos" class="section">
+            <div class="card">
+                <h2><i class="fas fa-balance-scale"></i> Tus Derechos y Deberes</h2>
+                <p>Como aprendiz del SENA en etapa productiva, tienes <strong>derechos que deben ser respetados</strong>
+                    y <strong>deberes que debes cumplir</strong>. Conocerlos es fundamental para que tu experiencia sea
+                    exitosa.</p>
+            </div>
+
+            <div class="rights-box">
+                <h4><i class="fas fa-check-circle"></i> TUS DERECHOS</h4>
+                <p>Según el <strong>Acuerdo 009 de 2024</strong>, como aprendiz SENA tienes derecho a:</p>
+
+                <ul class="checklist">
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Recibir una formación
+                            profesional integral</strong> de calidad que responda a las necesidades del sector
+                        productivo</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Conocer el Reglamento del
+                            Aprendiz</strong>, la organización y los procedimientos del SENA</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Tener acceso a
+                            infraestructura, recursos tecnológicos y didácticos</strong> necesarios para tu formación
+                    </li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Ser tratado con dignidad,
+                            respeto e igualdad</strong>, sin discriminación de ningún tipo</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Ejercer el debido
+                            proceso</strong> en todas las etapas de tu aprendizaje</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Participar en procesos
+                            administrativos y disciplinarios</strong> cuando seas llamado</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Recibir atención
+                            oportuna</strong> a tus denuncias, peticiones y reclamos</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Contar con ajustes
+                            razonables</strong> si tienes alguna condición de vulnerabilidad o discapacidad</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Ser afiliado a la ARL</strong>
+                        (Administradora de Riesgos Laborales) antes de iniciar tu EP</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Recibir elementos de
+                            protección personal</strong> cuando tu escenario de práctica lo requiera</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Tener un instructor de
+                            seguimiento</strong> que te acompañe durante tu EP</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Conocer los criterios de
+                            evaluación</strong> que se aplicarán en tu EP</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Ser evaluado
+                            objetivamente</strong> según tu desempeño y cumplimiento de competencias</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Recibir
+                            retroalimentación</strong> sobre tu desempeño de manera oportuna</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Cambiar de
+                            alternativa</strong> hasta 3 veces si presentas causales justificadas</li>
+                </ul>
+            </div>
+
+            <div class="duties-box">
+                <h4><i class="fas fa-clipboard-list"></i> TUS DEBERES</h4>
+                <p>Como aprendiz SENA en etapa productiva, debes cumplir con:</p>
+
+                <ul class="checklist">
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Gestionar tu etapa productiva
+                            de manera proactiva</strong> y responsable</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Mantener tus datos personales
+                            actualizados</strong> en Sofia Plus y demás plataformas del SENA</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Cumplir con los requisitos
+                            mínimos</strong> para iniciar EP (RAP aprobados, estado "En formación")</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Seleccionar tu alternativa de
+                            EP</strong> mediante el formato GFPI-F-165</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Diligenciar y entregar las
+                            bitácoras</strong> periódicamente (1-2 por mes)</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Asistir a las visitas
+                            programadas</strong> por tu instructor de seguimiento</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Aplicar las competencias de tu
+                            programa</strong> en el escenario de práctica</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Cumplir con el horario
+                            establecido</strong> en tu escenario de práctica</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Respetar las normas</strong>
+                        de la empresa u organización donde realizas tu EP</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Usar los elementos de
+                            protección personal</strong> cuando sea requerido</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Mantener comunicación
+                            regular</strong> con tu instructor de seguimiento</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Informar novedades o
+                            cambios</strong> de manera oportuna</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Entregar todos los documentos
+                            requeridos</strong> para tu certificación</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Ser honesto</strong> en la
+                        información que registras en tus bitácoras</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> <strong>Trabajar con compromiso y
+                            profesionalismo</strong> en tu escenario de práctica</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-shield-alt"></i> Tu Seguridad es Importante</h2>
+
+                <div class="info-box info">
+                    <i class="fas fa-hard-hat"></i>
+                    <div>
+                        <strong>Afiliación a Riesgos Laborales (ARL):</strong>
+                        <p>Tu ente co-formador <strong>está obligado</strong> a afiliarte a una Administradora de
+                            Riesgos Laborales (ARL) <strong>mínimo 1 día antes</strong> de que inicies tu etapa
+                            productiva. Esto te protege en caso de accidentes laborales o enfermedades laborales.</p>
+                    </div>
+                </div>
+
+                <div class="info-box info">
+                    <i class="fas fa-vest"></i>
+                    <div>
+                        <strong>Elementos de Protección Personal (EPP):</strong>
+                        <p>Si tu escenario de práctica lo requiere (construcción, industria, laboratorios, etc.), tu
+                            ente co-formador debe proporcionarte los elementos de protección personal necesarios: casco,
+                            guantes, gafas, botas, etc.</p>
+                    </div>
+                </div>
+
+                <h4>¿Qué hacer si no te afilian a la ARL?</h4>
+                <p>Informa inmediatamente a tu instructor de seguimiento y a la Coordinación Académica. <strong>No debes
+                        iniciar tu etapa productiva sin estar afiliado.</strong></p>
+
+                <h4>¿Qué hacer si no te dan los EPP?</h4>
+                <p>Reporta la situación a tu instructor de seguimiento. Tu seguridad es lo primero.</p>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-exclamation-triangle"></i> Situaciones que Debes Reportar</h2>
+                <p>Debes informar a tu instructor de seguimiento si:</p>
+                <ul style="margin-left: 1.5rem;">
+                    <li>Tu empresa cierra o entra en liquidación</li>
+                    <li>Tienes problemas de salud que te impiden continuar</li>
+                    <li>Tienes asuntos judiciales o familiares que afectan tu EP</li>
+                    <li>Debes prestar servicio militar</li>
+                    <li>Cambias de ciudad o lugar de residencia</li>
+                    <li>Hay situaciones en tu escenario de práctica que te incomoden o pongan en riesgo</li>
+                    <li>Tu jefe no te firma las bitácoras</li>
+                    <li>Tienes cualquier otra novedad que afecte tu proceso</li>
+                </ul>
+                <p style="margin-top: 1rem;"><strong>Recuerda:</strong> Comunicar oportunamente las novedades puede
+                    ayudarte a encontrar soluciones y evitar problemas mayores.</p>
+            </div>
+
+            <!-- New Section: Riesgos y Deserción -->
+            <div class="card">
+                <h2><i class="fas fa-exclamation-triangle"></i> Riesgos: Cancelación y Deserción</h2>
+                <div class="info-box danger">
+                    <i class="fas fa-ban"></i>
+                    <div>
+                        <strong>Causales de Deserción (Según Acuerdo 009):</strong>
+                        <p>Se considera deserción y puedes perder tu cupo en el SENA si:</p>
+                        <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                            <li>Injustificadamente no te presentas a tu etapa productiva al inicio de la misma.</li>
+                            <li>Dejas de asistir a tu empresa por <strong>3 días consecutivos</strong> sin justificación
+                                (Causal de Deserción - Art. 30 Acuerdo 009).</li>
+                            <li>No entregas las bitácoras o evidencias requeridas durante un mes completo.</li>
+                            <li><strong>Inasistencia a visitas programadas:</strong> No presentarse a las visitas
+                                concertadas con el instructor (vía agendador/bookings) sin una excusa válida soportada
+                                se considera un incumplimiento grave.</li>
+                            <li>Terminas tu relación de aprendizaje (contrato, vínculo, etc.) sin autorización previa
+                                del SENA.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="info-box warning">
+                    <i class="fas fa-gavel"></i>
+                    <div>
+                        <strong>Cancelación de Matrícula:</strong>
+                        <p>Puede ocurrir por faltas disciplinarias graves, bajo rendimiento académico persistente o
+                            incumplimiento reiterado del reglamento.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Documentos -->
+        <section id="documentos" class="section">
+            <div class="card">
+                <h2><i class="fas fa-folder-open"></i> Documentos que Necesitas</h2>
+                <p>A lo largo de tu etapa productiva necesitarás diferentes documentos. Aquí te presentamos una lista
+                    completa para que estés preparado.</p>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-file-alt"></i> Formatos del SENA</h3>
+
+                <div class="subsection">
+                    <h5><i class="fas fa-book"></i> GFPI-F-147 - Bitácora de Seguimiento</h5>
+                    <p>El documento donde registras tus actividades. Debes entregar bitácoras periódicas durante tu EP
+                        (6 a 9 según tu programa). Cada una debe estar firmada por ti, tu jefe y tu instructor.</p>
+                </div>
+
+                <div class="subsection" id="seccion-visitas">
+                    <h5><i class="fas fa-handshake"></i> GFPI-F-023 - Visitas de Seguimiento</h5>
+                    <p>Este formato es vital para evaluar tu desempeño en la empresa. Se diligencia en cuatro momentos:
+                    </p>
+                    <ul style="margin-left: 1.5rem;">
+                        <li><strong>Visita 1 - Concertación:</strong> Se realiza en el primer mes para definir las
+                            actividades y el plan de trabajo.</li>
+                        <li><strong>Visita 2 - Parcial:</strong> Se realiza a mitad de la etapa para verificar el
+                            cumplimiento y el desarrollo de competencias.</li>
+                        <li><strong>Visita 3 - Final:</strong> Se realiza al terminar la etapa para emitir el juicio
+                            evaluativo final (Aprobado/No Aprobado).</li>
+                        <li><strong>¡RIESGO CRÍTICO!:</strong> La inasistencia a cualquiera de estas citas programadas
+                            en el agendador personal del instructor proyecta falta de compromiso y puede derivar en un
+                            plan de mejoramiento o cancelación inmediata (Art. 30 Acuerdo 009).</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h5><i class="fas fa-tasks"></i> GFPI-F-165 - Selección de Alternativa</h5>
+                    <p>Lo diligencias al inicio para formalizar tu alternativa de EP o en caso de requerir un cambio de
+                        la misma.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-cloud-download-alt"></i> Descarga de Formatos</h3>
+                <p>Descarga aquí los formatos oficiales que necesitarás durante tu etapa productiva:</p>
+
+                <div class="two-col">
+                    <div class="subsection" style="text-align: center;">
+                        <i class="fas fa-file-pdf"
+                            style="font-size: 3rem; color: var(--sena-rojo); margin-bottom: 1rem;"></i>
+                        <h5>Bitácora (F-147)</h5>
+                        <p>Diligenciamiento mensual/quincenal.</p>
+                        <a href="Documentacion/FORMATOS%20GENERALES/02.%20FORMATOS%20ETAPA%20PRODUCTIVA/GFPI-F-147_Bitácora_seguimiento_etapa_productiva%20v3.zip"
+                            class="btn btn-primary" download><i class="fas fa-download"></i> Descargar</a>
+                    </div>
+
+                    <div class="subsection" style="text-align: center;">
+                        <i class="fas fa-file-word"
+                            style="font-size: 3rem; color: var(--sena-azul); margin-bottom: 1rem;"></i>
+                        <h5>Visitas (F-023)</h5>
+                        <p>Para concertación, parcial y final.</p>
+                        <a href="Documentacion/FORMATOS%20GENERALES/02.%20FORMATOS%20ETAPA%20PRODUCTIVA/GFPI-F-023_Formato_planeación_seguimiento_y_evaluación_etapa_productiva_V4.zip"
+                            class="btn btn-primary" download><i class="fas fa-download"></i> Descargar</a>
+                    </div>
+
+                    <div class="subsection" style="text-align: center;">
+                        <i class="fas fa-file-signature"
+                            style="font-size: 3rem; color: var(--sena-verde); margin-bottom: 1rem;"></i>
+                        <h5>Selección (F-165)</h5>
+                        <p>Inicio o cambio de etapa.</p>
+                        <a href="Documentacion/FORMATOS%20GENERALES/01.%20FORMATOS%20INICIO%20ETAPA%20PRODUCTIVA/GFPI-F-165_Formato_Selección_Etapa_Productiva_V3.zip"
+                            class="btn btn-primary" download><i class="fas fa-download"></i> Descargar</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-certificate"></i> Documentos para Certificación</h3>
+                <p>Al finalizar tu EP, debes entregar estos documentos:</p>
+
+                <div class="info-box warning">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <div>
+                        <strong>Lista Completa - Verifica que tengas todo:</strong>
+                        <ol style="margin-top: 0.8rem; margin-left: 1.5rem;">
+                            <li><strong>Fotocopia de tu documento de identidad al 150%</strong> - Ampliada y legible
+                            </li>
+                            <li><strong>Foto de tu carnet de aprendiz destruido</strong> - Debe estar cortado en 4
+                                partes mostrando tus datos personales. Si no lo tienes, presenta una carta explicando
+                                por qué.</li>
+                            <li><strong>Certificado de la Agencia Pública de Empleo SENA</strong> - Acércate a la
+                                oficina de empleo del SENA para registrarte y solicitar el certificado.</li>
+                            <li><strong>Pantallazo de datos actualizados en Sofia Plus</strong> - Entra a Sofia Plus, ve
+                                a tu perfil y toma una captura de pantalla donde se vean tus datos actualizados.</li>
+                            <li><strong>Resultado de pruebas TyT</strong> - Solo si eres tecnólogo. Solicita el
+                                certificado de resultados.</li>
+                            <li><strong>Certificación de la empresa</strong> - Tu empleador debe expedir una carta con:
+                                <ul style="margin-left: 1.5rem; margin-top: 0.3rem;">
+                                    <li>Tu nombre completo y documento</li>
+                                    <li>Fechas exactas de inicio y fin de tu EP</li>
+                                    <li>Funciones que desempeñaste</li>
+                                    <li>Firma y sello del representante legal</li>
+                                </ul>
+                            </li>
+                            <li><strong>Todas las bitácoras (6-9)</strong> - En orden cronológico, firmadas por ti y tu
+                                jefe</li>
+                            <li><strong>3 formatos F-023</strong> - Concertación, parcial y final, firmados por todas
+                                las partes</li>
+                            <li><strong>3 actas de visitas</strong> - Firmadas por ti, tu instructor y tu jefe</li>
+                            <li><strong>Correo de aprobación de tu alternativa</strong> - El correo donde te informaron
+                                que tu alternativa fue aprobada</li>
+                            <li><strong>Cámara de comercio y RUT de la empresa</strong> - Solo si tu alternativa fue
+                                vínculo laboral</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="note-box">
+                    <strong><i class="fas fa-lightbulb"></i> Consejo:</strong>
+                    <p>Desde el inicio de tu EP, ve recolectando estos documentos. No esperes al final para buscarlos,
+                        porque algunos pueden tardar en tramitarse.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-building"></i> Documentos de la Empresa</h3>
+                <p>Tu ente co-formador debe proporcionarte:</p>
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>Certificación de cumplimiento</strong> - Carta que certifica que completaste tu EP, con
+                        fechas y funciones</li>
+                    <li><strong>ARL</strong> - Deben afiliarte a una Administradora de Riesgos Laborales</li>
+                    <li><strong>Elementos de protección personal</strong> - Si tu trabajo lo requiere</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section: Guías y Ejemplos Prácticos -->
+        <section id="guias" class="section">
+            <div class="card">
+                <h2><i class="fas fa-lightbulb"></i> Guías y Ejemplos Prácticos</h2>
+                <p>Sigue estas recomendaciones para asegurar que tu proceso sea impecable y sin retrasos.</p>
+
+                <div class="accordion">
+                    <div class="accordion-header active" onclick="toggleAccordion(this)">
+                        <span><i class="fas fa-pen-nib"></i> Ejemplo: ¿Qué escribir en la Bitácora?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content show">
+                        <div class="note-box">
+                            <p
+                                style="color: var(--neon-orange); border-bottom: 1px solid rgba(255,107,0,0.2); padding-bottom: 0.5rem; margin-bottom: 1rem;">
+                                <i class="fas fa-microchip"></i> <strong>ÁREA TÉCNICA (Sistemas, Electrónica,
+                                    Mecánica):</strong>
+                            </p>
+                            <p>"Desarrollo de scripts en Python para automatizar la extracción de reportes diarios,
+                                utilizando la biblioteca Pandas y conectando con la base de datos SQL Server.
+                                <em>Competencia: Construir el sistema que cumpla con los requisitos.</em>"
+                            </p>
+                            <p>"Instalación y configuración de servidores Proxmox para virtualización de servicios
+                                críticos, configurando arreglos RAID 10 para redundancia de datos. <em>Competencia:
+                                    Implementar la infraestructura tecnológica.</em>"</p>
+                            <p>"Mantenimiento correctivo de maquinaria industrial CNC, reemplazando servomotores con
+                                falla y calibrando ejes X-Y según manual del fabricante. <em>Competencia: Realizar
+                                    mantenimiento de sistemas electromecánicos.</em>"</p>
+
+                            <p
+                                style="color: var(--neon-green); border-bottom: 1px solid rgba(57,169,0,0.2); padding-bottom: 0.5rem; margin-top: 1.5rem; margin-bottom: 1rem;">
+                                <i class="fas fa-briefcase"></i> <strong>ÁREA ADMINISTRATIVA Y GESTIÓN:</strong>
+                            </p>
+                            <p>"Organización y digitalización de expedientes contractuales siguiendo la tabla de
+                                retención documental de la empresa y validando firmas digitales. <em>Competencia:
+                                    Tramitar documentos de acuerdo con procesos administrativos.</em>"</p>
+                            <p>"Elaboración de informes de gestión mensual mediante tablas dinámicas en Excel,
+                                analizando KPIs de productividad del departamento comercial. <em>Competencia: Generar
+                                    reportes técnicos de procesos.</em>"</p>
+                        </div>
+
+                        <div class="info-box info">
+                            <i class="fas fa-lightbulb"></i>
+                            <div>
+                                <strong>Tips de Oro para una Bitácora Perfecta:</strong>
+                                <ul style="margin-top: 0.5rem; margin-left:1.5rem;">
+                                    <li><strong>Usa Verbos Pro:</strong> No digas "hice", di "Ejecuté, Diseñé,
+                                        Automaticé, Gestioné, Verifiqué".</li>
+                                    <li><strong>Detalle Técnico:</strong> Menciona el software o herramienta usado
+                                        (Excel, VS Code, Sap, CRM, Multímetro).</li>
+                                    <li><strong>La Competencia:</strong> Siempre vincula la actividad con una
+                                        competencia de tu programa de formación.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="info-box success">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <strong>Ejemplo Rápido de Formato:</strong>
+                                <p
+                                    style="font-family: 'Share Tech Mono', monospace; font-size: 0.85rem; background: rgba(0,0,0,0.2); padding: 0.5rem; border-radius: 4px; margin-top: 0.5rem;">
+                                    [FECHA]: 01/02/2026 - 15/02/2026<br>
+                                    [ACTIVIDAD]: Soporte técnico nivel 1 y actualización de software.<br>
+                                    [DESCRIPCIÓN]: Se realizó el despliegue de parches de seguridad mediante WSUS en 50
+                                    terminales...
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><i class="fas fa-exclamation-triangle"></i> Alertas: Errores Comunes que debes
+                            Evitar</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="info-box danger">
+                            <i class="fas fa-times-circle"></i>
+                            <p><strong>Falta de firmas:</strong> Una bitácora sin la firma del jefe inmediato NO es
+                                válida y
+                                retrasará tu certificación. ¡El instructor NO puede firmar si el jefe no lo ha hecho!
+                            </p>
+                        </div>
+                        <div class="info-box info">
+                            <i class="fas fa-fingerprint"></i>
+                            <p><strong>Firma Digital:</strong> Si usas firmas digitales, estas deben ser verificables.
+                                Evita
+                                simplemente copiar y pegar una foto de la firma en el PDF, ya que muchos instructores lo
+                                rechazan por seguridad.</p>
+                        </div>
+                        <div class="info-box danger">
+                            <i class="fas fa-calendar-times"></i>
+                            <p><strong>Acumular bitácoras:</strong> No esperes al mes 6 para hacer la bitácora 1. El
+                                instructor puede iniciar proceso de deserción por falta de evidencias mensuales.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><i class="fas fa-user-check"></i> Recomendaciones de Comportamiento Profesional</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="info-box info">
+                            <i class="fas fa-info-circle"></i>
+                            <p><strong>Relación con el Jefe:</strong> Solicita retroalimentación semanal. No esperes a
+                                que
+                                él te busque; demuestra proactividad.</p>
+                            <p><strong>Comunicación con el Instructor:</strong> Responde correos y mensajes de WhatsApp
+                                en
+                                menos de 24 horas. El instructor es tu aliado para la certificación.</p>
+                        </div>
+                        <div class="info-box success">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <strong>Respaldo Digital:</strong> Escanea y sube tus bitácoras firmadas a una carpeta en
+                            Drive
+                            o la nube inmediatamente. Si el instructor pierde acceso o hay un fallo en el sistema,
+                            tendrás
+                            tu respaldo listo.
+                        </div>
+                        <div class="info-box success">
+                            <i class="fas fa-star"></i>
+                            <strong>Importante:</strong> Tu actitud en la empresa es el 50% de tu evaluación final.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: QUIZ Interactivo -->
+        <section id="quiz" class="section">
+            <div class="card">
+                <h2><i class="fas fa-gamepad"></i> QUIZ: Desafío Etapa Productiva</h2>
+                <p>Pon a prueba tus conocimientos en cada fase de tu proceso. ¡Completa los tres momentos!</p>
+            </div>
+
+            <!-- Momento 1: Lectiva -->
+            <div class="card" id="quizContainerLectiva">
+                <h3><i class="fas fa-book-reader"></i> Momento 1: Etapa Lectiva</h3>
+                <div id="quizContentLectiva">
+                    <div id="questionContainerLectiva" class="subsection">
+                        <h5 id="questionTextLectiva">Cargando...</h5>
+                        <div id="optionsListLectiva" style="display: flex; flex-direction: column; gap: 0.8rem;"></div>
+                        <div id="feedbackLectiva"
+                            style="margin-top: 1rem; padding: 1rem; border-radius: 10px; display: none;"></div>
+                    </div>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+                        <span id="progressLectiva">Pregunta 1 de 5</span>
+                        <button class="btn btn-primary" id="nextBtnLectiva" onclick="nextQuestion('lectiva')"
+                            disabled>Siguiente</button>
+                    </div>
+                </div>
+                <div id="resultLectiva" style="display: none; text-align: center;">
+                    <i class="fas fa-trophy" style="font-size: 3rem; color: #FFD700;"></i>
+                    <h2 id="scoreLectiva">Puntaje: 0/5</h2>
+                    <button class="btn btn-secondary" onclick="restartQuiz('lectiva')">Reintentar</button>
+                </div>
+            </div>
+
+            <!-- Momento 2: Productiva -->
+            <div class="card" id="quizContainerProductiva">
+                <h3><i class="fas fa-briefcase"></i> Momento 2: Etapa Productiva</h3>
+                <div id="quizContentProductiva">
+                    <div id="questionContainerProductiva" class="subsection">
+                        <h5 id="questionTextProductiva">Cargando...</h5>
+                        <div id="optionsListProductiva" style="display: flex; flex-direction: column; gap: 0.8rem;">
+                        </div>
+                        <div id="feedbackProductiva"
+                            style="margin-top: 1rem; padding: 1rem; border-radius: 10px; display: none;"></div>
+                    </div>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+                        <span id="progressProductiva">Pregunta 1 de 5</span>
+                        <button class="btn btn-primary" id="nextBtnProductiva" onclick="nextQuestion('productiva')"
+                            disabled>Siguiente</button>
+                    </div>
+                </div>
+                <div id="resultProductiva" style="display: none; text-align: center;">
+                    <i class="fas fa-trophy" style="font-size: 3rem; color: #FFD700;"></i>
+                    <h2 id="scoreProductiva">Puntaje: 0/5</h2>
+                    <button class="btn btn-secondary" onclick="restartQuiz('productiva')">Reintentar</button>
+                </div>
+            </div>
+
+            <!-- Momento 3: Certificación -->
+            <div class="card" id="quizContainerCertificacion">
+                <h3><i class="fas fa-certificate"></i> Momento 3: Certificación</h3>
+                <div id="quizContentCertificacion">
+                    <div id="questionContainerCertificacion" class="subsection">
+                        <h5 id="questionTextCertificacion">Cargando...</h5>
+                        <div id="optionsListCertificacion" style="display: flex; flex-direction: column; gap: 0.8rem;">
+                        </div>
+                        <div id="feedbackCertificacion"
+                            style="margin-top: 1rem; padding: 1rem; border-radius: 10px; display: none;"></div>
+                    </div>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+                        <span id="progressCertificacion">Pregunta 1 de 5</span>
+                        <button class="btn btn-primary" id="nextBtnCertificacion"
+                            onclick="nextQuestion('certificacion')" disabled>Siguiente</button>
+                    </div>
+                </div>
+                <div id="resultCertificacion" style="display: none; text-align: center;">
+                    <i class="fas fa-trophy" style="font-size: 3rem; color: #FFD700;"></i>
+                    <h2 id="scoreCertificacion">Puntaje: 0/5</h2>
+                    <button class="btn btn-secondary" onclick="restartQuiz('certificacion')">Reintentar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Checklist -->
+        <section id="checklist" class="section">
+            <div class="card">
+                <h2><i class="fas fa-check-square"></i> Mi Checklist de Etapa Productiva</h2>
+                <p>Usa esta lista para llevar el control de tu proceso. <strong>Haz clic en cada ítem</strong> para
+                    marcarlo como completado.</p>
+
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar" style="width: 0%">0%</div>
+                </div>
+                <p style="text-align: center; color: #666; margin-top: 0.5rem;">Progreso: <span
+                        id="progressText">0/0</span>
+                    tareas completadas</p>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-play-circle"></i> Antes de Iniciar</h3>
+                <ul class="checklist" data-group="antes">
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Aprobé el 100% de los RAP de etapa
+                        lectiva</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Verifiqué que mis RAP estén
+                        cargados
+                        en Sofia Plus</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Estoy en estado "En formación" en
+                        Sofia Plus</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Actualicé mis datos personales en
+                        Sofia Plus</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Asistí al Taller de Vida Laboral
+                        (Momento 1)</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Asistí al Taller de Bitácoras
+                        (Momento
+                        2)</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Diligencié el formato GFPI-F-165
+                        con
+                        mi alternativa</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Obtuve el aval de la Coordinación
+                        Académica</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Encontré mi escenario de práctica
+                    </li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Verifiqué que me afiliaron a la
+                        ARL
+                    </li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Tengo los elementos de protección
+                        personal (si aplica)</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Conozco los datos de contacto de
+                        mi
+                        instructor</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-tasks"></i> Durante mi Etapa Productiva</h3>
+
+                <h4>Mes 1:</h4>
+                <ul class="checklist" data-group="mes1">
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Recibí la primera visita de mi
+                        instructor (concertación)</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Diligencié el F023 de concertación
+                    </li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Entregué mi primera bitácora</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Mi jefe firmó la bitácora</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Recibí retroalimentación de mi
+                        instructor</li>
+                </ul>
+
+                <h4>Mes 2-3:</h4>
+                <ul class="checklist" data-group="mes23">
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Entregué bitácora del mes 2</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Entregué bitácora del mes 3</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Todas las bitácoras firmadas por
+                        mi
+                        jefe</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Recibí retroalimentación oportuna
+                    </li>
+                </ul>
+
+                <h4>Mes 4-5 (Visita Parcial):</h4>
+                <ul class="checklist" data-group="mes45">
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Recibí la visita de evaluación
+                        parcial
+                    </li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Diligencié el F023 parcial</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Entregué bitácora del mes 4</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Entregué bitácora del mes 5</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Conozco mis fortalezas y áreas de
+                        mejora</li>
+                </ul>
+
+                <h4>Mes 6-9:</h4>
+                <ul class="checklist" data-group="mes69">
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Entregué todas las bitácoras
+                        restantes
+                    </li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Todas las bitácoras están firmadas
+                    </li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Mantengo comunicación con mi
+                        instructor</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Cumplo con mi horario en la
+                        empresa
+                    </li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Uso los elementos de protección
+                        personal</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-flag-checkered"></i> Para mi Certificación</h3>
+                <ul class="checklist" data-group="certificacion">
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Recibí la visita final de mi
+                        instructor</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Diligencié el F023 final</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Tengo la fotocopia de mi documento
+                        al
+                        150%</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Tengo foto de mi carnet destruido
+                        o
+                        carta</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Tengo certificado de Agencia
+                        Pública
+                        de Empleo</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Tengo pantallazo de datos
+                        actualizados
+                        en Sofia</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Tengo resultado de TyT (si soy
+                        tecnólogo)</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Tengo certificación de la empresa
+                        con
+                        fechas</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Tengo todas las bitácoras (6-9) en
+                        orden cronológico</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Todas las bitácoras están firmadas
+                        por
+                        mi jefe</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Tengo los 3 formatos F-023
+                        firmados
+                    </li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Tengo los 3 actas de visitas
+                        firmadas
+                    </li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Tengo correo de aprobación de
+                        alternativa</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Tengo cámara de comercio y RUT (si
+                        aplica)</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Entregué todos los documentos a mi
+                        instructor</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> Mi instructor emitió el juicio
+                        evaluativo</li>
+                    <li onclick="toggleCheck(this)"><i class="far fa-square"></i> ¡Recibí mi certificado!</li>
+                </ul>
+            </div>
+
+            <div style="text-align: center; margin: 2rem 0;">
+                <button class="btn btn-primary" onclick="resetChecklist()">
+                    <i class="fas fa-redo"></i> Reiniciar Mi Checklist
+                </button>
+                <button class="btn btn-secondary" onclick="window.print()">
+                    <i class="fas fa-print"></i> Imprimir Mi Checklist
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer"
+        style="padding: 4rem 2rem; border-top: 1px solid var(--neon-green); background: #0a0a0f; text-align: center;">
+        <p style="font-family: 'Share Tech Mono', monospace; color: var(--neon-green); margin-bottom: 1rem;">
+            <i class="fas fa-terminal"></i> ACCESO_SISTEMA: SERGIO_ANDRES_TORRES_MARTINEZ
+        </p>
+        <p style="text-transform: uppercase; letter-spacing: 2px; font-weight: 800;">Manual del Aprendiz - Etapa
+            Productiva</p>
+        <p style="opacity: 0.6; font-size: 0.9rem;">Basado en Acuerdo 009 de 2024 // Acuerdo 007 de 2012 // Guía
+            GFPI-G-040</p>
+
+        <div style="margin-top: 2rem;">
+            <button class="btn btn-secondary" onclick="sharePortal()">
+                <i class="fas fa-share-alt"></i> COMPARTIR_NÚCLEO
+            </button>
+        </div>
+
+        <p style="margin-top: 2rem; font-size: 0.75rem; font-family: 'Share Tech Mono', monospace; opacity: 0.4;">
+            © 2026 // SENA_NEO_ECOSYSTEM // VERSION 3.0
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Navigation Logic
+        function showSection(sectionId) {
+            // Remove active from all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show target section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) targetSection.classList.add('active');
+
+            // Update nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+                // Check if the button's onclick contains the sectionId
+                if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(sectionId)) {
+                    btn.classList.add('active');
+                }
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+
+            const themeBtn = document.getElementById('themeToggle');
+            const icon = themeBtn.querySelector('i');
+            if (newTheme === 'dark') {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+            localStorage.setItem('theme_app', newTheme);
+        }
+
+        // Search Content
+        function searchContent() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.card');
+
+            if (query === "") {
+                cards.forEach(c => c.style.display = "block");
+                return;
+            }
+
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(query) ? "block" : "none";
+            });
+        }
+
+        // Accordion
+        function toggleAccordion(header) {
+            header.classList.toggle('active');
+            const content = header.nextElementSibling;
+            content.classList.toggle('show');
+        }
+
+        // Checklist toggle
+        function toggleCheck(item) {
+            item.classList.toggle('checked');
+            const icon = item.querySelector('i');
+            if (item.classList.contains('checked')) {
+                icon.className = 'fas fa-check-square';
+            } else {
+                icon.className = 'far fa-square';
+            }
+            updateProgress();
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const allItems = document.querySelectorAll('.checklist li');
+            const checkedItems = document.querySelectorAll('.checklist li.checked');
+            const percentage = allItems.length ? Math.round((checkedItems.length / allItems.length) * 100) : 0;
+
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+
+            if (progressBar && progressText) {
+                progressBar.style.width = percentage + '%';
+                progressBar.textContent = percentage + '%';
+                progressText.textContent = checkedItems.length + '/' + allItems.length;
+            }
+        }
+
+        // Reset checklist
+        function resetChecklist() {
+            document.querySelectorAll('.checklist li').forEach(item => {
+                item.classList.remove('checked');
+                const icon = item.querySelector('i');
+                icon.className = 'far fa-square';
+            });
+            updateProgress();
+        }
+
+        // Share Portal
+        async function sharePortal() {
+            const shareData = {
+                title: 'Manual Etapa Productiva SENA',
+                text: 'Accede a la guía definitiva de la Etapa Productiva SENA (Cyber Edition)',
+                url: window.location.href
+            };
+
+            try {
+                if (navigator.share) {
+                    await navigator.share(shareData);
+                } else {
+                    await navigator.clipboard.writeText(window.location.href);
+                    Swal.fire({
+                        title: '¡NÚCLEO COMPARTIDO!',
+                        text: 'Enlace copiado al buffer de memoria (Portapapeles)',
+                        icon: 'success',
+                        background: '#0a0a0f',
+                        color: '#39A900',
+                        confirmButtonColor: '#39A900'
+                    });
+                }
+            } catch (err) {
+                console.log('Error compartiendo:', err);
+            }
+        }
+
+        // Quiz Data and Logic
+        let currentMoment = 'lectiva';
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        const quizData = {
+            lectiva: [
+                { q: "¿Cuál es el primer paso oficial para iniciar la EP?", a: ["Diligenciar el F-165", "Comprar el uniforme", "Renunciar al SENA", "Pedir el certificado"], c: 0, f: "El formato GFPI-F-165 es el primer paso para seleccionar tu alternativa oficial." },
+                { q: "¿Cuántos RAP de etapa lectiva debes tener aprobados?", a: ["50%", "75%", "90%", "100%"], c: 3, f: "Debes haber aprobado la totalidad de los Resultados de Aprendizaje de la etapa lectiva." },
+                { q: "¿Qué estado debes tener en Sofia Plus para iniciar EP?", a: ["Retirado", "En formación", "Certificado", "Egresado"], c: 1, f: "Debes estar activo y 'En formación' para que se te asigne un instructor de EP." },
+                { q: "¿Qué documento regula actualmente la etapa productiva?", a: ["Acuerdo 001 de 2000", "Acuerdo 009 de 2024", "Ley 789 de 2002", "Constitución Política"], c: 1, f: "El Acuerdo 009 de 2024 es la normativa vigente para la etapa productiva." },
+                { q: "¿Quién da el aval de la alternativa seleccionada?", a: ["Tu mamá", "La empresa", "Coordinación Académica", "El celador"], c: 2, f: "La Coordinación Académica debe validar que tu alternativa sea pertinente." },
+                { q: "¿Qué taller es obligatorio 4 meses antes de EP?", a: ["Taller de Manualidades", "Taller de Vida Laboral", "Taller de Natación", "Ninguno"], c: 1, f: "El Taller de Vida Laboral es fundamental para tu preparación profesional." },
+                { q: "¿Cuál es el plazo máximo para iniciar EP tras lectiva?", a: ["6 meses", "12 meses", "24 meses", "Ilimitado"], c: 2, f: "Tienes hasta 2 años para iniciar y completar tu etapa productiva." },
+                { q: "¿Quién afilia a la ARL en Contrato de Aprendizaje?", a: ["El SENA", "El Aprendiz", "La Empresa", "La Alcaldía"], c: 2, f: "En el contrato de aprendizaje, la empresa asume la afiliación a ARL." },
+                { q: "¿Qué alternativa NO requiere contrato?", a: ["Contrato Aprendizaje", "Pasantía", "Vínculo Laboral", "Ninguna"], c: 1, f: "La pasantía es una alternativa que no genera vínculo contractual de aprendizaje." },
+                { q: "¿Qué documento formaliza tu alternativa ante el SENA?", a: ["Cédula", "Copia del Contrato o Acta", "Carnet", "Foto"], c: 1, f: "Debes entregar el soporte legal (Contrato/Acta) para que el SENA asigne instructor." }
+            ],
+            productiva: [
+                { q: "¿Cómo se llama el formato de bitácora?", a: ["F-023", "F-147", "F-165", "F-191"], c: 1, f: "El formato GFPI-F-147 es la Bitácora de Seguimiento." },
+                { q: "¿A quién corresponde la Visita 1?", a: ["Final", "Parcial", "Concertación", "Despido"], c: 2, f: "La primera visita sirve para concertar el plan de trabajo con el jefe inmediato." },
+                { q: "¿Cada cuánto se entrega una bitácora?", a: ["Diario", "Semanal", "Quincenal/Mensual", "Al final"], c: 2, f: "Se recomienda entrega quincenal o según acuerdes con tu instructor." },
+                { q: "¿Quiénes deben firmar la bitácora?", a: ["Solo tú", "Solo el jefe", "Tú, el Jefe y el Instructor", "Nadie"], c: 2, f: "La validez del documento requiere las tres firmas." },
+                { q: "¿Qué es la visita parcial?", a: ["Un saludo", "Evaluación de mitad de etapa", "El cierre", "Una entrevista"], c: 1, f: "Es el segundo momento de seguimiento para medir avances." },
+                { q: "¿Cuándo se considera deserción por inasistencia?", a: ["1 día", "3 días consecutivos", "3 días al mes", "5 días"], c: 1, f: "3 días consecutivos sin justificación a la empresa es causal de deserción." },
+                { q: "¿Qué hacer si cambias de jefe inmediato?", a: ["Nada", "Renunciar", "Informar al Instructor", "Llorar"], c: 2, f: "Cualquier cambio de jefe debe ser reportado para actualizar el seguimiento." },
+                { q: "¿Qué evalúa el jefe en la etapa productiva?", a: ["Tu ropa", "Tus notas", "Desempeño técnico y actitud", "Nada"], c: 2, f: "El jefe califica tu aplicación de conocimientos y cumplimiento normativo." },
+                { q: "¿Qué pasa si faltas a una visita programada?", a: ["Nada", "Riesgo de sanción/cancelación", "Te dan premio", "Te cambian de curso"], c: 1, f: "Inasistir a citas programadas sin excusa es una falta al reglamento." },
+                { q: "¿Dónde registras tus actividades diarias?", a: ["En Facebook", "En la Bitácora F-147", "En un cuaderno", "No se registran"], c: 1, f: "La bitácora es el soporte legal de tus actividades en la empresa." }
+            ],
+            certificacion: [
+                { q: "¿Qué porcentaje del carnet debe verse destruido?", a: ["10%", "50%", "Totalmente", "0%"], c: 2, f: "Se debe evidenciar el carnet invalidado (cortado) para el proceso." },
+                { q: "¿Al cuánto por ciento se amplía la cédula?", a: ["100%", "150%", "200%", "50%"], c: 1, f: "Es el estándar requerido para legibilidad en el expediente." },
+                { q: "¿Qué certificado pides en la APE?", a: ["De salud", "De registro y postulación", "De bachiller", "De natación"], c: 1, f: "La Agencia Pública de Empleo emite un certificado tras actualizar tu perfil." },
+                { q: "¿Qué es the juicio evaluativo?", a: ["Una condena", "Aprobado en Sofia Plus", "Un consejo", "Una entrevista"], c: 1, f: "Es el estado final que permite iniciar el trámite de diploma." },
+                { q: "¿Quién emite la certificación laboral?", a: ["El SENA", "La Empresa", "Tú mismo", "El vecino"], c: 1, f: "La empresa debe certificar con fechas y funciones tu tiempo laborado." },
+                { q: "¿Cuál es el formato final de evaluación?", a: ["F-147", "F-023 Final", "F-165", "APE"], c: 1, f: "El F-023 Final cierra formalmente tu etapa productiva." },
+                { q: "¿Qué examen es requisito para tecnólogos?", a: ["Saber 11", "Saber TyT", "Examen Médico", "Ninguno"], c: 1, f: "El examen de Estado Saber TyT es obligatorio para la certificación de tecnólogos." },
+                { q: "¿Qué debe incluir la carta de la empresa?", a: ["Solo el nombre", "Fechas y funciones", "El sueldo", "La dirección"], c: 1, f: "La certificación debe ser clara en el tiempo laborado y las tareas realizadas." },
+                { q: "¿Cuánto tiempo hay para certificarse tras fin?", a: ["24 horas", "Plazo de 2 años lectiva+prod", "10 años", "Ilimitado"], c: 1, f: "Debes cumplir los tiempos reglamentarios para no perder la formación." },
+                { q: "¿Quién firma el certificado de la APE?", a: ["El Jefe", "El Instructor", "Funcionario APE", "Tú"], c: 2, f: "Es un documento generado por el sistema o funcionario de la Agencia." }
+            ]
+        };
+
+        // Quiz Multi-State
+        const quizState = {
+            lectiva: { index: 0, score: 0 },
+            productiva: { index: 0, score: 0 },
+            certificacion: { index: 0, score: 0 }
+        };
+
+        function loadQuestion(moment) {
+            const state = quizState[moment];
+            const data = quizData[moment][state.index];
+            const titleKey = moment.charAt(0).toUpperCase() + moment.slice(1);
+
+            const questionContainer = document.getElementById(`questionText${titleKey}`);
+            const optionsList = document.getElementById(`optionsList${titleKey}`);
+            const progressElem = document.getElementById(`progress${titleKey}`);
+            const feedbackElem = document.getElementById(`feedback${titleKey}`);
+            const nextBtn = document.getElementById(`nextBtn${titleKey}`);
+
+            if (!questionContainer || !optionsList) return;
+
+            questionContainer.textContent = data.q;
+            progressElem.textContent = `Pregunta ${state.index + 1} de ${quizData[moment].length}`;
+            feedbackElem.style.display = 'none';
+            nextBtn.disabled = true;
+
+            optionsList.innerHTML = '';
+            data.a.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-secondary';
+                btn.style.textAlign = 'left';
+                btn.style.width = '100%';
+                btn.style.marginBottom = '0.5rem';
+                btn.textContent = opt;
+                btn.onclick = () => checkAnswer(moment, idx);
+                optionsList.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(moment, choice) {
+            const state = quizState[moment];
+            const data = quizData[moment][state.index];
+            const titleKey = moment.charAt(0).toUpperCase() + moment.slice(1);
+            const options = document.getElementById(`optionsList${titleKey}`).children;
+            const feedback = document.getElementById(`feedback${titleKey}`);
+
+            for (let btn of options) btn.disabled = true;
+
+            if (choice === data.c) {
+                options[choice].style.background = '#39a900';
+                options[choice].style.color = 'white';
+                state.score++;
+                feedback.style.background = 'rgba(57, 169, 0, 0.1)';
+                feedback.innerHTML = `<strong>¡Correcto!</strong><p>${data.f}</p>`;
+            } else {
+                options[choice].style.background = '#e60000';
+                options[choice].style.color = 'white';
+                options[data.c].style.background = '#39a900';
+                options[data.c].style.color = 'white';
+                feedback.style.background = 'rgba(230, 0, 0, 0.1)';
+                feedback.innerHTML = `<strong>Incorrecto</strong><p>${data.f}</p>`;
+            }
+
+            feedback.style.display = 'block';
+            document.getElementById(`nextBtn${titleKey}`).disabled = false;
+        }
+
+        function nextQuestion(moment) {
+            const state = quizState[moment];
+            const titleKey = moment.charAt(0).toUpperCase() + moment.slice(1);
+            state.index++;
+            if (state.index < quizData[moment].length) {
+                loadQuestion(moment);
+            } else {
+                document.getElementById(`quizContent${titleKey}`).style.display = 'none';
+                const resultDiv = document.getElementById(`result${titleKey}`);
+                resultDiv.style.display = 'block';
+                document.getElementById(`score${titleKey}`).textContent = `Puntaje: ${state.score}/${quizData[moment].length}`;
+            }
+        }
+
+        function restartQuiz(moment) {
+            const titleKey = moment.charAt(0).toUpperCase() + moment.slice(1);
+            quizState[moment] = { index: 0, score: 0 };
+            document.getElementById(`quizContent${titleKey}`).style.display = 'block';
+            document.getElementById(`result${titleKey}`).style.display = 'none';
+            loadQuestion(moment);
+        }
+
+        // Tab Logic for Alternativas
+        function showTab(tabId) {
+            const tabsContainer = document.querySelector('.tabs');
+            if (tabsContainer) {
+                tabsContainer.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                const btns = tabsContainer.querySelectorAll('.tab-btn');
+                for (let btn of btns) {
+                    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(tabId)) {
+                        btn.classList.add('active');
+                        break;
+                    }
+                }
+            }
+
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+                content.style.display = 'none';
+            });
+
+            const targetContent = document.getElementById(tabId);
+            if (targetContent) {
+                targetContent.classList.add('active');
+                targetContent.style.display = 'block';
+            }
+        }
+
+        // Initialize on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            ['lectiva', 'productiva', 'certificacion'].forEach(m => loadQuestion(m));
+
+            const savedTheme = localStorage.getItem('theme_app');
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                const themeBtn = document.getElementById('themeToggle');
+                if (themeBtn) {
+                    const icon = themeBtn.querySelector('i');
+                    icon.className = 'fas fa-sun';
+                }
+            }
+
+            updateProgress();
+        });
+    </script>
+</body>
+
+</html>
+</body>
+
+</html>
