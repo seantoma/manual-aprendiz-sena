@@ -96,36 +96,71 @@
 
         .qr-frame {
             position: relative;
-            padding: 20px;
+            padding: 24px;
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
+            border-radius: 30px;
             backdrop-filter: blur(12px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            margin-bottom: 1.5rem;
-            transition: transform 0.3s ease;
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+            margin-bottom: 2rem;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: float 6s ease-in-out infinite;
         }
 
         .qr-frame:hover {
-            transform: scale(1.02);
+            transform: translateY(-10px) scale(1.05);
             border-color: var(--accent-indigo);
+            box-shadow: 0 0 50px rgba(99, 102, 241, 0.5);
         }
 
         .qr-frame img {
-            width: 180px;
-            height: 180px;
-            border-radius: 12px;
+            width: 200px;
+            height: 200px;
+            border-radius: 15px;
             display: block;
+            filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.2));
+        }
+
+        .qr-frame::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            background: linear-gradient(45deg, var(--accent-indigo), transparent, var(--accent-emerald));
+            border-radius: 35px;
+            z-index: -1;
+            opacity: 0.4;
+            animation: hologram-rotate 4s linear infinite;
         }
 
         .qr-frame::after {
             content: '';
             position: absolute;
-            inset: -2px;
-            border-radius: 22px;
-            background: linear-gradient(45deg, var(--accent-indigo), transparent, var(--accent-emerald));
-            z-index: -1;
-            opacity: 0.3;
+            inset: 0;
+            border-radius: 30px;
+            background: radial-gradient(circle at center, transparent 30%, rgba(99, 102, 241, 0.1));
+            pointer-events: none;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes hologram-rotate {
+            0% {
+                filter: hue-rotate(0deg) blur(5px);
+            }
+
+            100% {
+                filter: hue-rotate(360deg) blur(5px);
+            }
         }
 
         .hero-badge {
@@ -517,7 +552,7 @@
     </footer>
 
     <!-- AI AGENT -->
-    <button id="ai-fab"><i class="fas fa-comment-dots"></i></button>
+    <button id="ai-fab"><i class="fas fa-robot"></i></button>
     <div id="chat-window" class="chat-window hidden">
         <div class="chat-header">
             <h3><i class="fas fa-robot"></i> Asistente Virtual</h3>
@@ -560,16 +595,23 @@
 
         function respond(q) {
             const query = q.toLowerCase();
-            let r = "Lo lamento, no tengo información específica sobre eso. ¿Puedes consultar el manual?";
+            let r = "Lo lamento, no tengo información específica sobre eso. ¿Puedes consultar el <b>Manual del Aprendiz</b> para más detalles?";
 
-            if (query.includes("f023") || query.includes("formato") || query.includes("bitacora")) {
-                r = "Los formatos F-023 y las bitácoras están disponibles en la sección <b>Recursos y Formatos</b> del dashboard.";
+            // REASONING LOGIC (Basada en Documentación SENA)
+            if (query.includes("f023") || query.includes("planeación") || query.includes("planeacion") || query.includes("seguimiento")) {
+                r = "El <b>GFPI-F-023 (Planeación, Seguimiento y Evaluación)</b> es el formato fundamental de tus visitas. <br><br>👉 Puedes descargarlo en la sección <a href='recursos_etapa_productiva.html' style='color:var(--accent-emerald)'>Recursos y Formatos</a>. Solo se permiten descargas desde la carpeta oficial de Formatos.";
+            } else if (query.includes("bitacora") || query.includes("f147") || query.includes("f-147")) {
+                r = "La <b>Bitácora GFPI-F-147</b> es tu reporte mensual. Recuerda que debes entregar entre 6 y 9 bitácoras firmadas por tu jefe inmediato. <br><br>📍 Descárgala en <a href='recursos_etapa_productiva.html' style='color:var(--accent-emerald)'>Formatos Oficiales</a>.";
+            } else if (query.includes("f165") || query.includes("f-165") || query.includes("seleccion") || query.includes("selección")) {
+                r = "El formato <b>GFPI-F-165 (Selección Alternativa)</b> se usa para formalizar tu modalidad de etapa productiva o solicitar cambios. <br><br>📂 Encontré el archivo oficial en la carpeta de Formatos. <a href='recursos_etapa_productiva.html' style='color:var(--accent-emerald)'>Ver aquí</a>.";
             } else if (query.includes("agendar") || query.includes("cita") || query.includes("visita")) {
-                r = "Puedes programar tu visita de seguimiento usando el widget de <b>Agendamiento Profesional</b> en el portal.";
-            } else if (query.includes("final") || query.includes("termino") || query.includes("fecha")) {
-                r = "Usa la herramienta de <b>Gestión de Fechas</b> para calcular cuándo finaliza tu etapa productiva.";
-            } else if (query.includes("hola") || query.includes("buenos")) {
-                r = "¡Hola! Estoy aquí para ayudarte con dudas sobre formatos, agendamiento o el manual del aprendiz.";
+                r = "Para agendar visitas de concertación, parcial o final, usa el botón <b>Programar Cita</b> en el panel inferior del portal. El sistema conecta directamente con MS Bookings.";
+            } else if (query.includes("final") || query.includes("termino") || query.includes("fecha") || query.includes("calendario")) {
+                r = "Usa nuestra <a href='calculadora_fechas.html' style='color:var(--accent-emerald)'>Gestión de Fechas</a> para proyectar tu fin de etapa basándote en el Acuerdo 009 de 2024.";
+            } else if (query.includes("normativa") || query.includes("reglamento") || query.includes("derechos") || query.includes("acuerdo")) {
+                r = "Toda la normativa (Acuerdo 009 de 2024) y tus deberes como aprendiz están detallados en el <a href='manual_aprendiz.html' style='color:var(--accent-emerald)'>Manual del Aprendiz</a>.";
+            } else if (query.includes("hola") || query.includes("buenos") || query.includes("quien eres")) {
+                r = "¡Hola! Soy <b>SENA_BOT</b>, tu asistente de inteligencia artificial. Estoy entrenado con la documentación oficial para guiarte en tu Etapa Productiva.";
             }
 
             setTimeout(() => addMsg(r, 'bot'), 600);
