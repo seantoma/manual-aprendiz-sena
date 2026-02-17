@@ -380,6 +380,22 @@
         <i class="fas fa-question"></i>
     </div>
 
+    <!-- AI AGENT HTML -->
+    <button id="ai-fab"><i class="fas fa-robot"></i></button>
+    <div id="chat-window" class="chat-window hidden">
+        <div class="chat-header">
+            <h3>🤖 SENA_BOT</h3>
+            <button id="close-chat" class="close-chat"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="chat-body" class="chat-body">
+            <div class="msg bot">¡Hola! Soy tu asistente Cyber-SENA. ¿Te ayudo con las fechas?</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" class="chat-input" placeholder="Pregunta aquí...">
+            <button id="send-btn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
     <script>
         function calculateDates() {
             const dateInput = document.getElementById('startDate').value;
@@ -681,21 +697,7 @@
         document.head.appendChild(styleSheet);
     </script>
 
-    <!-- AI AGENT HTML -->
-    <button id="ai-fab"><i class="fas fa-robot"></i></button>
-    <div id="chat-window" class="chat-window hidden">
-        <div class="chat-header">
-            <h3>🤖 SENA_BOT</h3>
-            <button id="close-chat" class="close-chat"><i class="fas fa-times"></i></button>
-        </div>
-        <div id="chat-body" class="chat-body">
-            <div class="msg bot">¡Hola! Soy tu asistente Cyber-SENA. ¿Te ayudo con las fechas?</div>
-        </div>
-        <div class="chat-input-area">
-            <input type="text" id="chat-input" class="chat-input" placeholder="Pregunta aquí...">
-            <button id="send-btn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
-        </div>
-    </div>
+
 </body>
 
 </html>

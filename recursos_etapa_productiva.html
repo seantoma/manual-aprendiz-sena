@@ -487,6 +487,22 @@
 
     </div>
 
+    <!-- AI AGENT HTML -->
+    <button id="ai-fab"><i class="fas fa-robot"></i></button>
+    <div id="chat-window" class="chat-window hidden">
+        <div class="chat-header">
+            <h3>🤖 SENA_BOT</h3>
+            <button id="close-chat" class="close-chat"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="chat-body" class="chat-body">
+            <div class="msg bot">¡Hola! Soy tu asistente Cyber-SENA. ¿Dudas sobre los formatos?</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" class="chat-input" placeholder="Pregunta aquí...">
+            <button id="send-btn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
     <script>
         // ULTIMATE SENA_BOT LOGIC
         const sBotFab = document.getElementById('ai-fab');
@@ -647,21 +663,7 @@
         }
     </script>
 
-    <!-- AI AGENT HTML -->
-    <button id="ai-fab"><i class="fas fa-robot"></i></button>
-    <div id="chat-window" class="chat-window hidden">
-        <div class="chat-header">
-            <h3>🤖 SENA_BOT</h3>
-            <button id="close-chat" class="close-chat"><i class="fas fa-times"></i></button>
-        </div>
-        <div id="chat-body" class="chat-body">
-            <div class="msg bot">¡Hola! Soy tu asistente Cyber-SENA. ¿Dudas sobre los formatos?</div>
-        </div>
-        <div class="chat-input-area">
-            <input type="text" id="chat-input" class="chat-input" placeholder="Pregunta aquí...">
-            <button id="send-btn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
-        </div>
-    </div>
+
 </body>
 
 </html>
