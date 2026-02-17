@@ -12,17 +12,24 @@
     <style>
         :root {
             --neon-green: #39A900;
-            --neon-orange: #FF6B00;
+            --neon-magenta: #ff00ff;
+            --neon-cyan: #00f3ff;
             --bg-deep: #05050a;
-            --card-bg: rgba(15, 15, 25, 0.85);
-            --glass-border: 1px solid rgba(255, 255, 255, 0.1);
-            --text-main: #e0e0e0;
-            --text-glow: 0 0 10px rgba(57, 169, 0, 0.5);
+            --card-bg: rgba(15, 15, 25, 0.9);
+            --glass-border: 1px solid rgba(0, 243, 255, 0.2);
+            --text-main: #f8fafc;
+            --text-glow: 0 0 10px rgba(0, 243, 255, 0.3);
+
+            /* AI Bot Specifics */
+            --accent-cyan: var(--neon-cyan);
+            --accent-magenta: var(--neon-magenta);
+            --glow-cyan: rgba(0, 243, 255, 0.3);
+            --glow-magenta: rgba(255, 0, 255, 0.3);
 
             /* Legacy Sync */
             --sena-verde: var(--neon-green);
-            --sena-azul: #00324D;
-            --sena-naranja: var(--neon-orange);
+            --sena-azul: var(--neon-cyan);
+            --sena-naranja: var(--neon-magenta);
         }
 
         body {
@@ -61,12 +68,16 @@
 
         .header h1 {
             font-family: 'Montserrat', sans-serif;
+            font-size: 3.5rem;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             margin: 0;
-            font-size: 2.22rem;
-            filter: drop-shadow(0 0 10px var(--neon-green));
+            background: linear-gradient(to right, #fff, var(--neon-cyan), var(--neon-magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 10px var(--glow-cyan));
         }
 
         .header p {
@@ -473,14 +484,123 @@
     </div>
 
     <script>
+        // AI Logic
+        const fab = document.getElementById('ai-fab');
+        const chat = document.getElementById('chat-window');
+        const close = document.getElementById('close-chat');
+        const input = document.getElementById('chat-input');
+        const send = document.getElementById('send-btn');
+        const body = document.getElementById('chat-body');
+
+        if (fab) fab.addEventListener('click', () => chat.classList.toggle('hidden'));
+        if (close) close.addEventListener('click', () => chat.classList.add('hidden'));
+
+        function addMsg(text, sender) {
+            const m = document.createElement('div');
+            m.className = `msg ${sender}`;
+            m.innerHTML = text;
+            body.appendChild(m);
+            body.scrollTop = body.scrollHeight;
+        }
+
+        function respond(q) {
+            const query = q.toLowerCase();
+            let r = "Lo lamento, no tengo información específica sobre eso. ¿Puedes consultar el <b>Manual del Aprendiz</b> para más detalles?";
+
+            if (query.includes("f023") || query.includes("planeación") || query.includes("planeacion") || query.includes("seguimiento")) {
+                r = "El <b>GFPI-F-023</b> es el corazón de tu seguimiento. <br><br>👉 Tienes los links de descarga arriba en esta misma página.";
+            } else if (query.includes("bitacora") || query.includes("f147") || query.includes("f-147")) {
+                r = "La <b>Bitácora GFPI-F-147</b> se entrega mes a mes. <br><br>📍 Descarga el Excel oficial aquí mismo.";
+            } else if (query.includes("f165") || query.includes("f-165") || query.includes("seleccion") || query.includes("selección")) {
+                r = "El formato <b>GFPI-F-165 (Selección Alternativa)</b> está disponible para descarga en la sección inferior de esta página.";
+            } else if (query.includes("agendar") || query.includes("cita") || query.includes("visita")) {
+                r = "Puedes agendar tus visitas técnicas desde el portal principal del aprendiz.";
+            } else if (query.includes("final") || query.includes("termino") || query.includes("fecha") || query.includes("calendario")) {
+                r = "Usa nuestra calculadora de fechas para saber cuándo terminas.";
+            } else if (query.includes("hola") || query.includes("buenos") || query.includes("quien eres")) {
+                r = "¡Hola! Soy <b>SENA_BOT</b>. ¿Necesitas ayuda con los formatos o guías?";
+            }
+
+            setTimeout(() => addMsg(r, 'bot'), 600);
+        }
+
+        if (send) {
+            send.addEventListener('click', () => {
+                if (!input.value.trim()) return;
+                addMsg(input.value, 'user');
+                respond(input.value);
+                input.value = '';
+            });
+        }
+
+        if (input) {
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') send.click();
+            });
+        }
+
+        // AI styles injected dynamically
+        const aiStyles = `
+        #ai-fab {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta));
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.6rem;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--glow-cyan);
+            z-index: 10000;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #ai-fab:hover { transform: scale(1.1) rotate(15deg); box-shadow: 0 0 40px var(--glow-magenta); }
+        .chat-window {
+            position: fixed;
+            bottom: 115px;
+            right: 40px;
+            width: 350px;
+            height: 500px;
+            background: #05050a;
+            border: 1px solid var(--neon-cyan);
+            border-radius: 15px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 10000;
+            transform-origin: bottom right;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+        }
+        .chat-window.hidden { transform: scale(0); opacity: 0; pointer-events: none; }
+        .chat-header { background: #0a0a14; padding: 1.2rem; color: var(--neon-cyan); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--neon-cyan); }
+        .close-chat { background: none; border: none; color: var(--neon-magenta); cursor: pointer; font-size: 1.2rem; }
+        .chat-body { flex: 1; padding: 1.2rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; background: rgba(5, 5, 10, 0.9); }
+        .msg { max-width: 85%; padding: 0.8rem; border-radius: 10px; font-size: 0.85rem; line-height: 1.4; }
+        .msg.bot { align-self: flex-start; background: rgba(30, 41, 59, 0.5); color: #e2e8f0; border-left: 2px solid var(--neon-cyan); }
+        .msg.user { align-self: flex-end; background: var(--neon-magenta); color: white; border-right: 2px solid #fff; }
+        .chat-input-area { padding: 1rem; background: #0a0a14; display: flex; gap: 0.5rem; border-top: 1px solid rgba(0, 243, 255, 0.2); }
+        .chat-input { flex: 1; background: #000; border: 1px solid var(--neon-cyan); border-radius: 5px; padding: 0.6rem; color: white; }
+        .send-btn { background: var(--neon-cyan); border: none; color: #000; width: 35px; height: 35px; border-radius: 5px; cursor: pointer; }
+        `;
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = aiStyles;
+        document.head.appendChild(styleSheet);
+
         function downloadSelectedF023(event) {
             event.preventDefault();
             const select = document.getElementById('f023-select');
             const url = select.value;
-            // Create a temporary link to force download
             const link = document.createElement('a');
             link.href = url;
-            link.download = url.split('/').pop(); // Set filename
+            link.download = url.split('/').pop();
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -493,26 +613,35 @@
         }
 
         function openTab(evt, tabName) {
-            // Find parent guide-body to scope the tabs, preventing conflict between multiple sets of tabs
             const parent = evt.target.closest('.guide-body');
-
-            // Hide all tab content in this parent
             const tabContents = parent.getElementsByClassName("tab-content");
             for (let i = 0; i < tabContents.length; i++) {
                 tabContents[i].style.display = "none";
             }
-
-            // Deactivate all tab buttons in this parent
             const tabBtns = parent.getElementsByClassName("tab-btn");
             for (let i = 0; i < tabBtns.length; i++) {
                 tabBtns[i].className = tabBtns[i].className.replace(" active", "");
             }
-
-            // Show current tab and activate button
             parent.querySelector(`#${tabName}`).style.display = "block";
             evt.currentTarget.className += " active";
         }
     </script>
+
+    <!-- AI AGENT HTML -->
+    <button id="ai-fab"><i class="fas fa-robot"></i></button>
+    <div id="chat-window" class="chat-window hidden">
+        <div class="chat-header">
+            <h3>🤖 SENA_BOT</h3>
+            <button id="close-chat" class="close-chat"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="chat-body" class="chat-body">
+            <div class="msg bot">¡Hola! Soy tu asistente Cyber-SENA. ¿Dudas sobre los formatos?</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" class="chat-input" placeholder="Pregunta aquí...">
+            <button id="send-btn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
 </body>
 
 </html>
