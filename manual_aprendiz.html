@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manual del Aprendiz - Etapa Productiva SENA</title>
+    <meta name="description"
+        content="Manual detallado para aprendices SENA en Etapa Productiva. Normativa, bitácoras y procesos.">
+    <meta name="keywords" content="SENA, Aprendiz, Manual, Etapa Productiva, Bitácora, F-147">
+    <link rel="icon" href="https://www.sena.edu.co/favicon.ico" type="image/x-icon">
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap"
         rel="stylesheet">
@@ -742,6 +746,33 @@
         }
 
         /* Responsive */
+        /* Scroll to Top Button */
+        #btn-back-to-top {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            display: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--neon-cyan);
+            color: #000;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--glow-cyan);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        #btn-back-to-top:hover {
+            transform: scale(1.1) translateY(-5px);
+            background: var(--neon-magenta);
+            box-shadow: 0 0 30px var(--glow-magenta);
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1.8rem;
@@ -3392,7 +3423,11 @@
         function sBotAddMsg(text, sender) {
             const m = document.createElement('div');
             m.className = `msg ${sender}`;
-            m.innerHTML = text;
+            if (sender === 'user') {
+                m.textContent = text; // Seguridad: El texto del usuario siempre es texto plano
+            } else {
+                m.innerHTML = text; // El bot usa HTML controlado (links, negritas)
+            }
             sBotBody.appendChild(m);
             sBotBody.scrollTop = sBotBody.scrollHeight;
         }
@@ -3414,15 +3449,15 @@
             } else if (query.includes("bitacora") || query.includes("f147") || query.includes("reporte")) {
                 r = `Las <b>Bitácoras (F-147)</b> se entregan cada 15 días o mensual según tu centro. Deben estar firmadas por tu jefe. <br><br>📍 Revisa los formatos <a href='recursos_etapa_productiva.html' style='color:var(--neon-cyan)'>aquí</a>.`;
             } else if (query.includes("sofia") || query.includes("plus") || query.includes("plataforma")) {
-                r = `Para temas de certificados y estados académicos, dirígete a <a href="${links.sofia}" target="_blank" style="color:var(--accent-magenta)">SENA SofiaPlus</a>.`;
+                r = `Para temas de certificados y estados académicos, dirígete a <a href="${links.sofia}" target="_blank" rel="noopener" style="color:var(--accent-magenta)">SENA SofiaPlus</a>.`;
             } else if (query.includes("ayuda") || query.includes("soporte") || query.includes("zendesk") || query.includes("problema")) {
-                r = `Si tienes problemas técnicos con las plataformas, el <a href="${links.zendesk}" target="_blank" style="color:var(--accent-cyan)">Zendesk de SENA</a> es el canal oficial de soporte.`;
+                r = `Si tienes problemas técnicos con las plataformas, el <a href="${links.zendesk}" target="_blank" rel="noopener" style="color:var(--accent-cyan)">Zendesk de SENA</a> es el canal oficial de soporte.`;
             } else if (query.includes("final") || query.includes("termino") || query.includes("fecha") || query.includes("cuanto me falta")) {
                 r = `Puedes proyectar tu fecha de cierre usando nuestra <a href='calculadora_fechas.html' style='color:var(--accent-cyan)'>Calculadora de Etapa Productiva</a>.`;
             } else if (query.includes("alternativa") || query.includes("contrato") || query.includes("pasantia") || query.includes("f165")) {
                 r = `La elección de alternativa se formaliza con el <b>F-165</b>. Puedes ver los detalles en el <a href='manual_aprendiz.html' style='color:var(--accent-cyan)'>Manual del Aprendiz</a>.`;
             } else if (query.includes("noticias") || query.includes("blog") || query.includes("actualidad")) {
-                r = `Mantente al día con el <a href="${links.blog}" target="_blank" style="color:var(--accent-magenta)">SENA Blog</a> para noticias de seguimiento.`;
+                r = `Mantente al día con el <a href="${links.blog}" target="_blank" rel="noopener" style="color:var(--accent-magenta)">SENA Blog</a> para noticias de seguimiento.`;
             } else if (query.includes("hola") || query.includes("buenos") || query.includes("quien eres")) {
                 r = "¡Hola! Soy <b>SENA_BOT 2.0</b>. He sido actualizado con acceso a fuentes institucionales. ¿En qué puedo guiarte hoy?";
             }
@@ -3510,6 +3545,24 @@
     </script>
 
 
+    <button id="btn-back-to-top" title="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Scroll to top logic
+        const btnTopo = document.getElementById("btn-back-to-top");
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 1000) {
+                btnTopo.style.display = "flex";
+            } else {
+                btnTopo.style.display = "none";
+            }
+        });
+        btnTopo.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
 </body>
 
 </html>

@@ -4,7 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Fechas - Etapa Productiva SENA</title>
+    <title>SENA | Calculadora de Tiempos EP</title>
+    <meta name="description" content="Herramienta para proyectar fechas de cierre de Etapa Productiva SENA.">
+    <meta name="keywords" content="SENA, Calculadora, Fechas, Aprendiz, Etapa Productiva">
+    <link rel="icon" href="https://www.sena.edu.co/favicon.ico" type="image/x-icon">
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap"
         rel="stylesheet">
@@ -592,7 +595,11 @@
         function sBotAddMsg(text, sender) {
             const m = document.createElement('div');
             m.className = `msg ${sender}`;
-            m.innerHTML = text;
+            if (sender === 'user') {
+                m.textContent = text; // Seguridad: El texto del usuario siempre es texto plano
+            } else {
+                m.innerHTML = text; // El bot usa HTML controlado (links, negritas)
+            }
             sBotBody.appendChild(m);
             sBotBody.scrollTop = sBotBody.scrollHeight;
         }
@@ -614,9 +621,9 @@
             } else if (query.includes("bitacora") || query.includes("f147") || query.includes("reporte")) {
                 r = `Las bitácoras deben entregarse cada mes. Esta calculadora te ayuda a saber cuándo.`;
             } else if (query.includes("sofia") || query.includes("plus") || query.includes("plataforma")) {
-                r = `Para temas de certificados y estados académicos, dirígete a <a href="${links.sofia}" target="_blank" style="color:var(--accent-magenta)">SENA SofiaPlus</a>.`;
+                r = `Para temas de certificados y estados académicos, dirígete a <a href="${links.sofia}" target="_blank" rel="noopener" style="color:var(--accent-magenta)">SENA SofiaPlus</a>.`;
             } else if (query.includes("ayuda") || query.includes("soporte") || query.includes("zendesk") || query.includes("problema")) {
-                r = `Si tienes problemas técnicos con las plataformas, el <a href="${links.zendesk}" target="_blank" style="color:var(--accent-cyan)">Zendesk de SENA</a> es el canal oficial de soporte.`;
+                r = `Si tienes problemas técnicos con las plataformas, el <a href="${links.zendesk}" target="_blank" rel="noopener" style="color:var(--accent-cyan)">Zendesk de SENA</a> es el canal oficial de soporte.`;
             } else if (query.includes("final") || query.includes("termino") || query.includes("fecha") || query.includes("calendario")) {
                 r = `¡Estás en el lugar correcto! Solo ingresa tu fecha de inicio arriba para generar el cronograma.`;
             } else if (query.includes("hola") || query.includes("buenos") || query.includes("quien eres")) {

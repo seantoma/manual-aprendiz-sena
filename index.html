@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SENA | Portal del Aprendiz</title>
+    <meta name="description" content="Portal de servicios y manuales para el aprendiz SENA en Etapa Productiva.">
+    <meta name="keywords" content="SENA, Aprendiz, Etapa Productiva, Manual, SofiaPlus">
+    <link rel="icon" href="https://www.sena.edu.co/favicon.ico" type="image/x-icon">
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Outfit:wght@300;400;600;700&display=swap"
         rel="stylesheet">
@@ -145,6 +148,22 @@
             border-radius: 30px;
             background: radial-gradient(circle at center, transparent 30%, rgba(0, 243, 255, 0.1));
             pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .elegant-header h1 {
+                font-size: 2.5rem;
+                letter-spacing: -1px;
+            }
+
+            .qr-frame img {
+                width: 150px;
+                height: 150px;
+            }
+
+            .hero-section {
+                padding: 1rem;
+            }
         }
 
         @keyframes float {
@@ -520,7 +539,8 @@
 
     <section class="hero-section">
         <div class="qr-frame">
-            <img src="img/portal-qr.png" alt="Portal QR">
+            <img src="img/portal-qr.png" alt="Portal QR"
+                onerror="this.src='https://via.placeholder.com/200?text=QR+Portal+SENA'">
         </div>
         <div class="hero-badge">Sincronización Móvil Activa</div>
     </section>
@@ -557,7 +577,7 @@
             <p>Coordina tus visitas técnicas y sesiones de seguimiento parcial o final con tu instructor asignado de
                 forma autónoma.</p>
             <div id="date-badge" class="date-badge">-- / --</div>
-            <a href="https://outlook.office365.com/bookings/" target="_blank" class="btn-primary-glow">
+            <a href="https://outlook.office365.com/bookings/" target="_blank" rel="noopener" class="btn-primary-glow">
                 Programar Cita en MS Bookings
             </a>
         </div>
@@ -609,7 +629,11 @@
         function sBotAddMsg(text, sender) {
             const m = document.createElement('div');
             m.className = `msg ${sender}`;
-            m.innerHTML = text;
+            if (sender === 'user') {
+                m.textContent = text; // Seguridad: El texto del usuario siempre es texto plano
+            } else {
+                m.innerHTML = text; // El bot usa HTML controlado (links, negritas)
+            }
             sBotBody.appendChild(m);
             sBotBody.scrollTop = sBotBody.scrollHeight;
         }
@@ -631,15 +655,15 @@
             } else if (query.includes("bitacora") || query.includes("f147") || query.includes("reporte")) {
                 r = `Las <b>Bitácoras (F-147)</b> se entregan cada 15 días o mensual según tu centro. Deben estar firmadas por tu jefe. <br><br>📍 Revisa los formatos <a href='recursos_etapa_productiva.html' style='color:var(--accent-cyan)'>aquí</a>.`;
             } else if (query.includes("sofia") || query.includes("plus") || query.includes("plataforma")) {
-                r = `Para temas de certificados y estados académicos, dirígete a <a href="${links.sofia}" target="_blank" style="color:var(--accent-magenta)">SENA SofiaPlus</a>.`;
+                r = `Para temas de certificados y estados académicos, dirígete a <a href="${links.sofia}" target="_blank" rel="noopener" style="color:var(--accent-magenta)">SENA SofiaPlus</a>.`;
             } else if (query.includes("ayuda") || query.includes("soporte") || query.includes("zendesk") || query.includes("problema")) {
-                r = `Si tienes problemas técnicos con las plataformas, el <a href="${links.zendesk}" target="_blank" style="color:var(--accent-cyan)">Zendesk de SENA</a> es el canal oficial de soporte.`;
+                r = `Si tienes problemas técnicos con las plataformas, el <a href="${links.zendesk}" target="_blank" rel="noopener" style="color:var(--accent-cyan)">Zendesk de SENA</a> es el canal oficial de soporte.`;
             } else if (query.includes("final") || query.includes("termino") || query.includes("fecha") || query.includes("cuanto me falta")) {
                 r = `Puedes proyectar tu fecha de cierre usando nuestra <a href='calculadora_fechas.html' style='color:var(--accent-cyan)'>Calculadora de Etapa Productiva</a>.`;
             } else if (query.includes("alternativa") || query.includes("contrato") || query.includes("pasantia") || query.includes("f165")) {
                 r = `La elección de alternativa se formaliza con el <b>F-165</b>. Puedes ver los detalles en el <a href='manual_aprendiz.html' style='color:var(--accent-cyan)'>Manual del Aprendiz</a>.`;
             } else if (query.includes("noticias") || query.includes("blog") || query.includes("actualidad")) {
-                r = `Mantente al día con el <a href="${links.blog}" target="_blank" style="color:var(--accent-magenta)">SENA Blog</a> para noticias de seguimiento.`;
+                r = `Mantente al día con el <a href="${links.blog}" target="_blank" rel="noopener" style="color:var(--accent-magenta)">SENA Blog</a> para noticias de seguimiento.`;
             } else if (query.includes("hola") || query.includes("buenos") || query.includes("quien eres")) {
                 r = "¡Hola! Soy <b>SENA_BOT 2.0</b>. He sido actualizado con acceso a fuentes institucionales. ¿En qué puedo guiarte hoy?";
             }
