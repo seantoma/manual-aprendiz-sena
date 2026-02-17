@@ -6,21 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SENA | Portal del Aprendiz</title>
     <link
-        href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Montserrat:wght@400;500;600;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Outfit:wght@300;400;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            /* Cyberpunk Palette - Consistent with Manual */
-            --neon-green: #39A900;
-            --neon-orange: #FF6B00;
-            --bg-deep: #05050a;
-            --card-bg: rgba(15, 15, 25, 0.85);
-            --glass-border: 1px solid rgba(255, 255, 255, 0.1);
-            --text-main: #e0e0e0;
-            --text-muted: #b0b0b0;
-            --shadow: 0 0 20px rgba(57, 169, 0, 0.1);
-            --nav-bg: #0a0a14;
+            /* Elegant Glow Palette */
+            --bg-deep: #020617;
+            --glass-bg: rgba(15, 23, 42, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent-indigo: #6366f1;
+            --accent-emerald: #10b981;
+            --accent-orange: #f59e0b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --glow-indigo: rgba(99, 102, 241, 0.2);
+            --glow-emerald: rgba(16, 185, 129, 0.2);
+            --font-main: 'Outfit', 'Montserrat', sans-serif;
         }
 
         * {
@@ -30,909 +32,558 @@
         }
 
         body {
-            font-family: 'Montserrat', sans-serif;
+            font-family: var(--font-main);
             background: var(--bg-deep);
+            background-image:
+                radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
-            position: relative;
+            line-height: 1.6;
         }
 
-        /* Scanline Effect */
-        body::before {
-            content: " ";
-            display: block;
+        /* Ambient Glow Objects */
+        .ambient-glow {
             position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-            z-index: 2;
-            background-size: 100% 2px, 3px 100%;
+            width: 40vw;
+            height: 40vw;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            opacity: 0.15;
             pointer-events: none;
         }
 
-        /* Hero / Terminal Header */
-        .cyber-header {
-            background: var(--nav-bg);
-            border-bottom: 2px solid var(--neon-green);
-            padding: 2.5rem 1rem;
-            position: relative;
-            z-index: 3;
-            box-shadow: var(--shadow);
+        /* --- HEADER --- */
+        .elegant-header {
+            padding: 4rem 2rem 2rem 2rem;
+            text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* CENTERED HEADER */
-            text-align: center;
         }
 
-        .terminal-bar {
+        .elegant-header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #fff, #6366f1, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        .elegant-header p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* --- HERO QR --- */
+        .hero-section {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            opacity: 0.7;
+            padding: 2rem;
+            margin-bottom: 3rem;
         }
 
-        .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .red {
-            background: #ff5f56;
-        }
-
-        .yellow {
-            background: #ffbd2e;
-        }
-
-        .green {
-            background: #27c93f;
-        }
-
-        .cyber-header h1 {
-            font-family: 'Share Tech Mono', monospace;
-            color: var(--neon-green);
-            font-size: 2.8rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 0 0 15px var(--neon-green);
-            margin: 0;
-        }
-
-        .cyber-header p {
-            color: var(--text-muted);
-            font-family: 'Share Tech Mono', monospace;
-            margin-top: 0.5rem;
-        }
-
-        /* Dashboard Grid - CENTERED */
-        .dashboard-container {
-            flex: 1;
-            padding: 4rem 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            /* CENTERED ITEMS */
-            gap: 2.5rem;
+        .qr-frame {
             position: relative;
-            z-index: 3;
-        }
-
-        /* Cyber Cards - ROUNDED CORNERS */
-        .cyber-card {
-            background: var(--card-bg);
-            border: var(--glass-border);
+            padding: 20px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
             border-radius: 20px;
-            /* ROUNDED CORNERS AS REQUESTED */
-            padding: 2.5rem;
-            width: 350px;
-            min-height: 280px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .qr-frame:hover {
+            transform: scale(1.02);
+            border-color: var(--accent-indigo);
+        }
+
+        .qr-frame img {
+            width: 180px;
+            height: 180px;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .qr-frame::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 22px;
+            background: linear-gradient(45deg, var(--accent-indigo), transparent, var(--accent-emerald));
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .hero-badge {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            color: var(--accent-indigo);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* --- DASHBOARD --- */
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            width: 100%;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 3rem 2rem;
             text-decoration: none;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+        }
 
-            .calendar-widget {
-                text-align: center;
-                justify-content: center;
-                flex-direction: column;
-                border-top: 4px solid var(--neon-green);
-                background: linear-gradient(180deg, rgba(16, 32, 20, 0.9) 0%, rgba(5, 5, 10, 0.95) 100%);
-                /* Override Orb Styles for this specific card */
-                width: 100%;
-                max-width: 900px;
-                height: auto;
-                border-radius: 20px;
-                /* ROUNDED CORNERS */
-                margin: 3rem auto 0 auto;
-                /* CENTERED MARGIN */
-                aspect-ratio: auto;
-            }
+        .glass-card:hover {
+            transform: translateY(-10px);
+            background: rgba(15, 23, 42, 0.8);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 20px var(--glow-indigo);
+        }
 
-            .cyber-card::before {
-                content: '';
-                position: absolute;
-                top: -5px;
-                left: -5px;
-                right: -5px;
-                bottom: -5px;
-                background: transparent;
-                border-radius: 50%;
-                border: 2px dashed var(--neon-green);
-                animation: spin 10s infinite linear;
-                opacity: 0.3;
-            }
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent-indigo), #312e81);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
 
-            .cyber-card::after {
-                content: '';
-                position: absolute;
-                top: 10px;
-                left: 10px;
-                right: 10px;
-                bottom: 10px;
-                border-radius: 50%;
-                box-shadow: inset 0 0 30px rgba(57, 169, 0, 0.2);
-                pointer-events: none;
-            }
+        .glass-card.orange .card-icon {
+            background: linear-gradient(135deg, var(--accent-orange), #78350f);
+        }
 
-            @keyframes spin {
-                0% {
-                    transform: rotate(0deg);
-                }
+        .glass-card h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: white;
+        }
 
-                100% {
-                    transform: rotate(360deg);
-                }
-            }
+        .glass-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
 
-            .cyber-card:hover {
-                transform: scale(1.05);
-                box-shadow: 0 0 40px rgba(57, 169, 0, 0.4);
-                background: radial-gradient(circle at 30% 30%, rgba(30, 50, 40, 0.95), #050505);
-            }
+        .btn-elegant {
+            padding: 0.8rem 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: white;
+            border-radius: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
 
-            .cyber-card.orange {
-                border-color: var(--neon-orange);
-                background: radial-gradient(circle at 30% 30%, rgba(40, 20, 5, 0.9), #000);
-                box-shadow: 0 0 20px rgba(255, 107, 0, 0.1), inset 0 0 20px rgba(255, 107, 0, 0.05);
-            }
+        .glass-card:hover .btn-elegant {
+            background: var(--accent-indigo);
+            border-color: var(--accent-indigo);
+            box-shadow: 0 10px 20px var(--glow-indigo);
+        }
 
-            .cyber-card.orange::before {
-                border-color: var(--neon-orange);
-                animation: spin 12s infinite linear reverse;
-                /* Spin other way */
-            }
+        .glass-card.orange:hover .btn-elegant {
+            background: var(--accent-orange);
+            border-color: var(--accent-orange);
+        }
 
-            .cyber-card.orange:hover {
-                box-shadow: 0 0 40px rgba(255, 107, 0, 0.4);
-            }
+        /* --- SCHEDULER WIDGET --- */
+        .scheduler-section {
+            max-width: 1200px;
+            width: 100%;
+            padding: 0 2rem 6rem 2rem;
+            margin: 0 auto;
+        }
 
-            .card-icon {
-                font-size: 3.5rem;
-                margin-bottom: 1rem;
-                color: var(--neon-green);
-                text-shadow: 0 0 15px var(--neon-green);
-                z-index: 2;
-            }
+        .scheduler-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.8));
+            border: 1px solid var(--glow-emerald);
+            border-radius: 30px;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
 
-            .orange .card-icon {
-                color: var(--neon-orange);
-                text-shadow: 0 0 15px var(--neon-orange);
-            }
+        .scheduler-card h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-emerald);
+        }
 
-            .cyber-card h2 {
-                font-family: 'Share Tech Mono', monospace;
-                color: white;
-                font-size: 1.4rem;
-                margin-bottom: 0.5rem;
-                text-transform: uppercase;
-                z-index: 2;
-            }
+        .scheduler-card p {
+            max-width: 700px;
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
 
-            .cyber-card p {
-                color: var(--text-muted);
-                font-size: 0.85rem;
-                line-height: 1.4;
-                margin-bottom: 1.5rem;
-                max-width: 90%;
-                z-index: 2;
-            }
+        .date-badge {
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 2.5rem;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 1rem 3rem;
+            border-radius: 20px;
+            border: 1px solid var(--glow-emerald);
+        }
 
-            .btn-launch {
-                background: rgba(0, 0, 0, 0.5);
-                border: 1px solid var(--neon-green);
-                color: var(--neon-green);
-                padding: 0.6rem 1.2rem;
-                font-family: 'Share Tech Mono', monospace;
-                font-weight: bold;
-                text-transform: uppercase;
-                border-radius: 20px;
-                /* Pill shape for orb */
-                transition: all 0.3s ease;
-                z-index: 2;
-            }
+        .btn-primary-glow {
+            padding: 1.2rem 3.5rem;
+            background: var(--accent-emerald);
+            color: #020617;
+            text-decoration: none;
+            border-radius: 18px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 30px var(--glow-emerald);
+        }
 
-            .orange .btn-launch {
-                border-color: var(--neon-orange);
-                color: var(--neon-orange);
-            }
+        .btn-primary-glow:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.4);
+            filter: brightness(1.1);
+        }
 
-            .btn-launch:hover {
-                background: var(--neon-green);
-                color: black;
-                box-shadow: 0 0 20px var(--neon-green);
-            }
+        /* --- FOOTER --- */
+        footer {
+            margin-top: auto;
+            padding: 3rem;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
 
-            .orange .btn-launch:hover {
-                background: var(--neon-orange);
-                color: black;
-                box-shadow: 0 0 20px var(--neon-orange);
-            }
-
-            /* Message for wide/mobile screens */
-            @media (max-width: 768px) {
-                .cyber-card {
-                    width: 280px;
-                    height: 280px;
-                }
-            }
-
-            /* Calendar Widget */
-            .calendar-widget {
-                grid-column: span 2;
-                /* Span wider on larger screens */
-                background: radial-gradient(circle at center, #0a1a0f, #05050a);
-                border: 1px solid var(--neon-green);
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 3rem;
-            }
-
-            .calendar-content {
-                flex: 1;
-                padding-right: 2rem;
-            }
-
-            .date-display {
-                font-family: 'Share Tech Mono', monospace;
-                font-size: 4rem;
-                color: var(--neon-green);
-                margin-bottom: 0.5rem;
-                line-height: 1;
-            }
-
-            .qr-placeholder {
-                width: 150px;
-                height: 150px;
-                background: rgba(255, 255, 255, 0.05);
-                border: 2px dashed var(--neon-green);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-                color: var(--neon-green);
-                text-align: center;
-                font-family: 'Share Tech Mono', monospace;
-                font-size: 0.8rem;
-                animation: pulse 2s infinite;
-            }
-
-            @keyframes pulse {
-                0% {
-                    box-shadow: 0 0 0 0 rgba(57, 169, 0, 0.4);
-                }
-
-                70% {
-                    box-shadow: 0 0 0 10px rgba(57, 169, 0, 0);
-                }
-
-                100% {
-                    box-shadow: 0 0 0 0 rgba(57, 169, 0, 0);
-                }
-            }
-
-            /* Footer */
-            .cyber-footer {
-                background: var(--nav-bg);
-                border-top: 1px solid var(--neon-green);
-                padding: 2rem;
-                text-align: center;
-                font-family: 'Share Tech Mono', monospace;
-                font-size: 0.8rem;
-                color: var(--text-muted);
-                margin-top: auto;
-                z-index: 3;
-            }
-
-            @media (max-width: 768px) {
-                .dashboard-container {
-                    grid-template-columns: 1fr;
-                    padding: 1.5rem;
-                }
-
-                .calendar-widget {
-                    grid-column: span 1;
-                    flex-direction: column;
-                    text-align: center;
-                    gap: 2rem;
-                    padding: 1.5rem;
-                }
-
-                .calendar-content {
-                    padding-right: 0;
-                }
-
-                .cyber-header h1 {
-                    font-size: 1.8rem;
-                }
-            }
-
-            /* --- HERO QR SECTION --- */
-            .hero-qr-section {
-                background: linear-gradient(180deg, var(--nav-bg) 0%, var(--bg-deep) 100%);
-                padding: 2rem;
-                text-align: center;
-                position: relative;
-                border-bottom: 1px solid var(--glass-border);
-                overflow: hidden;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-            }
-
-            .qr-hologram-container {
-                position: relative;
-                padding: 15px;
-                /* Reduced padding for image */
-                border: 2px solid var(--neon-green);
-                border-radius: 10px;
-                background: rgba(57, 169, 0, 0.05);
-                box-shadow: 0 0 30px rgba(57, 169, 0, 0.2);
-                backdrop-filter: blur(5px);
-                margin-bottom: 1rem;
-                display: inline-block;
-                /* Keep tight to image */
-            }
-
-            .qr-hologram-container::before {
-                content: '';
-                position: absolute;
-                top: -2px;
-                left: -2px;
-                right: -2px;
-                bottom: -2px;
-                background: linear-gradient(45deg, var(--neon-green), transparent, var(--neon-green));
-                z-index: -1;
-                filter: blur(10px);
-                opacity: 0.5;
-                animation: hologram-pulse 4s infinite alternate;
-            }
-
-            .hero-qr-img {
-                width: 150px;
-                height: 150px;
-                display: block;
-                border-radius: 4px;
-                filter: drop-shadow(0 0 5px var(--neon-green));
-            }
-
-            .scan-line {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 4px;
-                background: var(--neon-green);
-                box-shadow: 0 0 15px var(--neon-green);
-                animation: scan 3s infinite linear;
-                opacity: 0.7;
-                pointer-events: none;
-                /* Let clicks pass through if needed */
-            }
-
-            .hero-text {
-                font-family: 'Share Tech Mono', monospace;
-                color: var(--text-main);
-                margin-top: 1rem;
-                text-transform: uppercase;
-                letter-spacing: 2px;
-                font-size: 1.2rem;
-            }
-
-            .hero-subtext {
-                color: var(--neon-green);
-                font-size: 0.9rem;
-                opacity: 0.8;
-                margin-top: 0.5rem;
-            }
-
-            /* --- REFINED CALENDAR WIDGET (Console Style) --- */
-            .calendar-widget {
-                text-align: center;
-                justify-content: center;
-                flex-direction: column;
-                border-top: 4px solid var(--neon-green);
-                background: linear-gradient(180deg, rgba(16, 32, 20, 0.9) 0%, rgba(5, 5, 10, 0.95) 100%);
-                /* Override Orb Styles for this specific card */
-                width: 100%;
-                max-width: 900px;
-                height: auto;
-                border-radius: 10px;
-                /* Rectangular again */
-                margin-top: 2rem;
-                aspect-ratio: auto;
-                /* Remove orb aspect */
-            }
-
-            .calendar-widget::before {
-                display: none;
-                /* No spinner for the console */
-            }
-
-            .calendar-widget .btn-launch {
-                border-radius: 4px;
-                /* Rectangular button for console */
-            }
-
-            .calendar-content {
-                padding-right: 0;
-                /* Remove side padding specifically */
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                width: 100%;
-            }
-
-            .calendar-widget h2 {
-                font-size: 2rem;
-                letter-spacing: 1px;
-                margin-bottom: 0.5rem;
-            }
-
-            .calendar-widget p {
-                max-width: 600px;
-                margin: 0 auto 1.5rem auto;
-                font-size: 1rem;
-            }
-
-            .calendar-widget .btn-launch {
-                align-self: center;
-                /* Center the button */
-                font-size: 1.1rem;
-                padding: 1rem 2.5rem;
-                background: rgba(57, 169, 0, 0.1);
-                border: 1px solid var(--neon-green);
-                box-shadow: 0 0 20px rgba(57, 169, 0, 0.1);
-            }
-
-            .calendar-widget .btn-launch:hover {
-                background: var(--neon-green);
-                color: black;
-                box-shadow: 0 0 40px rgba(57, 169, 0, 0.6);
-            }
-
-            /* ANIMATIONS */
-            @keyframes scan {
-                0% {
-                    top: 0%;
-                    opacity: 0;
-                }
-
-                10% {
-                    opacity: 1;
-                }
-
-                90% {
-                    opacity: 1;
-                }
-
-                100% {
-                    top: 100%;
-                    opacity: 0;
-                }
-            }
-
-            @keyframes hologram-pulse {
-                0% {
-                    opacity: 0.3;
-                    filter: blur(5px);
-                }
-
-                100% {
-                    opacity: 0.7;
-                    filter: blur(15px);
-                }
-            }
-    </style>
-</head>
-
-<body>
-    <header class="cyber-header">
-        <div class="terminal-bar">
-            <div class="dot red"></div>
-            <div class="dot yellow"></div>
-            <div class="dot green"></div>
-            <span>user@sena-terminal:~/portal-aprendiz</span>
-        </div>
-        <h1>Portal del Aprendiz</h1>
-        <p>> Inicializando entorno de Etapa Productiva v2.5...</p>
-    </header>
-
-    <!-- HERO QR SECTION -->
-    <section class="hero-qr-section">
-        <div class="qr-hologram-container">
-            <div class="scan-line"></div>
-            <img src="img/portal-qr.png" alt="Portal QR Code" class="hero-qr-img">
-        </div>
-        <h2 class="hero-text">Acceso Móvil Seguro</h2>
-        <p class="hero-subtext">Escanea para sincronizar tu dispositivo</p>
-    </section>
-
-    <main class="dashboard-container">
-
-        <!-- Manual Card -->
-        <a href="manual_aprendiz.html" class="cyber-card">
-            <div class="card-icon"><i class="fas fa-book"></i></div>
-            <div>
-                <h2>Manual Completo</h2>
-                <p>Accede a la guía detallada de procesos, bitácoras y requisitos para tu etapa productiva.</p>
-                <div class="btn-launch">Ejecutar Manual</div>
-            </div>
-        </a>
-
-        <!-- Tools Card -->
-        <a href="calculadora_fechas.html" class="cyber-card orange">
-            <div class="card-icon"><i class="fas fa-calculator"></i></div>
-            <div>
-                <h2>Calculadora de Fechas</h2>
-                <p>Herramienta para proyectar la fecha de finalización de tu etapa productiva.</p>
-                <div class="btn-launch">Abrir Tool</div>
-            </div>
-        </a>
-
-        <!-- Downloads Card -->
-        <a href="recursos_etapa_productiva.html" class="cyber-card">
-            <div class="card-icon"><i class="fas fa-download"></i></div>
-            <div>
-                <h2>Descargas y Formatos</h2>
-                <p>Bitácoras (F023), formatos de concertación y plantillas oficiales.</p>
-                <div class="btn-launch">Acceder Archivos</div>
-            </div>
-        </a>
-
-        <!-- Calendar / Booking Widget (Professional Redesign) -->
-        <div class="cyber-card calendar-widget">
-            <div class="calendar-content">
-                <div class="card-icon"><i class="fas fa-calendar-check"></i></div>
-                <h2>AGENDAMIENTO DE SEGUIMIENTO</h2>
-                <p>Gestiona tus visitas de etapa productiva (Concertación, Seguimiento Parcial o Final) de manera
-                    autónoma con tu instructor asignado.</p>
-                <div id="current-date" class="date-display">--/--</div>
-                <a href="https://outlook.office365.com/bookings/" target="_blank" class="btn-launch">
-                    <i class="fas fa-external-link-alt"></i> Agendar Cita en MS Bookings
-                </a>
-            </div>
-        </div>
-
-    </main>
-
-    <footer class="cyber-footer">
-        <p>SYSTEM STATUS: ONLINE | CONNECTED TO SENA MAINFRAME</p>
-        <p>© 2025 Servicio Nacional de Aprendizaje SENA</p>
-    </footer>
-
-    <script>
-        // Simple script to set current date
-        const dateDisplay = document.getElementById('current-date');
-        const now = new Date();
-        const options = { weekday: 'short', month: 'short', day: 'numeric' };
-        dateDisplay.textContent = now.toLocaleDateString('es-ES', options).toUpperCase();
-    </script>
-    <!-- AI AGENT WIDGET -->
-    <div id="ai-widget-container">
-        <!-- Floating Toggle Button -->
-        <button id="ai-toggle-btn" class="ai-fab">
-            <i class="fas fa-robot"></i>
-        </button>
-
-        <!-- Chat Window -->
-        <div id="ai-chat-window" class="ai-window hidden">
-            <div class="ai-header">
-                <div class="ai-title">
-                    <i class="fas fa-brain"></i> SENA_BOT v1.0
-                </div>
-                <button id="ai-close-btn" class="ai-close"><i class="fas fa-times"></i></button>
-            </div>
-            <div id="ai-messages" class="ai-body">
-                <div class="ai-msg bot">
-                    <p>¡Hola! Soy tu asistente virtual de Etapa Productiva. 🤖</p>
-                    <p>Puedo ayudarte a encontrar formatos (F-023), guías o fechas. ¿Qué necesitas?</p>
-                </div>
-            </div>
-            <div class="ai-input-area">
-                <input type="text" id="ai-input" placeholder="Escribe tu duda env..." autocomplete="off">
-                <button id="ai-send-btn"><i class="fas fa-paper-plane"></i></button>
-            </div>
-        </div>
-    </div>
-
-    <style>
-        /* AI WIDGET STYLES */
-        .ai-fab {
+        /* --- AI ASSISTANT --- */
+        #ai-fab {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: var(--nav-bg);
-            border: 2px solid var(--neon-green);
-            color: var(--neon-green);
-            font-size: 24px;
+            bottom: 40px;
+            right: 40px;
+            width: 70px;
+            height: 70px;
+            background: var(--accent-indigo);
+            color: white;
+            border: none;
+            border-radius: 22px;
+            font-size: 1.8rem;
             cursor: pointer;
-            box-shadow: 0 0 20px rgba(57, 169, 0, 0.4);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 30px var(--glow-indigo);
             z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .ai-fab:hover {
-            transform: scale(1.1) rotate(10deg);
-            box-shadow: 0 0 30px var(--neon-green);
-            background: var(--neon-green);
-            color: black;
+        #ai-fab:hover {
+            transform: scale(1.1) rotate(5deg);
         }
 
-        .ai-window {
+        .chat-window {
             position: fixed;
-            bottom: 100px;
-            right: 30px;
-            width: 350px;
-            height: 500px;
-            background: rgba(10, 15, 20, 0.95);
-            border: 1px solid var(--neon-green);
-            border-radius: 10px;
+            bottom: 120px;
+            right: 40px;
+            width: 400px;
+            height: 550px;
+            background: #fff;
+            border-radius: 25px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
-            transition: all 0.3s ease;
             z-index: 1000;
             transform-origin: bottom right;
-            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            color: #1e293b;
         }
 
-        .ai-window.hidden {
+        .chat-window.hidden {
             transform: scale(0);
             opacity: 0;
             pointer-events: none;
         }
 
-        .ai-header {
-            background: rgba(57, 169, 0, 0.1);
-            padding: 15px;
-            border-bottom: 1px solid var(--neon-green);
+        .chat-header {
+            background: var(--accent-indigo);
+            padding: 2rem 1.5rem;
+            color: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .ai-title {
-            font-family: 'Share Tech Mono', monospace;
-            color: var(--neon-green);
-            font-weight: bold;
+        .chat-header h3 {
+            font-size: 1.2rem;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .ai-close {
+        .close-chat {
             background: none;
             border: none;
-            color: var(--text-muted);
+            color: rgba(255, 255, 255, 0.7);
             cursor: pointer;
-            font-size: 16px;
-            transition: color 0.2s;
+            font-size: 1.2rem;
         }
 
-        .ai-close:hover {
-            color: #ff5f56;
-        }
-
-        .ai-body {
+        .chat-body {
             flex: 1;
-            padding: 15px;
+            padding: 1.5rem;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 1rem;
+            background: #f8fafc;
         }
 
-        .ai-msg {
-            max-width: 80%;
-            padding: 10px 15px;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            line-height: 1.4;
+        .msg {
+            max-width: 85%;
+            padding: 1rem;
+            border-radius: 18px;
+            font-size: 0.95rem;
         }
 
-        .ai-msg.bot {
+        .msg.bot {
             align-self: flex-start;
-            background: rgba(57, 169, 0, 0.1);
-            border-left: 2px solid var(--neon-green);
-            color: var(--text-main);
+            background: white;
+            color: #1e293b;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
-        .ai-msg.user {
+        .msg.user {
             align-self: flex-end;
-            background: rgba(255, 255, 255, 0.05);
-            border-right: 2px solid var(--text-muted);
+            background: var(--accent-indigo);
             color: white;
-            text-align: right;
+            border-bottom-right-radius: 4px;
         }
 
-        .ai-input-area {
-            padding: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        .chat-input-area {
+            padding: 1.5rem;
+            background: white;
             display: flex;
-            gap: 10px;
+            gap: 0.8rem;
+            border-top: 1px solid #e2e8f0;
         }
 
-        #ai-input {
+        .chat-input {
             flex: 1;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 10px;
-            border-radius: 5px;
-            color: white;
-            font-family: 'Montserrat', sans-serif;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0.8rem 1rem;
+            font-family: inherit;
+            font-size: 0.95rem;
         }
 
-        #ai-input:focus {
+        .chat-input:focus {
             outline: none;
-            border-color: var(--neon-green);
+            border-color: var(--accent-indigo);
         }
 
-        #ai-send-btn {
-            background: var(--neon-green);
+        .send-btn {
+            background: var(--accent-indigo);
             border: none;
-            color: black;
-            width: 40px;
-            border-radius: 5px;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        #ai-send-btn:hover {
-            opacity: 0.8;
-        }
-
-        /* Loading dots */
-        .typing-indicator span {
-            display: inline-block;
-            width: 5px;
-            height: 5px;
-            background-color: var(--text-muted);
-            border-radius: 50%;
-            animation: typing 1s infinite;
-            margin: 0 2px;
-        }
-
-        .typing-indicator span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .typing-indicator span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes typing {
-
-            0%,
-            100% {
-                transform: translateY(0);
+        @media (max-width: 768px) {
+            .elegant-header h1 {
+                font-size: 2.5rem;
             }
 
-            50% {
-                transform: translateY(-5px);
+            .chat-window {
+                width: calc(100% - 40px);
+                right: 20px;
+                left: 20px;
+            }
+
+            #ai-fab {
+                bottom: 20px;
+                right: 20px;
             }
         }
     </style>
+</head>
+
+<body>
+    <div class="ambient-glow" style="top: -10%; left: -10%; background: var(--accent-indigo);"></div>
+
+    <header class="elegant-header">
+        <h1>Portal del Aprendiz</h1>
+        <p>Servicio Nacional de Aprendizaje SENA</p>
+    </header>
+
+    <section class="hero-section">
+        <div class="qr-frame">
+            <img src="img/portal-qr.png" alt="Portal QR">
+        </div>
+        <div class="hero-badge">Sincronización Móvil Activa</div>
+    </section>
+
+    <main class="dashboard-container">
+        <!-- Manual -->
+        <a href="manual_aprendiz.html" class="glass-card">
+            <div class="card-icon"><i class="fas fa-book-open"></i></div>
+            <h2>Manual del Aprendiz</h2>
+            <p>Guía integral de procesos, reglamentos y requerimientos para tu etapa productiva.</p>
+            <div class="btn-elegant">Explorar Manual</div>
+        </a>
+
+        <!-- Calculadora -->
+        <a href="calculadora_fechas.html" class="glass-card orange">
+            <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
+            <h2>Gestión de Fechas</h2>
+            <p>Proyecta y calcula con precisión los tiempos de finalización de tu proceso formativo.</p>
+            <div class="btn-elegant">Abrir Herramienta</div>
+        </a>
+
+        <!-- Formatos -->
+        <a href="recursos_etapa_productiva.html" class="glass-card">
+            <div class="card-icon"><i class="fas fa-folder-open"></i></div>
+            <h2>Recursos y Formatos</h2>
+            <p>Repositorio central de bitácoras, actas y documentación técnica oficial.</p>
+            <div class="btn-elegant">Ver Archivos</div>
+        </a>
+    </main>
+
+    <section class="scheduler-section">
+        <div class="scheduler-card">
+            <h2>Agendamiento Profesional</h2>
+            <p>Coordina tus visitas técnicas y sesiones de seguimiento parcial o final con tu instructor asignado de
+                forma autónoma.</p>
+            <div id="date-badge" class="date-badge">-- / --</div>
+            <a href="https://outlook.office365.com/bookings/" target="_blank" class="btn-primary-glow">
+                Programar Cita en MS Bookings
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 SENA | Centro de Formación | Todos los derechos reservados</p>
+    </footer>
+
+    <!-- AI AGENT -->
+    <button id="ai-fab"><i class="fas fa-comment-dots"></i></button>
+    <div id="chat-window" class="chat-window hidden">
+        <div class="chat-header">
+            <h3><i class="fas fa-robot"></i> Asistente Virtual</h3>
+            <button id="close-chat" class="close-chat"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="chat-body" class="chat-body">
+            <div class="msg bot">¡Hola! 👋 Soy tu asistente del SENA. ¿En qué puedo orientarte hoy sobre tu etapa
+                productiva?</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" class="chat-input" placeholder="Escribe tu pregunta aquí...">
+            <button id="send-btn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
 
     <script>
-        // AI WIDGET LOGIC
-        const toggleBtn = document.getElementById('ai-toggle-btn');
-        const closeBtn = document.getElementById('ai-close-btn');
-        const chatWindow = document.getElementById('ai-chat-window');
-        const input = document.getElementById('ai-input');
-        const sendBtn = document.getElementById('ai-send-btn');
-        const messages = document.getElementById('ai-messages');
+        // Update current date
+        const d = new Date();
+        const options = { weekday: 'long', day: 'numeric', month: 'long' };
+        document.getElementById('date-badge').innerText = d.toLocaleDateString('es-ES', options).toUpperCase();
 
-        toggleBtn.addEventListener('click', () => chatWindow.classList.toggle('hidden'));
-        closeBtn.addEventListener('click', () => chatWindow.classList.add('hidden'));
+        // AI Logic
+        const fab = document.getElementById('ai-fab');
+        const chat = document.getElementById('chat-window');
+        const close = document.getElementById('close-chat');
+        const input = document.getElementById('chat-input');
+        const send = document.getElementById('send-btn');
+        const body = document.getElementById('chat-body');
 
-        function addMessage(text, sender) {
-            const div = document.createElement('div');
-            div.className = `ai-msg ${sender}`;
-            // Allow basic HTML for links
-            div.innerHTML = text;
-            messages.appendChild(div);
-            messages.scrollTop = messages.scrollHeight;
+        fab.addEventListener('click', () => chat.classList.toggle('hidden'));
+        close.addEventListener('click', () => chat.classList.add('hidden'));
+
+        function addMsg(text, sender) {
+            const m = document.createElement('div');
+            m.className = `msg ${sender}`;
+            m.innerHTML = text;
+            body.appendChild(m);
+            body.scrollTop = body.scrollHeight;
         }
 
-        function showTyping() {
-            const div = document.createElement('div');
-            div.className = 'ai-msg bot typing-indicator';
-            div.id = 'typing';
-            div.innerHTML = '<span></span><span></span><span></span>';
-            messages.appendChild(div);
-            messages.scrollTop = messages.scrollHeight;
+        function respond(q) {
+            const query = q.toLowerCase();
+            let r = "Lo lamento, no tengo información específica sobre eso. ¿Puedes consultar el manual?";
+
+            if (query.includes("f023") || query.includes("formato") || query.includes("bitacora")) {
+                r = "Los formatos F-023 y las bitácoras están disponibles en la sección <b>Recursos y Formatos</b> del dashboard.";
+            } else if (query.includes("agendar") || query.includes("cita") || query.includes("visita")) {
+                r = "Puedes programar tu visita de seguimiento usando el widget de <b>Agendamiento Profesional</b> en el portal.";
+            } else if (query.includes("final") || query.includes("termino") || query.includes("fecha")) {
+                r = "Usa la herramienta de <b>Gestión de Fechas</b> para calcular cuándo finaliza tu etapa productiva.";
+            } else if (query.includes("hola") || query.includes("buenos")) {
+                r = "¡Hola! Estoy aquí para ayudarte con dudas sobre formatos, agendamiento o el manual del aprendiz.";
+            }
+
+            setTimeout(() => addMsg(r, 'bot'), 600);
         }
 
-        function removeTyping() {
-            const typing = document.getElementById('typing');
-            if (typing) typing.remove();
-        }
-
-        function getBotResponse(query) {
-            const q = query.toLowerCase();
-
-            // KNOWLEDGE BASE (Reglas simples basadas en documentación)
-            if (q.includes('f023') || q.includes('f-023') || q.includes('bitacora') || q.includes('bitácora')) {
-                return `El formato <b>F-023 (Planeación, Seguimiento y Evaluación)</b> es vital. <br><br>👉 <a href="recursos_etapa_productiva.html" style="color:var(--neon-green)">Descarga la Guía y Formatos aquí</a>. Recuerda que hay uno para cada visita (1, 2, 3).`;
-            }
-            if (q.includes('fecha') || q.includes('calculadora') || q.includes('fin')) {
-                return `Para saber cuándo termina tu etapa productiva, usa nuestra <a href="calculadora_fechas.html" style="color:var(--neon-green)">Calculadora de Fechas</a>. Necesitarás tu fecha de inicio.`;
-            }
-            if (q.includes('concertacion') || q.includes('concertación')) {
-                return `La concertación es la primera reunión. Debes llevar el F-023 impreso y diligenciado en la parte de Planeación. Agenda tu cita en el panel de abajo. 👇`;
-            }
-            if (q.includes('agendar') || q.includes('cita') || q.includes('instructor')) {
-                return `Puedes agendar tu cita de seguimiento con el instructor usando el widget de "Agendamiento" en la parte inferior de este tablero.`;
-            }
-            if (q.includes('hola') || q.includes('buenos')) {
-                return `¡Hola! Soy SENA_BOT. Pregúntame sobre formatos, fechas o procesos de etapa productiva.`;
-            }
-
-            return `No estoy seguro de eso, pero puedes consultar el <a href="manual_aprendiz.html" style="color:var(--neon-green)">Manual Completo</a> para más detalles o escribirle a ta tu instructor.`;
-        }
-
-        function handleSend() {
-            const text = input.value.trim();
-            if (!text) return;
-
-            addMessage(text, 'user');
+        send.addEventListener('click', () => {
+            if (!input.value.trim()) return;
+            addMsg(input.value, 'user');
+            respond(input.value);
             input.value = '';
+        });
 
-            showTyping();
-
-            // Simulate thinking delay
-            setTimeout(() => {
-                removeTyping();
-                const response = getBotResponse(text);
-                addMessage(response, 'bot');
-            }, 1000);
-        }
-
-        sendBtn.addEventListener('click', handleSend);
         input.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleSend();
+            if (e.key === 'Enter') send.click();
         });
     </script>
 </body>
