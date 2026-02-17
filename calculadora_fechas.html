@@ -37,8 +37,8 @@
             font-family: 'Open Sans', sans-serif;
             background: var(--bg-deep);
             background-image:
-                radial-gradient(circle at 0% 0%, rgba(0, 243, 255, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 100% 100%, rgba(255, 0, 255, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 0% 0%, rgba(0, 243, 255, 0.2) 0%, transparent 60%),
+                radial-gradient(circle at 100% 100%, rgba(255, 0, 255, 0.15) 0%, transparent 60%);
             color: var(--text-main);
             margin: 0;
             padding: 0;
@@ -558,53 +558,71 @@
                 confirmButtonColor: '#39A900'
             });
         }
-        // AI Logic
-        const fab = document.getElementById('ai-fab');
-        const chat = document.getElementById('chat-window');
-        const close = document.getElementById('close-chat');
-        const input = document.getElementById('chat-input');
-        const send = document.getElementById('send-btn');
-        const chatBody = document.getElementById('chat-body');
+        // ULTIMATE SENA_BOT LOGIC
+        const sBotFab = document.getElementById('ai-fab');
+        const sBotChat = document.getElementById('chat-window');
+        const sBotClose = document.getElementById('close-chat');
+        const sBotInput = document.getElementById('chat-input');
+        const sBotSend = document.getElementById('send-btn');
+        const sBotBody = document.getElementById('chat-body');
 
-        if (fab) fab.addEventListener('click', () => chat.classList.toggle('hidden'));
-        if (close) close.addEventListener('click', () => chat.classList.add('hidden'));
+        if (sBotFab) {
+            sBotFab.addEventListener('click', () => sBotChat.classList.toggle('hidden'));
+        }
+        if (sBotClose) {
+            sBotClose.addEventListener('click', () => sBotChat.classList.add('hidden'));
+        }
 
-        function addMsg(text, sender) {
+        function sBotAddMsg(text, sender) {
             const m = document.createElement('div');
             m.className = `msg ${sender}`;
             m.innerHTML = text;
-            chatBody.appendChild(m);
-            chatBody.scrollTop = chatBody.scrollHeight;
+            sBotBody.appendChild(m);
+            sBotBody.scrollTop = sBotBody.scrollHeight;
         }
 
-        function respond(q) {
+        function sBotRespond(q) {
             const query = q.toLowerCase();
-            let r = "Lo lamento, no tengo información específica sobre eso. ¿Puedes consultar el <b>Manual del Aprendiz</b> para más detalles?";
+            let r = "Lo lamento, no tengo información exacta sobre eso. Sin embargo, puedes consultar el <b>Manual del Aprendiz</b> o contactar a tu instructor.";
 
-            if (query.includes("f023") || query.includes("planeación") || query.includes("planeacion") || query.includes("seguimiento")) {
-                r = "El <b>GFPI-F-023</b> es vital. Revisa la sección de recursos para descargarlo.";
-            } else if (query.includes("bitacora") || query.includes("f147") || query.includes("f-147")) {
-                r = "Las bitácoras deben entregarse cada mes. Esta calculadora te ayuda a saber cuándo.";
+            // INSTITUTIONAL KNOWLEDGE BASE
+            const links = {
+                sofia: "https://oferta.senasofiaplus.edu.co/",
+                zendesk: "https://sena.zendesk.com/",
+                blog: "https://senasofiaplus.com.co/blog/",
+                oficial: "https://www.sena.edu.co/"
+            };
+
+            if (query.includes("f023") || query.includes("planeación") || query.includes("seguimiento") || query.includes("evaluacion")) {
+                r = `El formato <b>GFPI-F-023</b> es vital. Revisa la sección de recursos para descargarlo.`;
+            } else if (query.includes("bitacora") || query.includes("f147") || query.includes("reporte")) {
+                r = `Las bitácoras deben entregarse cada mes. Esta calculadora te ayuda a saber cuándo.`;
+            } else if (query.includes("sofia") || query.includes("plus") || query.includes("plataforma")) {
+                r = `Para temas de certificados y estados académicos, dirígete a <a href="${links.sofia}" target="_blank" style="color:var(--accent-magenta)">SENA SofiaPlus</a>.`;
+            } else if (query.includes("ayuda") || query.includes("soporte") || query.includes("zendesk") || query.includes("problema")) {
+                r = `Si tienes problemas técnicos con las plataformas, el <a href="${links.zendesk}" target="_blank" style="color:var(--accent-cyan)">Zendesk de SENA</a> es el canal oficial de soporte.`;
             } else if (query.includes("final") || query.includes("termino") || query.includes("fecha") || query.includes("calendario")) {
-                r = "¡Estás en el lugar correcto! Solo ingresa tu fecha de inicio arriba para generar el cronograma.";
+                r = `¡Estás en el lugar correcto! Solo ingresa tu fecha de inicio arriba para generar el cronograma.`;
             } else if (query.includes("hola") || query.includes("buenos") || query.includes("quien eres")) {
-                r = "¡Hola! Soy <b>SENA_BOT</b>. ¿Te ayudo con las fechas de tu etapa productiva?";
+                r = "¡Hola! Soy <b>SENA_BOT 2.0</b>. He sido actualizado con acceso a fuentes institucionales. ¿Te ayudo con las fechas de tu etapa productiva?";
             }
 
-            setTimeout(() => addMsg(r, 'bot'), 600);
+            setTimeout(() => sBotAddMsg(r, 'bot'), 600);
         }
 
-        if (send) {
-            send.addEventListener('click', () => {
-                if (!input.value.trim()) return;
-                addMsg(input.value, 'user');
-                respond(input.value);
-                input.value = '';
+        if (sBotSend) {
+            sBotSend.addEventListener('click', () => {
+                if (!sBotInput.value.trim()) return;
+                sBotAddMsg(sBotInput.value, 'user');
+                sBotRespond(sBotInput.value);
+                sBotInput.value = '';
             });
         }
 
-        if (input) {
-            input.addEventListener('keypress', (e) => { e.key === 'Enter' && send.click(); });
+        if (sBotInput) {
+            sBotInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sBotSend.click();
+            });
         }
 
         // AI styles injected dynamically

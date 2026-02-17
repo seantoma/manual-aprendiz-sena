@@ -590,59 +590,77 @@
         const options = { weekday: 'long', day: 'numeric', month: 'long' };
         document.getElementById('date-badge').innerText = d.toLocaleDateString('es-ES', options).toUpperCase();
 
-        // AI Logic
-        const fab = document.getElementById('ai-fab');
-        const chat = document.getElementById('chat-window');
-        const close = document.getElementById('close-chat');
-        const input = document.getElementById('chat-input');
-        const send = document.getElementById('send-btn');
-        const chatBody = document.getElementById('chat-body');
+        //    <script>
+        // ULTIMATE SENA_BOT LOGIC
+        const sBotFab = document.getElementById('ai-fab');
+        const sBotChat = document.getElementById('chat-window');
+        const sBotClose = document.getElementById('close-chat');
+        const sBotInput = document.getElementById('chat-input');
+        const sBotSend = document.getElementById('send-btn');
+        const sBotBody = document.getElementById('chat-body');
 
-        fab.addEventListener('click', () => chat.classList.toggle('hidden'));
-        close.addEventListener('click', () => chat.classList.add('hidden'));
+        if (sBotFab) {
+            sBotFab.addEventListener('click', () => sBotChat.classList.toggle('hidden'));
+        }
+        if (sBotClose) {
+            sBotClose.addEventListener('click', () => sBotChat.classList.add('hidden'));
+        }
 
-        function addMsg(text, sender) {
+        function sBotAddMsg(text, sender) {
             const m = document.createElement('div');
             m.className = `msg ${sender}`;
             m.innerHTML = text;
-            chatBody.appendChild(m);
-            chatBody.scrollTop = chatBody.scrollHeight;
+            sBotBody.appendChild(m);
+            sBotBody.scrollTop = sBotBody.scrollHeight;
         }
 
-        function respond(q) {
+        function sBotRespond(q) {
             const query = q.toLowerCase();
-            let r = "Lo lamento, no tengo información específica sobre eso. ¿Puedes consultar el <b>Manual del Aprendiz</b> para más detalles?";
+            let r = "Lo lamento, no tengo información exacta sobre eso. Sin embargo, puedes consultar el <b>Manual del Aprendiz</b> o contactar a tu instructor.";
 
-            // REASONING LOGIC (Basada en Documentación SENA)
-            if (query.includes("f023") || query.includes("planeación") || query.includes("planeacion") || query.includes("seguimiento")) {
-                r = "El <b>GFPI-F-023 (Planeación, Seguimiento y Evaluación)</b> es el formato fundamental de tus visitas. <br><br>👉 Puedes descargarlo en la sección <a href='recursos_etapa_productiva.html' style='color:var(--accent-emerald)'>Recursos y Formatos</a>. Solo se permiten descargas desde la carpeta oficial de Formatos.";
-            } else if (query.includes("bitacora") || query.includes("f147") || query.includes("f-147")) {
-                r = "La <b>Bitácora GFPI-F-147</b> es tu reporte mensual. Recuerda que debes entregar entre 6 y 9 bitácoras firmadas por tu jefe inmediato. <br><br>📍 Descárgala en <a href='recursos_etapa_productiva.html' style='color:var(--accent-emerald)'>Formatos Oficiales</a>.";
-            } else if (query.includes("f165") || query.includes("f-165") || query.includes("seleccion") || query.includes("selección")) {
-                r = "El formato <b>GFPI-F-165 (Selección Alternativa)</b> se usa para formalizar tu modalidad de etapa productiva o solicitar cambios. <br><br>📂 Encontré el archivo oficial en la carpeta de Formatos. <a href='recursos_etapa_productiva.html' style='color:var(--accent-emerald)'>Ver aquí</a>.";
-            } else if (query.includes("agendar") || query.includes("cita") || query.includes("visita")) {
-                r = "Para agendar visitas de concertación, parcial o final, usa el botón <b>Programar Cita</b> en el panel inferior del portal. El sistema conecta directamente con MS Bookings.";
-            } else if (query.includes("final") || query.includes("termino") || query.includes("fecha") || query.includes("calendario")) {
-                r = "Usa nuestra <a href='calculadora_fechas.html' style='color:var(--accent-emerald)'>Gestión de Fechas</a> para proyectar tu fin de etapa basándote en el Acuerdo 009 de 2024.";
-            } else if (query.includes("normativa") || query.includes("reglamento") || query.includes("derechos") || query.includes("acuerdo")) {
-                r = "Toda la normativa (Acuerdo 009 de 2024) y tus deberes como aprendiz están detallados en el <a href='manual_aprendiz.html' style='color:var(--accent-emerald)'>Manual del Aprendiz</a>.";
+            // INSTITUTIONAL KNOWLEDGE BASE
+            const links = {
+                sofia: "https://oferta.senasofiaplus.edu.co/",
+                zendesk: "https://sena.zendesk.com/",
+                blog: "https://senasofiaplus.com.co/blog/",
+                oficial: "https://www.sena.edu.co/"
+            };
+
+            if (query.includes("f023") || query.includes("planeación") || query.includes("seguimiento") || query.includes("evaluacion")) {
+                r = `El formato <b>GFPI-F-023</b> es el registro oficial de tus 3 visitas técnicas. <br><br>👉 Descárgalo en la pestaña de <a href='recursos_etapa_productiva.html' style='color:var(--accent-cyan)'>Recursos</a>.`;
+            } else if (query.includes("bitacora") || query.includes("f147") || query.includes("reporte")) {
+                r = `Las <b>Bitácoras (F-147)</b> se entregan cada 15 días o mensual según tu centro. Deben estar firmadas por tu jefe. <br><br>📍 Revisa los formatos <a href='recursos_etapa_productiva.html' style='color:var(--accent-cyan)'>aquí</a>.`;
+            } else if (query.includes("sofia") || query.includes("plus") || query.includes("plataforma")) {
+                r = `Para temas de certificados y estados académicos, dirígete a <a href="${links.sofia}" target="_blank" style="color:var(--accent-magenta)">SENA SofiaPlus</a>.`;
+            } else if (query.includes("ayuda") || query.includes("soporte") || query.includes("zendesk") || query.includes("problema")) {
+                r = `Si tienes problemas técnicos con las plataformas, el <a href="${links.zendesk}" target="_blank" style="color:var(--accent-cyan)">Zendesk de SENA</a> es el canal oficial de soporte.`;
+            } else if (query.includes("final") || query.includes("termino") || query.includes("fecha") || query.includes("cuanto me falta")) {
+                r = `Puedes proyectar tu fecha de cierre usando nuestra <a href='calculadora_fechas.html' style='color:var(--accent-cyan)'>Calculadora de Etapa Productiva</a>.`;
+            } else if (query.includes("alternativa") || query.includes("contrato") || query.includes("pasantia") || query.includes("f165")) {
+                r = `La elección de alternativa se formaliza con el <b>F-165</b>. Puedes ver los detalles en el <a href='manual_aprendiz.html' style='color:var(--accent-cyan)'>Manual del Aprendiz</a>.`;
+            } else if (query.includes("noticias") || query.includes("blog") || query.includes("actualidad")) {
+                r = `Mantente al día con el <a href="${links.blog}" target="_blank" style="color:var(--accent-magenta)">SENA Blog</a> para noticias de seguimiento.`;
             } else if (query.includes("hola") || query.includes("buenos") || query.includes("quien eres")) {
-                r = "¡Hola! Soy <b>SENA_BOT</b>, tu asistente de inteligencia artificial. Estoy entrenado con la documentación oficial para guiarte en tu Etapa Productiva.";
+                r = "¡Hola! Soy <b>SENA_BOT 2.0</b>. He sido actualizado con acceso a fuentes institucionales. ¿En qué puedo guiarte hoy?";
             }
 
-            setTimeout(() => addMsg(r, 'bot'), 600);
+            setTimeout(() => sBotAddMsg(r, 'bot'), 600);
         }
 
-        send.addEventListener('click', () => {
-            if (!input.value.trim()) return;
-            addMsg(input.value, 'user');
-            respond(input.value);
-            input.value = '';
-        });
+        if (sBotSend) {
+            sBotSend.addEventListener('click', () => {
+                if (!sBotInput.value.trim()) return;
+                sBotAddMsg(sBotInput.value, 'user');
+                sBotRespond(sBotInput.value);
+                sBotInput.value = '';
+            });
+        }
 
-        input.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') send.click();
-        });
+        if (sBotInput) {
+            sBotInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sBotSend.click();
+            });
+        }
     </script>
 </body>
 

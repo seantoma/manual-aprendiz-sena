@@ -51,8 +51,8 @@
             font-family: 'Open Sans', sans-serif;
             background: var(--bg-body);
             background-image:
-                radial-gradient(circle at 0% 0%, rgba(0, 243, 255, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 100% 100%, rgba(255, 0, 255, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 0% 0%, rgba(0, 243, 255, 0.2) 0%, transparent 60%),
+                radial-gradient(circle at 100% 100%, rgba(255, 0, 255, 0.15) 0%, transparent 60%);
             color: var(--text-main);
             line-height: 1.7;
             transition: background 0.3s ease, color 0.3s ease;
@@ -3358,58 +3358,74 @@
 
             updateProgress();
         });
-        // AI Logic
-        const fab = document.getElementById('ai-fab');
-        const chat = document.getElementById('chat-window');
-        const close = document.getElementById('close-chat');
-        const input = document.getElementById('chat-input');
-        const send = document.getElementById('send-btn');
-        const chatBody = document.getElementById('chat-body');
+        // ULTIMATE SENA_BOT LOGIC
+        const sBotFab = document.getElementById('ai-fab');
+        const sBotChat = document.getElementById('chat-window');
+        const sBotClose = document.getElementById('close-chat');
+        const sBotInput = document.getElementById('chat-input');
+        const sBotSend = document.getElementById('send-btn');
+        const sBotBody = document.getElementById('chat-body');
 
-        if (fab) fab.addEventListener('click', () => chat.classList.toggle('hidden'));
-        if (close) close.addEventListener('click', () => chat.classList.add('hidden'));
+        if (sBotFab) {
+            sBotFab.addEventListener('click', () => sBotChat.classList.toggle('hidden'));
+        }
+        if (sBotClose) {
+            sBotClose.addEventListener('click', () => sBotChat.classList.add('hidden'));
+        }
 
-        function addMsg(text, sender) {
+        function sBotAddMsg(text, sender) {
             const m = document.createElement('div');
             m.className = `msg ${sender}`;
             m.innerHTML = text;
-            chatBody.appendChild(m);
-            chatBody.scrollTop = chatBody.scrollHeight;
+            sBotBody.appendChild(m);
+            sBotBody.scrollTop = sBotBody.scrollHeight;
         }
 
-        function respond(q) {
+        function sBotRespond(q) {
             const query = q.toLowerCase();
-            let r = "Lo lamento, no tengo información específica sobre eso. ¿Puedes consultar el <b>Manual del Aprendiz</b> para más detalles?";
+            let r = "Lo lamento, no tengo información exacta sobre eso. Sin embargo, puedes consultar el <b>Manual del Aprendiz</b> o contactar a tu instructor.";
 
-            if (query.includes("f023") || query.includes("planeación") || query.includes("planeacion") || query.includes("seguimiento")) {
-                r = "El <b>GFPI-F-023 (Planeación, Seguimiento y Evaluación)</b> es fundamental. <br><br>👉 Puedes descargarlo en la sección <a href='recursos_etapa_productiva.html' style='color:var(--neon-cyan)'>Recursos y Formatos</a>.";
-            } else if (query.includes("bitacora") || query.includes("f147") || query.includes("f-147")) {
-                r = "La <b>Bitácora GFPI-F-147</b> es el reporte mensual obligatorio. <br><br>📍 Descárgala en <a href='recursos_etapa_productiva.html' style='color:var(--neon-cyan)'>Formatos Oficiales</a>.";
-            } else if (query.includes("f165") || query.includes("f-165") || query.includes("seleccion") || query.includes("selección")) {
-                r = "El formato <b>GFPI-F-165 (Selección Alternativa)</b> se usa para formalizar tu modalidad. <br><br>📂 Encontré el archivo oficial en la carpeta de Formatos.";
-            } else if (query.includes("agendar") || query.includes("cita") || query.includes("visita")) {
-                r = "Para agendar visitas, usa el botón <b>Programar Cita</b> en el portal principal.";
-            } else if (query.includes("final") || query.includes("termino") || query.includes("fecha") || query.includes("calendario")) {
-                r = "Usa la <a href='calculadora_fechas.html' style='color:var(--neon-cyan)'>Gestión de Fechas</a> para proyectar tu fin de etapa.";
+            // INSTITUTIONAL KNOWLEDGE BASE
+            const links = {
+                sofia: "https://oferta.senasofiaplus.edu.co/",
+                zendesk: "https://sena.zendesk.com/",
+                blog: "https://senasofiaplus.com.co/blog/",
+                oficial: "https://www.sena.edu.co/"
+            };
+
+            if (query.includes("f023") || query.includes("planeación") || query.includes("seguimiento") || query.includes("evaluacion")) {
+                r = `El formato <b>GFPI-F-023</b> es el registro oficial de tus 3 visitas técnicas. <br><br>👉 Descárgalo en la pestaña de <a href='recursos_etapa_productiva.html' style='color:var(--neon-cyan)'>Recursos</a>.`;
+            } else if (query.includes("bitacora") || query.includes("f147") || query.includes("reporte")) {
+                r = `Las <b>Bitácoras (F-147)</b> se entregan cada 15 días o mensual según tu centro. Deben estar firmadas por tu jefe. <br><br>📍 Revisa los formatos <a href='recursos_etapa_productiva.html' style='color:var(--neon-cyan)'>aquí</a>.`;
+            } else if (query.includes("sofia") || query.includes("plus") || query.includes("plataforma")) {
+                r = `Para temas de certificados y estados académicos, dirígete a <a href="${links.sofia}" target="_blank" style="color:var(--accent-magenta)">SENA SofiaPlus</a>.`;
+            } else if (query.includes("ayuda") || query.includes("soporte") || query.includes("zendesk") || query.includes("problema")) {
+                r = `Si tienes problemas técnicos con las plataformas, el <a href="${links.zendesk}" target="_blank" style="color:var(--accent-cyan)">Zendesk de SENA</a> es el canal oficial de soporte.`;
+            } else if (query.includes("final") || query.includes("termino") || query.includes("fecha") || query.includes("cuanto me falta")) {
+                r = `Puedes proyectar tu fecha de cierre usando nuestra <a href='calculadora_fechas.html' style='color:var(--accent-cyan)'>Calculadora de Etapa Productiva</a>.`;
+            } else if (query.includes("alternativa") || query.includes("contrato") || query.includes("pasantia") || query.includes("f165")) {
+                r = `La elección de alternativa se formaliza con el <b>F-165</b>. Puedes ver los detalles en el <a href='manual_aprendiz.html' style='color:var(--accent-cyan)'>Manual del Aprendiz</a>.`;
+            } else if (query.includes("noticias") || query.includes("blog") || query.includes("actualidad")) {
+                r = `Mantente al día con el <a href="${links.blog}" target="_blank" style="color:var(--accent-magenta)">SENA Blog</a> para noticias de seguimiento.`;
             } else if (query.includes("hola") || query.includes("buenos") || query.includes("quien eres")) {
-                r = "¡Hola! Soy <b>SENA_BOT</b>, tu asistente virtual. ¿En qué puedo ayudarte hoy?";
+                r = "¡Hola! Soy <b>SENA_BOT 2.0</b>. He sido actualizado con acceso a fuentes institucionales. ¿En qué puedo guiarte hoy?";
             }
 
-            setTimeout(() => addMsg(r, 'bot'), 600);
+            setTimeout(() => sBotAddMsg(r, 'bot'), 600);
         }
 
-        if (send) {
-            send.addEventListener('click', () => {
-                if (!input.value.trim()) return;
-                addMsg(input.value, 'user');
-                respond(input.value);
-                input.value = '';
+        if (sBotSend) {
+            sBotSend.addEventListener('click', () => {
+                if (!sBotInput.value.trim()) return;
+                sBotAddMsg(sBotInput.value, 'user');
+                sBotRespond(sBotInput.value);
+                sBotInput.value = '';
             });
         }
 
-        if (input) {
-            input.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') send.click();
+        if (sBotInput) {
+            sBotInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sBotSend.click();
             });
         }
 
