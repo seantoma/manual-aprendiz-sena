@@ -3085,18 +3085,19 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- AI AGENT HTML -->
-    <button id="ai-fab"><i class="fas fa-robot"></i></button>
+    <!-- MAYA AI AGENT -->
+    <button id="ai-fab"><i class="fas fa-paw"></i></button>
     <div id="chat-window" class="chat-window hidden">
         <div class="chat-header">
-            <h3>🤖 SENA_BOT</h3>
+            <h3>🐺 MAYA Assistant AI</h3>
             <button id="close-chat" class="close-chat"><i class="fas fa-times"></i></button>
         </div>
         <div id="chat-body" class="chat-body">
-            <div class="msg bot">¡Hola! Soy tu asistente Cyber-SENA. ¿Dudas sobre el manual?</div>
+            <div class="msg bot">¡Auuuu! 🐺 ¡Hola, Aprendiz! Soy <b>MAYA</b>, tu Malamute guardiana. ¿Dudas sobre el
+                manual?</div>
         </div>
         <div class="chat-input-area">
-            <input type="text" id="chat-input" class="chat-input" placeholder="Pregunta aquí...">
+            <input type="text" id="chat-input" class="chat-input" placeholder="Pregunta a Maya...">
             <button id="send-btn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
@@ -3405,78 +3406,93 @@
 
             updateProgress();
         });
-        // ULTIMATE SENA_BOT LOGIC
-        const sBotFab = document.getElementById('ai-fab');
-        const sBotChat = document.getElementById('chat-window');
-        const sBotClose = document.getElementById('close-chat');
-        const sBotInput = document.getElementById('chat-input');
-        const sBotSend = document.getElementById('send-btn');
-        const sBotBody = document.getElementById('chat-body');
+        // MAYA BOT - Alaska Malamute Assistant
+        const mayaFab = document.getElementById('ai-fab');
+        const mayaChat = document.getElementById('chat-window');
+        const mayaClose = document.getElementById('close-chat');
+        const mayaInput = document.getElementById('chat-input');
+        const mayaSend = document.getElementById('send-btn');
+        const mayaBody = document.getElementById('chat-body');
 
-        if (sBotFab) {
-            sBotFab.addEventListener('click', () => sBotChat.classList.toggle('hidden'));
+        if (mayaFab) {
+            mayaFab.innerHTML = '<img src="https://img.icons8.com/color/96/alaskan-malamute.png" style="width:70%; filter: brightness(1.2);">';
+            mayaFab.addEventListener('click', () => mayaChat.classList.toggle('hidden'));
         }
-        if (sBotClose) {
-            sBotClose.addEventListener('click', () => sBotChat.classList.add('hidden'));
+        if (mayaClose) {
+            mayaClose.addEventListener('click', () => mayaChat.classList.add('hidden'));
         }
 
-        function sBotAddMsg(text, sender) {
+        function mayaAddMsg(text, sender) {
             const m = document.createElement('div');
             m.className = `msg ${sender}`;
             if (sender === 'user') {
-                m.textContent = text; // Seguridad: El texto del usuario siempre es texto plano
+                m.textContent = text;
             } else {
-                m.innerHTML = text; // El bot usa HTML controlado (links, negritas)
+                m.innerHTML = text;
             }
-            sBotBody.appendChild(m);
-            sBotBody.scrollTop = sBotBody.scrollHeight;
+            mayaBody.appendChild(m);
+            mayaBody.scrollTop = mayaBody.scrollHeight;
         }
 
-        function sBotRespond(q) {
+        function mayaShowTyping() {
+            const dot = document.createElement('div');
+            dot.className = 'msg bot typing';
+            dot.innerHTML = '<i class="fas fa-paw fa-bounce"></i> Maya está rastreando la información...';
+            dot.id = 'typing-indicator';
+            mayaBody.appendChild(dot);
+            mayaBody.scrollTop = mayaBody.scrollHeight;
+        }
+
+        function mayaRespond(q) {
             const query = q.toLowerCase();
-            let r = "Lo lamento, no tengo información exacta sobre eso. Sin embargo, puedes consultar el <b>Manual del Aprendiz</b> o contactar a tu instructor.";
+            mayaShowTyping();
 
-            // INSTITUTIONAL KNOWLEDGE BASE
-            const links = {
-                sofia: "https://oferta.senasofiaplus.edu.co/",
-                zendesk: "https://sena.zendesk.com/",
-                blog: "https://senasofiaplus.com.co/blog/",
-                oficial: "https://www.sena.edu.co/"
-            };
+            setTimeout(() => {
+                const indicator = document.getElementById('typing-indicator');
+                if (indicator) indicator.remove();
 
-            if (query.includes("f023") || query.includes("planeación") || query.includes("seguimiento") || query.includes("evaluacion")) {
-                r = `El formato <b>GFPI-F-023</b> es el registro oficial de tus 3 visitas técnicas. <br><br>👉 Descárgalo en la pestaña de <a href='recursos_etapa_productiva.html' style='color:var(--neon-cyan)'>Recursos</a>.`;
-            } else if (query.includes("bitacora") || query.includes("f147") || query.includes("reporte")) {
-                r = `Las <b>Bitácoras (F-147)</b> se entregan cada 15 días o mensual según tu centro. Deben estar firmadas por tu jefe. <br><br>📍 Revisa los formatos <a href='recursos_etapa_productiva.html' style='color:var(--neon-cyan)'>aquí</a>.`;
-            } else if (query.includes("sofia") || query.includes("plus") || query.includes("plataforma")) {
-                r = `Para temas de certificados y estados académicos, dirígete a <a href="${links.sofia}" target="_blank" rel="noopener" style="color:var(--accent-magenta)">SENA SofiaPlus</a>.`;
-            } else if (query.includes("ayuda") || query.includes("soporte") || query.includes("zendesk") || query.includes("problema")) {
-                r = `Si tienes problemas técnicos con las plataformas, el <a href="${links.zendesk}" target="_blank" rel="noopener" style="color:var(--accent-cyan)">Zendesk de SENA</a> es el canal oficial de soporte.`;
-            } else if (query.includes("final") || query.includes("termino") || query.includes("fecha") || query.includes("cuanto me falta")) {
-                r = `Puedes proyectar tu fecha de cierre usando nuestra <a href='calculadora_fechas.html' style='color:var(--accent-cyan)'>Calculadora de Etapa Productiva</a>.`;
-            } else if (query.includes("alternativa") || query.includes("contrato") || query.includes("pasantia") || query.includes("f165")) {
-                r = `La elección de alternativa se formaliza con el <b>F-165</b>. Puedes ver los detalles en el <a href='manual_aprendiz.html' style='color:var(--accent-cyan)'>Manual del Aprendiz</a>.`;
-            } else if (query.includes("noticias") || query.includes("blog") || query.includes("actualidad")) {
-                r = `Mantente al día con el <a href="${links.blog}" target="_blank" rel="noopener" style="color:var(--accent-magenta)">SENA Blog</a> para noticias de seguimiento.`;
-            } else if (query.includes("hola") || query.includes("buenos") || query.includes("quien eres")) {
-                r = "¡Hola! Soy <b>SENA_BOT 2.0</b>. He sido actualizado con acceso a fuentes institucionales. ¿En qué puedo guiarte hoy?";
-            }
+                let r = "Aprendiz, mi instinto no localiza ese rastro específico en la documentación interna. ¿Deseas que rastreemos en la red global SENA?<br><br><div style='display:flex; gap:5px; flex-wrap:wrap;'><a href='https://www.google.com/search?q=SENA+etapa+productiva+" + encodeURIComponent(query) + "' target='_blank' style='background:var(--neon-cyan); color:#020617; padding:5px 10px; border-radius:5px; text-decoration:none; font-size:0.7rem; font-weight:600;'>Rastrear en Google</a></div>";
 
-            setTimeout(() => sBotAddMsg(r, 'bot'), 600);
+                const intents = [
+                    { keys: ['hola', 'bienvenido', 'saludo', 'quien eres', 'maya', 'buenos'], response: "¡Auuuu! 🐺 Saludos, Aprendiz. Soy <b>MAYA</b>, tu Malamute guardiana de la Etapa Productiva SENA.<br><br><b>Mis capacidades:</b><br>1. <b>Normativa:</b> Te guío sobre la <b>Guía 040</b> y el <b>Acuerdo 009</b>.<br>2. <b>Formatos:</b> Te indico qué documentos necesitas.<br>3. <b>Plazos:</b> Te alerto sobre fechas clave.<br>4. <b>Recursos:</b> Te dirijo a las herramientas del portal.<br><br>¿En qué proceso te ayudo hoy?" },
+                    { keys: ['bitacora', 'f-147', 'bitácora', 'formato 147', 'reporte'], response: "<b>📋 Bitácora GFPI-F-147:</b><br><br>La <b>Bitácora (F-147)</b> es tu registro <b>QUINCENAL</b> obligatorio.<br><br><b>¿Qué debes hacer?</b><br>• Llenarla <b>cada 15 días</b><br>• Describir actividades realizadas<br>• Obtener firma de tu <b>jefe inmediato</b><br><br>⚠️ Sin bitácoras al día = <b>riesgo de novedad académica</b><br><br>📍 Descarga en <a href='recursos_etapa_productiva.html' style='color:var(--neon-cyan)'>Recursos y Formatos</a>." },
+                    { keys: ['f023', 'f-023', 'planeación', 'planeacion', 'seguimiento', 'evaluacion', 'evaluación', 'visita'], response: "<b>📝 Formato GFPI-F-023:</b><br><br>Registro oficial de las <b>3 visitas técnicas</b> de tu instructor.<br><br><b>Las 3 visitas:</b><br>1. <b>Inicial:</b> Validación del plan<br>2. <b>Seguimiento:</b> Revisión de avance<br>3. <b>Final:</b> Evaluación y cierre<br><br>📍 Descárgalo en <a href='recursos_etapa_productiva.html' style='color:var(--neon-cyan)'>Recursos</a>." },
+                    { keys: ['alternativa', 'contrato', 'pasantia', 'pasantía', 'vinculacion', 'f165', 'f-165', 'monitoria', 'monitoría'], response: "<b>🔄 Las 7 Alternativas de Etapa Productiva:</b><br><br>1. <b>Contrato de Aprendizaje</b><br>2. <b>Pasantía</b><br>3. <b>Vinculación Laboral</b><br>4. <b>Proyecto Productivo</b><br>5. <b>Monitoría</b><br>6. <b>Proyecto de Investigación</b><br>7. <b>Unidad Productiva Familiar</b><br><br>📄 Se formaliza con formato <b>F-165</b>." },
+                    { keys: ['acuerdo 009', 'acuerdo 9', 'reglamento', 'faltas', 'sanciones', 'falta'], response: "<b>📜 Acuerdo 009 de 2024:</b><br><br>⚠️ <b>Alerta:</b><br>• <b>3 días hábiles sin justificación</b> = Reporte de deserción<br>• <b>Inasistencia a visitas</b> = Falta académica<br>• <b>No entregar bitácoras</b> = Novedad académica" },
+                    { keys: ['tyt', 'prueba saber', 'saber tyt', 'certificacion', 'certificación', 'icfes'], response: "<b>🎓 Pruebas Saber TyT:</b><br><br>Obligatorias para tecnólogos.<br>• Registro en ICFES con código SENA<br>• Antes del cierre de etapa productiva<br>• ⚠️ Si no la presentas, tu certificación se retrasa." },
+                    { keys: ['sofia', 'plus', 'sofiaplus', 'plataforma'], response: "<b>🌐 SofiaPlus:</b><br><br><a href='https://oferta.senasofiaplus.edu.co/' target='_blank' style='color:var(--neon-cyan)'>SofiaPlus</a> para verificar estado académico y certificados.<br><br>Problemas técnicos: <a href='https://sena.zendesk.com' target='_blank' style='color:var(--neon-magenta)'>Zendesk SENA</a>" },
+                    { keys: ['fecha', 'termino', 'final', 'cuanto me falta', 'cuando termino'], response: "<b>📅 Calculadora de Fechas:</b><br><br>👉 <a href='calculadora_fechas.html' style='color:var(--neon-cyan)'><b>Abrir Calculadora</b></a><br><br>Ingresa tu fecha de inicio y duración del programa para saber cuándo terminas." },
+                    { keys: ['formato', 'formatos', 'gfpi', 'descarga', 'documento'], response: "<b>📂 Formatos GFPI:</b><br><br>• F-023: Planeación y seguimiento<br>• F-147: Bitácora quincenal<br>• F-165: Aval de alternativa<br>• F-008: Planeación evaluación<br>• F-009: Juicio evaluativo<br><br>📍 En <a href='recursos_etapa_productiva.html' style='color:var(--neon-cyan)'>Recursos y Formatos</a>." },
+                    { keys: ['momento', '6 momento', 'los 6', 'guia 040', 'momentos'], response: "<b>🐾 Los 6 Momentos (Guía 040):</b><br><br>1. <b>Inicio:</b> Plan de trabajo (F-023)<br>2. <b>1er Seguimiento:</b> A los 2 meses<br>3. <b>2do Seguimiento:</b> A los 4 meses<br>4. <b>3er Seguimiento:</b> A los 6 meses<br>5. <b>Evaluación Final:</b> (F-008)<br>6. <b>Certificación:</b> (F-009)" },
+                    { keys: ['ayuda', 'soporte', 'zendesk', 'problema', 'error'], response: "<b>🆘 Soporte:</b><br><br>• <a href='https://sena.zendesk.com' target='_blank' style='color:var(--neon-cyan)'>Zendesk SENA</a><br>• <a href='https://www.sena.edu.co' target='_blank' style='color:var(--neon-cyan)'>Portal SENA</a><br>• <a href='https://oferta.senasofiaplus.edu.co' target='_blank' style='color:var(--neon-cyan)'>SofiaPlus</a>" },
+                    { keys: ['fuente', 'fuentes', 'enlace', 'link', 'web', 'noticias', 'blog'], response: "<b>🌐 Fuentes Oficiales:</b><br><br>• <a href='https://www.sena.edu.co' target='_blank' style='color:var(--neon-cyan)'>Portal SENA</a><br>• <a href='https://oferta.senasofiaplus.edu.co' target='_blank' style='color:var(--neon-cyan)'>SofiaPlus</a><br>• <a href='https://sena.zendesk.com' target='_blank' style='color:var(--neon-cyan)'>Zendesk</a><br>• <a href='https://blog.sena.edu.co' target='_blank' style='color:var(--neon-cyan)'>Blog SENA</a>" }
+                ];
+
+                let bestMatch = null;
+                let maxScore = 0;
+                intents.forEach(intent => {
+                    let score = 0;
+                    intent.keys.forEach(key => { if (query.includes(key)) score++; });
+                    if (score > maxScore) { maxScore = score; bestMatch = intent.response; }
+                });
+
+                if (bestMatch) r = bestMatch;
+                mayaAddMsg(r, 'bot');
+            }, 1500);
         }
 
-        if (sBotSend) {
-            sBotSend.addEventListener('click', () => {
-                if (!sBotInput.value.trim()) return;
-                sBotAddMsg(sBotInput.value, 'user');
-                sBotRespond(sBotInput.value);
-                sBotInput.value = '';
+        if (mayaSend) {
+            mayaSend.addEventListener('click', () => {
+                if (!mayaInput.value.trim()) return;
+                mayaAddMsg(mayaInput.value, 'user');
+                mayaRespond(mayaInput.value);
+                mayaInput.value = '';
             });
         }
 
-        if (sBotInput) {
-            sBotInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') sBotSend.click();
+        if (mayaInput) {
+            mayaInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') mayaSend.click();
             });
         }
 
