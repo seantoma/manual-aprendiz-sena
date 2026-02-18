@@ -494,11 +494,12 @@
     <button id="ai-fab"><i class="fas fa-paw"></i></button>
     <div id="chat-window" class="chat-window hidden">
         <div class="chat-header">
-            <h3>🐺 MAYA Assistant AI</h3>
+            <span><b>MAYA Assistant</b> AI</span>
             <button id="close-chat" class="close-chat"><i class="fas fa-times"></i></button>
         </div>
         <div id="chat-body" class="chat-body">
-            <div class="msg bot">¡Auuuu! 🐺 ¡Hola, Aprendiz! Soy <b>MAYA</b>, tu Malamute guardiana. ¿Dudas sobre los
+            <div class="msg bot">¡Guau! 🐾 ¡Hola, Aprendiz! Soy <b>MAYA</b>, tu Border Collie guardiana. ¿Dudas sobre
+                los
                 formatos?</div>
         </div>
         <div class="chat-input-area">
@@ -551,7 +552,7 @@
                 let r = "Aprendiz, mi instinto no localiza ese rastro. ¿Deseas rastrear en la red?<br><br><a href='https://www.google.com/search?q=SENA+etapa+productiva+" + encodeURIComponent(query) + "' target='_blank' style='background:var(--neon-cyan); color:#020617; padding:5px 10px; border-radius:5px; text-decoration:none; font-size:0.7rem; font-weight:600;'>Rastrear en Google</a>";
 
                 const intents = [
-                    { keys: ['hola', 'buenos', 'quien eres', 'maya'], response: "¡Auuuu! 🐺 Soy <b>MAYA</b>, tu Malamute guardiana. ¿Te ayudo con los formatos?" },
+                    { keys: ['hola', 'buenos', 'quien eres', 'maya'], response: "¡Guau! 🐾 Soy <b>MAYA</b>, tu Border Collie guardiana. ¿Te ayudo con los formatos?" },
                     { keys: ['bitacora', 'f-147', 'bitácora', 'reporte', 'f147'], response: "<b>📋 Bitácora F-147:</b><br>Entrega <b>quincenal</b>, firmada por tu jefe.<br><br>👆 Tienes el link de descarga arriba en esta misma página." },
                     { keys: ['f023', 'f-023', 'planeación', 'seguimiento', 'visita'], response: "<b>📝 F-023:</b><br>Registro de tus 3 visitas técnicas.<br><br>👆 Los formatos de cada visita están arriba para descargar." },
                     { keys: ['f165', 'f-165', 'seleccion', 'selección', 'alternativa'], response: "<b>📄 F-165 (Selección Alternativa):</b><br>Está disponible en la sección inferior de esta página para descarga." },
