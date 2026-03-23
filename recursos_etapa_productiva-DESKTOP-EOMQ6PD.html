@@ -243,26 +243,45 @@
         }
 
         .btn-download {
-            background: transparent;
-            border: 2px solid var(--neon-orange);
-            color: var(--neon-orange);
+            background: linear-gradient(135deg, var(--neon-green), #2d8a00);
+            border: 2px solid var(--neon-green);
+            color: #fff;
             text-decoration: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 4px;
+            padding: 1rem 2rem;
+            border-radius: 8px;
             font-weight: 800;
-            font-size: 0.9rem;
+            font-size: 1rem;
             font-family: 'Share Tech Mono', monospace;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.7rem;
             text-transform: uppercase;
-            transition: 0.3s;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(57, 169, 0, 0.3);
+            animation: pulseGlow 2s ease-in-out infinite;
         }
 
         .btn-download:hover {
-            background: var(--neon-orange);
-            color: black;
-            box-shadow: 0 0 20px var(--neon-orange);
+            background: linear-gradient(135deg, #45c700, var(--neon-green));
+            color: #fff;
+            box-shadow: 0 0 30px rgba(57, 169, 0, 0.6), 0 0 60px rgba(57, 169, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-download i {
+            font-size: 1.2rem;
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 15px rgba(57, 169, 0, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 25px rgba(57, 169, 0, 0.5);
+            }
         }
 
         .toggle-icon {
@@ -378,6 +397,17 @@
 
     <div class="container">
 
+        <!-- Blog CSF Link -->
+        <a href="https://serviciosfinancierosena.blogspot.com/p/etapa-productiva.html" target="_blank" rel="noopener"
+            class="blog-link-card">
+            <div class="blog-icon"><i class="fas fa-blog"></i></div>
+            <div class="blog-info">
+                <h3>Blog CSF Etapa Productiva</h3>
+                <p>Información y recursos actualizados del Centro de Servicios Financieros para tu etapa productiva.</p>
+            </div>
+            <div class="blog-arrow"><i class="fas fa-arrow-right"></i></div>
+        </a>
+
         <!-- Guía F-023 Concertación -->
         <div class="guide-card">
             <div class="guide-header" onclick="toggleGuide(this)">
@@ -477,7 +507,7 @@
                 <span><i class="fas fa-file-alt"></i> Guía para Bitácora (F-147)</span>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="guide-body">
+            <div class="guide-body show">
                 <p>Tu diario de campo quincenal o mensual. Sé descriptivo y honesto con el tiempo reportado.</p>
 
                 <div class="example-tabs">
@@ -547,7 +577,7 @@
                 <span><i class="fas fa-file-signature"></i> Selección Alternativa (F-165)</span>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="guide-body">
+            <div class="guide-body show">
                 <p>Usa este formato para declarar tu modalidad de etapa productiva o solicitar un cambio de la misma.
                 </p>
 
@@ -580,15 +610,7 @@
             </div>
         </div>
 
-        <!-- Blog CSF Link -->
-        <a href="https://serviciosfinancierosena.blogspot.com/p/etapa-productiva.html" target="_blank" rel="noopener" class="blog-link-card">
-            <div class="blog-icon"><i class="fas fa-blog"></i></div>
-            <div class="blog-info">
-                <h3>Blog CSF Etapa Productiva</h3>
-                <p>Información y recursos actualizados del Centro de Servicios Financieros para tu etapa productiva.</p>
-            </div>
-            <div class="blog-arrow"><i class="fas fa-arrow-right"></i></div>
-        </a>
+
 
         <!-- Videos Informativos -->
         <div class="guide-card">
@@ -596,20 +618,26 @@
                 <span><i class="fas fa-video"></i> Videos Informativos - Etapa Productiva</span>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="guide-body">
+            <div class="guide-body show">
                 <p>Material audiovisual de apoyo para orientarte durante tu proceso de etapa productiva.</p>
                 <div class="video-grid">
                     <div class="video-wrapper">
-                        <div class="video-label"><i class="fas fa-play-circle"></i> Video 1 — Orientación Etapa Productiva</div>
+                        <div class="video-label"><i class="fas fa-play-circle"></i> Video 1 — Orientación Etapa
+                            Productiva</div>
                         <video controls preload="metadata">
-                            <source src="https://rr4---sn-vgqsrnl6.googlevideo.com/videoplayback?expire=1772863007&ei=n02raa_QBqjb2O8P3tGxwAM&ip=190.102.124.207&id=674bcadd9bca881d&itag=18&source=blogger&requiressl=yes&xpc=Egho7Zf3LnoBAQ==&cps=0&met=1772834207,&mh=E7&mm=31&mn=sn-vgqsrnl6&ms=au&mv=m&mvi=4&pl=24&rms=au,au&susc=bl&svpuc=1&eaua=EGZcU3I1yKo&mime=video/mp4&vprv=1&rqh=1&dur=810.794&lmt=1751123752519472&mt=1772833778&txp=1311224&sparams=expire,ei,ip,id,itag,source,requiressl,xpc,susc,svpuc,eaua,mime,vprv,rqh,dur,lmt&sig=AHEqNM4wRgIhAMohhWIE93VE4edclPG9D9zpPuYE6hxhcnvTeMPY3fTXAiEAwWeCtLzlgeTOz2uSHhKh62EvAq8x5ko6YK7tuptonvI=&lsparams=cps,met,mh,mm,mn,ms,mv,mvi,pl,rms&lsig=APaTxxMwRAIgb7qv1P2gss3oZlFf3xdagF3w0jKa5KoIDH8qf0mSgiMCID66tEHO-BSvWZwkL3Nq0sWG9puR6lnBkjHj4P05e-ug&cpn=iGwQseqIrZodoiRY&c=WEB_EMBEDDED_PLAYER&cver=1.20260303.11.00" type="video/mp4">
+                            <source
+                                src="https://rr4---sn-vgqsrnl6.googlevideo.com/videoplayback?expire=1772863007&ei=n02raa_QBqjb2O8P3tGxwAM&ip=190.102.124.207&id=674bcadd9bca881d&itag=18&source=blogger&requiressl=yes&xpc=Egho7Zf3LnoBAQ==&cps=0&met=1772834207,&mh=E7&mm=31&mn=sn-vgqsrnl6&ms=au&mv=m&mvi=4&pl=24&rms=au,au&susc=bl&svpuc=1&eaua=EGZcU3I1yKo&mime=video/mp4&vprv=1&rqh=1&dur=810.794&lmt=1751123752519472&mt=1772833778&txp=1311224&sparams=expire,ei,ip,id,itag,source,requiressl,xpc,susc,svpuc,eaua,mime,vprv,rqh,dur,lmt&sig=AHEqNM4wRgIhAMohhWIE93VE4edclPG9D9zpPuYE6hxhcnvTeMPY3fTXAiEAwWeCtLzlgeTOz2uSHhKh62EvAq8x5ko6YK7tuptonvI=&lsparams=cps,met,mh,mm,mn,ms,mv,mvi,pl,rms&lsig=APaTxxMwRAIgb7qv1P2gss3oZlFf3xdagF3w0jKa5KoIDH8qf0mSgiMCID66tEHO-BSvWZwkL3Nq0sWG9puR6lnBkjHj4P05e-ug&cpn=iGwQseqIrZodoiRY&c=WEB_EMBEDDED_PLAYER&cver=1.20260303.11.00"
+                                type="video/mp4">
                             Tu navegador no soporta la reproducción de video.
                         </video>
                     </div>
                     <div class="video-wrapper">
-                        <div class="video-label"><i class="fas fa-play-circle"></i> Video 2 — Proceso de Seguimiento</div>
+                        <div class="video-label"><i class="fas fa-play-circle"></i> Video 2 — Proceso de Seguimiento
+                        </div>
                         <video controls preload="metadata">
-                            <source src="https://rr1---sn-vgqsrnzz.googlevideo.com/videoplayback?expire=1772863007&ei=n02rac-6CufB2O8P3_aB6Q0&ip=190.102.124.207&id=ecfedccde8184581&itag=18&source=blogger&requiressl=yes&xpc=Egho7Zf3LnoBAQ==&cps=4&met=1772834207,&mh=rf&mm=31&mn=sn-vgqsrnzz&ms=au&mv=m&mvi=1&pl=24&rms=au,au&susc=bl&svpuc=1&eaua=EGZcU3I1yKo&mime=video/mp4&vprv=1&rqh=1&dur=277.362&lmt=1753477758997734&mt=1772833778&txp=1311224&sparams=expire,ei,ip,id,itag,source,requiressl,xpc,susc,svpuc,eaua,mime,vprv,rqh,dur,lmt&sig=AHEqNM4wRQIhAJrjZRcsPG1aUNrhZfzCqFWLSfWPa2YYe7GcaNoDncC4AiAsXmHOgDLV5Q_H330ecZHvnMdzX3yAyc7JOrcO_Cy_AQ==&lsparams=cps,met,mh,mm,mn,ms,mv,mvi,pl,rms&lsig=APaTxxMwRAIgTq2tWI27ypChBwnxuLzuDS2V7_fJSXX3b0CpDD7EE7wCIARC7g1DTRYw8XU5M-s3pWixTe2jjtwZPz30ljHfPhzY&cpn=K1R7Rg53TpEvVTqB&c=WEB_EMBEDDED_PLAYER&cver=1.20260303.11.00" type="video/mp4">
+                            <source
+                                src="https://rr1---sn-vgqsrnzz.googlevideo.com/videoplayback?expire=1772863007&ei=n02rac-6CufB2O8P3_aB6Q0&ip=190.102.124.207&id=ecfedccde8184581&itag=18&source=blogger&requiressl=yes&xpc=Egho7Zf3LnoBAQ==&cps=4&met=1772834207,&mh=rf&mm=31&mn=sn-vgqsrnzz&ms=au&mv=m&mvi=1&pl=24&rms=au,au&susc=bl&svpuc=1&eaua=EGZcU3I1yKo&mime=video/mp4&vprv=1&rqh=1&dur=277.362&lmt=1753477758997734&mt=1772833778&txp=1311224&sparams=expire,ei,ip,id,itag,source,requiressl,xpc,susc,svpuc,eaua,mime,vprv,rqh,dur,lmt&sig=AHEqNM4wRQIhAJrjZRcsPG1aUNrhZfzCqFWLSfWPa2YYe7GcaNoDncC4AiAsXmHOgDLV5Q_H330ecZHvnMdzX3yAyc7JOrcO_Cy_AQ==&lsparams=cps,met,mh,mm,mn,ms,mv,mvi,pl,rms&lsig=APaTxxMwRAIgTq2tWI27ypChBwnxuLzuDS2V7_fJSXX3b0CpDD7EE7wCIARC7g1DTRYw8XU5M-s3pWixTe2jjtwZPz30ljHfPhzY&cpn=K1R7Rg53TpEvVTqB&c=WEB_EMBEDDED_PLAYER&cver=1.20260303.11.00"
+                                type="video/mp4">
                             Tu navegador no soporta la reproducción de video.
                         </video>
                     </div>
