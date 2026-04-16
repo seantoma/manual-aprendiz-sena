@@ -13,6 +13,8 @@
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
             /* Neon Cyberpunk Palette */
@@ -999,7 +1001,7 @@
                 <i class="fas fa-handshake"></i> Visitas
             </button>
             <button class="nav-btn" onclick="showSection('quiz')">
-                <i class="fas fa-gamepad"></i> QUIZ
+                <i class="fas fa-gamepad"></i> EVALUACIÓN VIDA LABORAL
             </button>
             <button class="nav-btn" onclick="showSection('checklist')">
                 <i class="fas fa-check-square"></i> Mi Checklist
@@ -2743,84 +2745,99 @@
             </div>
         </section>
 
-        <!-- Section: QUIZ Interactivo -->
+        <!-- Section: EVALUACIÓN VIDA LABORAL -->
         <section id="quiz" class="section">
             <div class="card">
-                <h2><i class="fas fa-gamepad"></i> QUIZ: Desafío Etapa Productiva</h2>
-                <p>Pon a prueba tus conocimientos en cada fase de tu proceso. ¡Completa los tres momentos!</p>
+                <h2><i class="fas fa-gamepad"></i> EVALUACIÓN VIDA LABORAL</h2>
+                <p>Completa esta evaluación para validar tus conocimientos adquiridos. Al finalizar podrás descargar tu reporte en PDF.</p>
+                
+                <div class="subsection" id="userDataForm">
+                    <h5><i class="fas fa-user-edit"></i> Datos del Aprendiz</h5>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div class="form-group">
+                            <label style="display: block; color: var(--neon-cyan); font-size: 0.8rem; margin-bottom: 0.3rem;">Nombre Completo</label>
+                            <input type="text" id="userName" class="search-input" style="width: 100%;" placeholder="Ej: Juan Pérez">
+                        </div>
+                        <div class="form-group">
+                            <label style="display: block; color: var(--neon-cyan); font-size: 0.8rem; margin-bottom: 0.3rem;">Número de Identificación</label>
+                            <input type="text" id="userId" class="search-input" style="width: 100%;" placeholder="Ej: 10203040">
+                        </div>
+                        <div class="form-group">
+                            <label style="display: block; color: var(--neon-cyan); font-size: 0.8rem; margin-bottom: 0.3rem;">Ficha</label>
+                            <input type="text" id="userFicha" class="search-input" style="width: 100%;" placeholder="Ej: 2560890">
+                        </div>
+                        <div class="form-group">
+                            <label style="display: block; color: var(--neon-cyan); font-size: 0.8rem; margin-bottom: 0.3rem;">Programa de Formación</label>
+                            <input type="text" id="userProgram" class="search-input" style="width: 100%;" placeholder="Ej: Análisis y Desarrollo de Software">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" style="margin-top: 1.5rem; width: 100%;" onclick="startEvaluation()">
+                        <i class="fas fa-play"></i> INICIAR EVALUACIÓN
+                    </button>
+                </div>
             </div>
 
-            <!-- Momento 1: Lectiva -->
-            <div class="card" id="quizContainerLectiva">
-                <h3><i class="fas fa-book-reader"></i> Momento 1: Etapa Lectiva</h3>
-                <div id="quizContentLectiva">
-                    <div id="questionContainerLectiva" class="subsection">
-                        <h5 id="questionTextLectiva">Cargando...</h5>
-                        <div id="optionsListLectiva" style="display: flex; flex-direction: column; gap: 0.8rem;"></div>
-                        <div id="feedbackLectiva"
+            <!-- Momento Único: Evaluación -->
+            <div class="card" id="quizContainerMain" style="display: none;">
+                <h3><i class="fas fa-clipboard-check"></i> Evaluación de Conocimientos</h3>
+                <div id="quizContentMain">
+                    <div id="questionContainerMain" class="subsection">
+                        <h5 id="questionTextMain">Cargando...</h5>
+                        <div id="optionsListMain" style="display: flex; flex-direction: column; gap: 0.8rem;"></div>
+                        <div id="feedbackMain"
                             style="margin-top: 1rem; padding: 1rem; border-radius: 10px; display: none;"></div>
                     </div>
                     <div
                         style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
-                        <span id="progressLectiva">Pregunta 1 de 5</span>
-                        <button class="btn btn-primary" id="nextBtnLectiva" onclick="nextQuestion('lectiva')"
+                        <span id="progressMain">Pregunta 1 de 5</span>
+                        <button class="btn btn-primary" id="nextBtnMain" onclick="nextQuestion('main')"
                             disabled>Siguiente</button>
                     </div>
                 </div>
-                <div id="resultLectiva" style="display: none; text-align: center;">
+                <div id="resultMain" style="display: none; text-align: center;">
                     <i class="fas fa-trophy" style="font-size: 3rem; color: #FFD700;"></i>
-                    <h2 id="scoreLectiva">Puntaje: 0/5</h2>
-                    <button class="btn btn-secondary" onclick="restartQuiz('lectiva')">Reintentar</button>
+                    <h2 id="scoreMain">Puntaje: 0/5</h2>
+                    <p style="margin-bottom: 1.5rem; color: var(--text-muted);">Has completado la evaluación de conocimientos. Ahora, por favor responde el siguiente caso de estudio.</p>
+                    <button class="btn btn-primary" onclick="showCaseStudy()">Ir al Estudio de Caso <i class="fas fa-arrow-right"></i></button>
                 </div>
             </div>
 
-            <!-- Momento 2: Productiva -->
-            <div class="card" id="quizContainerProductiva">
-                <h3><i class="fas fa-briefcase"></i> Momento 2: Etapa Productiva</h3>
-                <div id="quizContentProductiva">
-                    <div id="questionContainerProductiva" class="subsection">
-                        <h5 id="questionTextProductiva">Cargando...</h5>
-                        <div id="optionsListProductiva" style="display: flex; flex-direction: column; gap: 0.8rem;">
-                        </div>
-                        <div id="feedbackProductiva"
-                            style="margin-top: 1rem; padding: 1rem; border-radius: 10px; display: none;"></div>
+            <!-- Estudio de Caso -->
+            <div class="card" id="caseStudyContainer" style="display: none;">
+                <h3><i class="fas fa-brain"></i> Caso Nº1: Marlon Pérez</h3>
+                <div class="subsection">
+                    <p style="font-style: italic; background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem; border-left: 3px solid var(--neon-magenta);">
+                        Marlon Pérez, Aprendiz SENA, realiza su etapa productiva en la empresa X, en el departamento de Recursos Humanos, su jefe deja caer $600.000 sin darse cuenta, el aprendiz es la única persona presente en este momento.
+                    </p>
+                    
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label style="display: block; color: var(--neon-cyan); font-size: 0.9rem; margin-bottom: 0.5rem;">1. ¿Si usted es el aprendiz que haría?</label>
+                        <textarea id="caseAns1" class="search-input" style="width: 100%; height: 80px; padding: 10px;" placeholder="Escriba su respuesta aquí..."></textarea>
                     </div>
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
-                        <span id="progressProductiva">Pregunta 1 de 5</span>
-                        <button class="btn btn-primary" id="nextBtnProductiva" onclick="nextQuestion('productiva')"
-                            disabled>Siguiente</button>
+                    
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label style="display: block; color: var(--neon-cyan); font-size: 0.9rem; margin-bottom: 0.5rem;">2. ¿En caso de tomar el dinero y no informar que cree que pasaría?</label>
+                        <textarea id="caseAns2" class="search-input" style="width: 100%; height: 80px; padding: 10px;" placeholder="Escriba su respuesta aquí..."></textarea>
                     </div>
-                </div>
-                <div id="resultProductiva" style="display: none; text-align: center;">
-                    <i class="fas fa-trophy" style="font-size: 3rem; color: #FFD700;"></i>
-                    <h2 id="scoreProductiva">Puntaje: 0/5</h2>
-                    <button class="btn btn-secondary" onclick="restartQuiz('productiva')">Reintentar</button>
-                </div>
-            </div>
-
-            <!-- Momento 3: Certificación -->
-            <div class="card" id="quizContainerCertificacion">
-                <h3><i class="fas fa-certificate"></i> Momento 3: Certificación</h3>
-                <div id="quizContentCertificacion">
-                    <div id="questionContainerCertificacion" class="subsection">
-                        <h5 id="questionTextCertificacion">Cargando...</h5>
-                        <div id="optionsListCertificacion" style="display: flex; flex-direction: column; gap: 0.8rem;">
-                        </div>
-                        <div id="feedbackCertificacion"
-                            style="margin-top: 1rem; padding: 1rem; border-radius: 10px; display: none;"></div>
+                    
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label style="display: block; color: var(--neon-cyan); font-size: 0.9rem; margin-bottom: 0.5rem;">3. ¿Si la empresa se da cuenta de que usted se quedó con el dinero cuál cree que sería el proceso?</label>
+                        <textarea id="caseAns3" class="search-input" style="width: 100%; height: 80px; padding: 10px;" placeholder="Escriba su respuesta aquí..."></textarea>
                     </div>
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
-                        <span id="progressCertificacion">Pregunta 1 de 5</span>
-                        <button class="btn btn-primary" id="nextBtnCertificacion"
-                            onclick="nextQuestion('certificacion')" disabled>Siguiente</button>
+                    
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label style="display: block; color: var(--neon-cyan); font-size: 0.9rem; margin-bottom: 0.5rem;">4. ¿Cuál cree que es el proceso indicado por parte del SENA una vez la empresa informe el caso?</label>
+                        <textarea id="caseAns4" class="search-input" style="width: 100%; height: 80px; padding: 10px;" placeholder="Escriba su respuesta aquí..."></textarea>
                     </div>
-                </div>
-                <div id="resultCertificacion" style="display: none; text-align: center;">
-                    <i class="fas fa-trophy" style="font-size: 3rem; color: #FFD700;"></i>
-                    <h2 id="scoreCertificacion">Puntaje: 0/5</h2>
-                    <button class="btn btn-secondary" onclick="restartQuiz('certificacion')">Reintentar</button>
+                    
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <button class="btn btn-primary" onclick="generatePDF()">
+                            <i class="fas fa-file-pdf"></i> GENERAR REPORTE PDF
+                        </button>
+                        <button class="btn btn-secondary" onclick="restartEvaluation()">
+                            <i class="fas fa-redo"></i> REINICIAR TODO
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -3158,56 +3175,68 @@
             }
         }
 
-        // Quiz Data and Logic
-        let currentMoment = 'lectiva';
-        let currentQuestionIndex = 0;
-        let score = 0;
-
+        // Evaluación Vida Laboral Logic
         const quizData = {
-            lectiva: [
-                { q: "¿Cuál es el primer paso oficial para iniciar la EP?", a: ["Diligenciar el F-165", "Comprar el uniforme", "Renunciar al SENA", "Pedir el certificado"], c: 0, f: "El formato GFPI-F-165 es el primer paso para seleccionar tu alternativa oficial." },
-                { q: "¿Cuántos RAP de etapa lectiva debes tener aprobados?", a: ["50%", "75%", "90%", "100%"], c: 3, f: "Debes haber aprobado la totalidad de los Resultados de Aprendizaje de la etapa lectiva." },
-                { q: "¿Qué estado debes tener en Sofia Plus para iniciar EP?", a: ["Retirado", "En formación", "Certificado", "Egresado"], c: 1, f: "Debes estar activo y 'En formación' para que se te asigne un instructor de EP." },
-                { q: "¿Qué documento regula actualmente la etapa productiva?", a: ["Acuerdo 001 de 2000", "Acuerdo 009 de 2024", "Ley 789 de 2002", "Constitución Política"], c: 1, f: "El Acuerdo 009 de 2024 es la normativa vigente para la etapa productiva." },
-                { q: "¿Quién da el aval de la alternativa seleccionada?", a: ["Tu mamá", "La empresa", "Coordinación Académica", "El celador"], c: 2, f: "La Coordinación Académica debe validar que tu alternativa sea pertinente." },
-                { q: "¿Qué taller es obligatorio 4 meses antes de EP?", a: ["Taller de Manualidades", "Taller de Vida Laboral", "Taller de Natación", "Ninguno"], c: 1, f: "El Taller de Vida Laboral es fundamental para tu preparación profesional." },
-                { q: "¿Cuál es el plazo máximo para iniciar EP tras lectiva?", a: ["6 meses", "12 meses", "24 meses", "Ilimitado"], c: 2, f: "Tienes hasta 2 años para iniciar y completar tu etapa productiva." },
-                { q: "¿Quién afilia a la ARL en Contrato de Aprendizaje?", a: ["El SENA", "El Aprendiz", "La Empresa", "La Alcaldía"], c: 2, f: "En el contrato de aprendizaje, la empresa asume la afiliación a ARL." },
-                { q: "¿Qué alternativa NO requiere contrato?", a: ["Contrato Aprendizaje", "Pasantía", "Vínculo Laboral", "Ninguna"], c: 1, f: "La pasantía es una alternativa que no genera vínculo contractual de aprendizaje." },
-                { q: "¿Qué documento formaliza tu alternativa ante el SENA?", a: ["Cédula", "Copia del Contrato o Acta", "Carnet", "Foto"], c: 1, f: "Debes entregar el soporte legal (Contrato/Acta) para que el SENA asigne instructor." }
-            ],
-            productiva: [
-                { q: "¿Cómo se llama el formato de bitácora?", a: ["F-023", "F-147", "F-165", "F-191"], c: 1, f: "El formato GFPI-F-147 es la Bitácora de Seguimiento." },
-                { q: "¿A quién corresponde la Visita 1?", a: ["Final", "Parcial", "Concertación", "Despido"], c: 2, f: "La primera visita sirve para concertar el plan de trabajo con el jefe inmediato." },
-                { q: "¿Cada cuánto se entrega una bitácora?", a: ["Diario", "Semanal", "Mensual", "Al final"], c: 2, f: "Se recomienda entrega mensual o según acuerdes con tu instructor." },
-                { q: "¿Quiénes deben firmar la bitácora?", a: ["Solo tú", "Solo el jefe", "Tú, el Jefe y el Instructor", "Nadie"], c: 2, f: "La validez del documento requiere las tres firmas." },
-                { q: "¿Qué es la visita parcial?", a: ["Un saludo", "Evaluación de mitad de etapa", "El cierre", "Una entrevista"], c: 1, f: "Es el segundo momento de seguimiento para medir avances." },
-                { q: "¿Cuándo se considera deserción por inasistencia?", a: ["1 día", "3 días consecutivos", "3 días al mes", "5 días"], c: 1, f: "3 días consecutivos sin justificación a la empresa es causal de deserción." },
-                { q: "¿Qué hacer si cambias de jefe inmediato?", a: ["Nada", "Renunciar", "Informar al Instructor", "Llorar"], c: 2, f: "Cualquier cambio de jefe debe ser reportado para actualizar el seguimiento." },
-                { q: "¿Qué evalúa el jefe en la etapa productiva?", a: ["Tu ropa", "Tus notas", "Desempeño técnico y actitud", "Nada"], c: 2, f: "El jefe califica tu aplicación de conocimientos y cumplimiento normativo." },
-                { q: "¿Qué pasa si faltas a una visita programada?", a: ["Nada", "Riesgo de sanción/cancelación", "Te dan premio", "Te cambian de curso"], c: 1, f: "Inasistir a citas programadas sin excusa es una falta al reglamento." },
-                { q: "¿Dónde registras tus actividades diarias?", a: ["En Facebook", "En la Bitácora F-147", "En un cuaderno", "No se registran"], c: 1, f: "La bitácora es el soporte legal de tus actividades en la empresa." }
-            ],
-            certificacion: [
-                { q: "¿Qué porcentaje del carnet debe verse destruido?", a: ["10%", "50%", "Totalmente", "0%"], c: 2, f: "Se debe evidenciar el carnet invalidado (cortado) para el proceso." },
-                { q: "¿Al cuánto por ciento se amplía la cédula?", a: ["100%", "150%", "200%", "50%"], c: 1, f: "Es el estándar requerido para legibilidad en el expediente." },
-                { q: "¿Qué certificado pides en la APE?", a: ["De salud", "De registro y postulación", "De bachiller", "De natación"], c: 1, f: "La Agencia Pública de Empleo emite un certificado tras actualizar tu perfil." },
-                { q: "¿Qué es the juicio evaluativo?", a: ["Una condena", "Aprobado en Sofia Plus", "Un consejo", "Una entrevista"], c: 1, f: "Es el estado final que permite iniciar el trámite de diploma." },
-                { q: "¿Quién emite la certificación laboral?", a: ["El SENA", "La Empresa", "Tú mismo", "El vecino"], c: 1, f: "La empresa debe certificar con fechas y funciones tu tiempo laborado." },
-                { q: "¿Cuál es el formato final de evaluación?", a: ["F-147", "F-023 Final", "F-165", "APE"], c: 1, f: "El F-023 Final cierra formalmente tu etapa productiva." },
-                { q: "¿Qué examen es requisito para tecnólogos?", a: ["Saber 11", "Saber TyT", "Examen Médico", "Ninguno"], c: 1, f: "El examen de Estado Saber TyT es obligatorio para la certificación de tecnólogos." },
-                { q: "¿Qué debe incluir la carta de la empresa?", a: ["Solo el nombre", "Fechas y funciones", "El sueldo", "La dirección"], c: 1, f: "La certificación debe ser clara en el tiempo laborado y las tareas realizadas." },
-                { q: "¿Cuánto tiempo hay para certificarse tras fin?", a: ["24 horas", "Plazo de 2 años lectiva+prod", "10 años", "Ilimitado"], c: 1, f: "Debes cumplir los tiempos reglamentarios para no perder la formación." },
-                { q: "¿Quién firma el certificado de la APE?", a: ["El Jefe", "El Instructor", "Funcionario APE", "Tú"], c: 2, f: "Es un documento generado por el sistema o funcionario de la Agencia." }
+            main: [
+                { 
+                    q: "Asistir a las reuniones que programe el Centro de Formación para seguimiento a las actividades desarrolladas durante la etapa productiva. La no asistencia a estas reuniones debe justificarse mediante excusa comprobable. corresponde a:", 
+                    a: ["Un Derecho del Aprendiz", "Una Actividad del proceso de formación - compromiso SIGA", "Un Deber del Aprendiz", "Ninguna de las anteriores"], 
+                    c: 2, 
+                    f: "Según el reglamento del aprendiz, asistir a las reuniones de seguimiento es un deber fundamental para garantizar el acompañamiento institucional." 
+                },
+                { 
+                    q: "Si el trámite para la consecución de contrato de aprendizaje o de otra de las alternativas para el desarrollo de la etapa productiva, es realizado directamente por el aprendiz, este deberá informar inmediatamente cuando esto ocurra, a:", 
+                    a: ["Los responsables de apoyar este proceso en el Centro de Formación", "Coordinador Académico", "Líder de Contrato de Aprendizaje", "Coordinador de Formación Profesional"], 
+                    c: 0, 
+                    f: "Es vital informar inmediatamente a los responsables de apoyar el proceso en el Centro para legalizar tu etapa productiva y asegurar la cobertura de la ARL." 
+                },
+                { 
+                    q: "Firmar contratos de aprendizaje sin realizar la gestión a través del Sistema Gestión Virtual de Aprendices, o sin encontrarse registrado como aprendiz disponible en dicha plataforma. corresponde a:", 
+                    a: ["Un Deber", "Una Prohibición", "Un deber legal de la empresa", "Ninguna de las anteriores"], 
+                    c: 1, 
+                    f: "No puedes firmar contratos de aprendizaje por fuera del SGVA o sin estar disponible en la plataforma; esto constituye una prohibición según el reglamento." 
+                },
+                { 
+                    q: "Cuando el Aprendiz opta por otra alternativa diferente al contrato de aprendizaje, esta debe ser aprobada por:", 
+                    a: ["Instructor", "Coordinador Académico", "Según a la alternativa que escoja el coordinador académico, el líder de emprendimiento o el líder de producción de centro", "Subdirector de Centro"], 
+                    c: 2, 
+                    f: "La aprobación depende de la coordinación o líderes específicos (Emprendimiento, Producción o Coordinador Académico) según la opción elegida." 
+                },
+                { 
+                    q: "No se consideran alternativas para el desarrollo de la etapa productiva:", 
+                    a: ["Apoyo a una institución estatal nacional", "Asesoría PYMES", "SENA proveedor SENA", "Servicio militar obligatorio"], 
+                    c: 3, 
+                    f: "El servicio militar obligatorio no es una alternativa válida para el desarrollo de la etapa productiva, ya que no permite la aplicación directa de competencias." 
+                }
             ]
         };
 
-        // Quiz Multi-State
         const quizState = {
-            lectiva: { index: 0, score: 0 },
-            productiva: { index: 0, score: 0 },
-            certificacion: { index: 0, score: 0 }
+            main: { index: 0, score: 0, userAnswers: [] }
         };
+
+        function startEvaluation() {
+            const name = document.getElementById('userName').value;
+            const id = document.getElementById('userId').value;
+            const ficha = document.getElementById('userFicha').value;
+            const program = document.getElementById('userProgram').value;
+
+            if (!name || !id || !ficha || !program) {
+                Swal.fire({
+                    title: 'Campos Incompletos',
+                    text: 'Por favor completa todos tus datos antes de iniciar.',
+                    icon: 'warning',
+                    confirmButtonColor: '#39A900',
+                    background: '#0a0a0f',
+                    color: '#f8fafc'
+                });
+                return;
+            }
+
+            document.getElementById('userDataForm').style.display = 'none';
+            document.getElementById('quizContainerMain').style.display = 'block';
+            loadQuestion('main');
+        }
 
         function loadQuestion(moment) {
             const state = quizState[moment];
@@ -3248,6 +3277,13 @@
             const feedback = document.getElementById(`feedback${titleKey}`);
 
             for (let btn of options) btn.disabled = true;
+            
+            state.userAnswers.push({
+                question: data.q,
+                answer: data.a[choice],
+                correct: choice === data.c,
+                correctAnswer: data.a[data.c]
+            });
 
             if (choice === data.c) {
                 options[choice].style.background = '#39a900';
@@ -3282,12 +3318,150 @@
             }
         }
 
-        function restartQuiz(moment) {
-            const titleKey = moment.charAt(0).toUpperCase() + moment.slice(1);
-            quizState[moment] = { index: 0, score: 0 };
-            document.getElementById(`quizContent${titleKey}`).style.display = 'block';
-            document.getElementById(`result${titleKey}`).style.display = 'none';
-            loadQuestion(moment);
+        function showCaseStudy() {
+            document.getElementById('quizContainerMain').style.display = 'none';
+            document.getElementById('caseStudyContainer').style.display = 'block';
+        }
+
+        function restartEvaluation() {
+            quizState.main = { index: 0, score: 0, userAnswers: [] };
+            document.getElementById('caseStudyContainer').style.display = 'none';
+            document.getElementById('resultMain').style.display = 'none';
+            document.getElementById('quizContentMain').style.display = 'block';
+            document.getElementById('userDataForm').style.display = 'block';
+            
+            // Clear inputs
+            document.getElementById('caseAns1').value = '';
+            document.getElementById('caseAns2').value = '';
+            document.getElementById('caseAns3').value = '';
+            document.getElementById('caseAns4').value = '';
+        }
+
+        async function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            const name = document.getElementById('userName').value;
+            const id = document.getElementById('userId').value;
+            const ficha = document.getElementById('userFicha').value;
+            const program = document.getElementById('userProgram').value;
+            
+            const case1 = document.getElementById('caseAns1').value;
+            const case2 = document.getElementById('caseAns2').value;
+            const case3 = document.getElementById('caseAns3').value;
+            const case4 = document.getElementById('caseAns4').value;
+
+            // Page 1
+            doc.setFontSize(22);
+            doc.setTextColor(57, 169, 0);
+            doc.text("SENA - MANUAL DEL APRENDIZ", 105, 20, { align: "center" });
+            doc.setFontSize(16);
+            doc.text("REPORTE DE EVALUACIÓN: VIDA LABORAL", 105, 30, { align: "center" });
+            
+            doc.setFontSize(10);
+            doc.setTextColor(100, 100, 100);
+            doc.text(`Generado el: ${new Date().toLocaleString()}`, 20, 40);
+            
+            // User Data Box
+            doc.setDrawColor(57, 169, 0);
+            doc.setLineWidth(0.5);
+            doc.rect(15, 45, 180, 40);
+            
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.setFont("helvetica", "bold");
+            doc.text("DATOS DEL APRENDIZ:", 20, 55);
+            doc.setFont("helvetica", "normal");
+            doc.text(`Nombre: ${name}`, 20, 62);
+            doc.text(`Identificación: ${id}`, 20, 69);
+            doc.text(`Ficha: ${ficha} | Programa: ${program}`, 20, 76);
+            
+            // Results Summary
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(14);
+            doc.text(`PUNTAJE EVALUACIÓN TÉCNICA: ${quizState.main.score} / 5`, 20, 100);
+            
+            let y = 110;
+            doc.setFontSize(12);
+            doc.text("DETALLE DE RESPUESTAS:", 20, y);
+            y += 10;
+            doc.setFontSize(9);
+            
+            quizState.main.userAnswers.forEach((ans, i) => {
+                const splitQ = doc.splitTextToSize(`${i+1}. ${ans.question}`, 170);
+                doc.setFont("helvetica", "bold");
+                doc.text(splitQ, 20, y);
+                y += splitQ.length * 4;
+                
+                doc.setFont("helvetica", "italic");
+                doc.text(`Tu respuesta: ${ans.answer}`, 25, y);
+                y += 5;
+                
+                if (!ans.correct) {
+                    doc.setTextColor(200, 0, 0);
+                    doc.text(`[INCORRECTO] Respuesta correcta: ${ans.correctAnswer}`, 25, y);
+                } else {
+                    doc.setTextColor(0, 150, 0);
+                    doc.text(`[CORRECTO]`, 25, y);
+                }
+                doc.setTextColor(0, 0, 0);
+                doc.setFont("helvetica", "normal");
+                y += 8;
+                
+                if (y > 270) {
+                    doc.addPage();
+                    y = 20;
+                }
+            });
+            
+            if (y > 240) { doc.addPage(); y = 20; }
+            
+            // Case Study
+            y += 10;
+            doc.setFontSize(14);
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(255, 0, 255);
+            doc.text("ESTUDIO DE CASO: MARLON PÉREZ", 20, y);
+            y += 8;
+            doc.setTextColor(0);
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "italic");
+            const caseDesc = "Escenario: Marlon Pérez (Aprendiz) presencia cómo a su jefe se le caen $600.000 y nadie más está presente.";
+            doc.text(caseDesc, 20, y);
+            y += 10;
+            
+            const cases = [
+                { q: "¿Qué haría usted en esa situación?", a: case1 },
+                { q: "¿Qué pasaría si toma el dinero y no informa?", a: case2 },
+                { q: "¿Cuál sería el proceso si la empresa lo descubre?", a: case3 },
+                { q: "¿Cuál es el proceso del SENA tras el informe?", a: case4 }
+            ];
+            
+            cases.forEach((c, i) => {
+                doc.setFont("helvetica", "bold");
+                doc.text(`${i+1}. ${c.q}`, 20, y);
+                y += 6;
+                doc.setFont("helvetica", "normal");
+                const splitA = doc.splitTextToSize(c.a || "Sin respuesta diligenciada.", 170);
+                doc.text(splitA, 20, y);
+                y += splitA.length * 4 + 6;
+                
+                if (y > 270) {
+                    doc.addPage();
+                    y = 20;
+                }
+            });
+
+            doc.save(`Reporte_Evaluacion_SENA_${name.replace(/\s+/g, '_')}.pdf`);
+            
+            Swal.fire({
+                title: 'Reporte Generado',
+                text: 'El documento PDF ha sido descargado correctamente.',
+                icon: 'success',
+                confirmButtonColor: '#39A900',
+                background: '#0a0a0f',
+                color: '#f8fafc'
+            });
         }
 
         // Tab Logic for Alternativas
@@ -3318,7 +3492,7 @@
 
         // Initialize on Load
         document.addEventListener('DOMContentLoaded', () => {
-            ['lectiva', 'productiva', 'certificacion'].forEach(m => loadQuestion(m));
+            loadQuestion('main');
 
             const savedTheme = localStorage.getItem('theme_app');
             if (savedTheme === 'dark') {
