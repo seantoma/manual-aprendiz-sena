@@ -9,7 +9,7 @@
     <meta name="keywords" content="SENA, Recursos, Formatos, Descargas, Guías EP">
     <link rel="icon" href="https://img.icons8.com/?size=48&id=rEkHtgGbERQY&format=png" type="image/png">
     <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&family=Share+Tech+Mono&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -17,10 +17,12 @@
             --neon-green: #39A900;
             --neon-magenta: #ff00ff;
             --neon-cyan: #00f3ff;
+            --neon-orange: #ff6b00;
             --bg-deep: #05050a;
             --card-bg: rgba(15, 15, 25, 0.9);
             --glass-border: 1px solid rgba(0, 243, 255, 0.2);
             --text-main: #f8fafc;
+            --text-muted: #94a3b8;
             --text-glow: 0 0 10px rgba(0, 243, 255, 0.3);
 
             /* AI Bot Specifics */
@@ -118,9 +120,299 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 3rem auto;
             padding: 0 2rem;
+        }
+
+        .section-label {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.25rem;
+        }
+
+        .section-label h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 0.5px;
+            color: var(--text-main);
+        }
+
+        .section-label p {
+            margin: 0.35rem 0 0;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .section-label a {
+            color: var(--neon-cyan);
+            text-decoration: none;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .section-label a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- DOWNLOAD HUB --- */
+        .download-hub {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: var(--glass-border);
+            border-radius: 8px;
+            padding: 1.75rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.06);
+        }
+
+        .download-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .filter-chip {
+            appearance: none;
+            border: 1px solid rgba(0, 243, 255, 0.25);
+            background: rgba(0, 0, 0, 0.35);
+            color: var(--text-muted);
+            padding: 0.45rem 0.9rem;
+            border-radius: 999px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .filter-chip:hover {
+            border-color: var(--neon-cyan);
+            color: var(--neon-cyan);
+        }
+
+        .filter-chip.active {
+            background: rgba(57, 169, 0, 0.15);
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            box-shadow: 0 0 12px rgba(57, 169, 0, 0.25);
+        }
+
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1rem;
+        }
+
+        .file-card {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            padding: 1.1rem;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+            min-height: 100%;
+        }
+
+        .file-card:hover {
+            border-color: rgba(0, 243, 255, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+        }
+
+        .file-card-top {
+            display: flex;
+            gap: 0.85rem;
+            align-items: flex-start;
+        }
+
+        .file-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            font-size: 1.15rem;
+        }
+
+        .file-icon.xlsx {
+            background: rgba(57, 169, 0, 0.15);
+            color: var(--neon-green);
+            border: 1px solid rgba(57, 169, 0, 0.35);
+        }
+
+        .file-icon.docx {
+            background: rgba(0, 243, 255, 0.12);
+            color: var(--neon-cyan);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+        }
+
+        .file-meta {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .file-code {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--neon-cyan);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 0.2rem;
+        }
+
+        .file-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.98rem;
+            line-height: 1.3;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        .file-desc {
+            margin: 0.35rem 0 0;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .file-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.55rem;
+        }
+
+        .badge {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            padding: 0.2rem 0.45rem;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--text-muted);
+        }
+
+        .badge.ver {
+            color: var(--neon-green);
+            border-color: rgba(57, 169, 0, 0.4);
+            background: rgba(57, 169, 0, 0.08);
+        }
+
+        .file-actions {
+            margin-top: auto;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-download {
+            background: transparent;
+            border: 2px solid var(--neon-green);
+            color: var(--neon-green);
+            text-decoration: none;
+            padding: 0.7rem 1rem;
+            border-radius: 6px;
+            font-weight: 800;
+            font-size: 0.78rem;
+            font-family: 'Share Tech Mono', monospace;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            transition: 0.25s;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .btn-download:hover {
+            background: var(--neon-green);
+            color: #041000;
+            box-shadow: 0 0 18px rgba(57, 169, 0, 0.45);
+        }
+
+        .btn-download:focus-visible {
+            outline: 2px solid var(--neon-cyan);
+            outline-offset: 2px;
+        }
+
+        .btn-download.is-downloading {
+            pointer-events: none;
+            opacity: 0.75;
+            border-color: var(--neon-cyan);
+            color: var(--neon-cyan);
+        }
+
+        .download-zone {
+            margin-top: 1.5rem;
+        }
+
+        .download-zone .file-grid {
+            margin-top: 0.75rem;
+        }
+
+        .guides-anchor {
+            scroll-margin-top: 1.5rem;
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 28px;
+            transform: translateX(-50%) translateY(20px);
+            background: #0b1220;
+            border: 1px solid var(--neon-green);
+            color: var(--text-main);
+            padding: 0.85rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            z-index: 10001;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s, transform 0.25s;
+            box-shadow: 0 0 24px rgba(57, 169, 0, 0.25);
+            max-width: min(92vw, 420px);
+            text-align: center;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 2rem;
+                letter-spacing: 1px;
+            }
+
+            .download-hub {
+                padding: 1.15rem;
+            }
+
+            .file-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .example-tabs {
+                gap: 0.25rem;
+            }
+
+            .tab-btn {
+                padding: 0.75rem 0.85rem;
+                font-size: 0.75rem;
+            }
         }
 
         .guide-card {
@@ -237,34 +529,6 @@
             background: rgba(255, 255, 255, 0.02);
         }
 
-        .download-zone {
-            margin-top: 2rem;
-            text-align: right;
-        }
-
-        .btn-download {
-            background: transparent;
-            border: 2px solid var(--neon-orange);
-            color: var(--neon-orange);
-            text-decoration: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 4px;
-            font-weight: 800;
-            font-size: 0.9rem;
-            font-family: 'Share Tech Mono', monospace;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
-
-        .btn-download:hover {
-            background: var(--neon-orange);
-            color: black;
-            box-shadow: 0 0 20px var(--neon-orange);
-        }
-
         .toggle-icon {
             transition: transform 0.3s;
             color: var(--neon-green);
@@ -371,12 +635,177 @@
 <body>
 
     <div class="header">
-        <h1><i class="fas fa-book"></i> Guías y Ejemplos Prácticos</h1>
-        <p>Modelos de referencia visual para construir tu plan de trabajo y bitácora sin errores.</p>
+        <h1><i class="fas fa-folder-open"></i> Recursos y Formatos</h1>
+        <p>Descarga los formatos oficiales de Etapa Productiva y consulta guías prácticas para diligenciarlos sin errores.</p>
         <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Volver al Portal</a>
     </div>
 
     <div class="container">
+
+        <!-- Centro de Descargas -->
+        <section class="download-hub" id="descargas" aria-labelledby="hub-title">
+            <div class="section-label">
+                <div>
+                    <h2 id="hub-title"><i class="fas fa-cloud-download-alt" style="color:var(--neon-green)"></i> Centro de Descargas</h2>
+                    <p>Todos los archivos en un solo lugar. Filtra por tipo y descarga con un clic.</p>
+                </div>
+                <a href="#guias">Ver guías de diligenciamiento ↓</a>
+            </div>
+
+            <div class="download-filters" role="tablist" aria-label="Filtrar formatos">
+                <button type="button" class="filter-chip active" data-filter="all">Todos</button>
+                <button type="button" class="filter-chip" data-filter="f023">Visitas F-023</button>
+                <button type="button" class="filter-chip" data-filter="f147">Bitácora F-147</button>
+                <button type="button" class="filter-chip" data-filter="f165">Alternativa F-165</button>
+                <button type="button" class="filter-chip" data-filter="apoyo">Apoyo</button>
+            </div>
+
+            <div class="file-grid" id="file-grid">
+                <article class="file-card" data-category="f023">
+                    <div class="file-card-top">
+                        <div class="file-icon xlsx" aria-hidden="true"><i class="fas fa-file-excel"></i></div>
+                        <div class="file-meta">
+                            <div class="file-code">GFPI-F-023</div>
+                            <h3 class="file-title">Visita 1 — Concertación</h3>
+                            <p class="file-desc">Plan de trabajo al inicio de la etapa.</p>
+                            <div class="file-badges"><span class="badge">.xlsx</span><span class="badge ver">Oficial</span></div>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <a class="btn-download" href="Formatos/Visita 1 GFPI-F023.xlsx" download data-label="Visita 1 (F-023)">
+                            <i class="fas fa-download"></i> Descargar
+                        </a>
+                    </div>
+                </article>
+
+                <article class="file-card" data-category="f023">
+                    <div class="file-card-top">
+                        <div class="file-icon xlsx" aria-hidden="true"><i class="fas fa-file-excel"></i></div>
+                        <div class="file-meta">
+                            <div class="file-code">GFPI-F-023</div>
+                            <h3 class="file-title">Visita 2 — Seguimiento parcial</h3>
+                            <p class="file-desc">Avance a mitad de la etapa productiva.</p>
+                            <div class="file-badges"><span class="badge">.xlsx</span><span class="badge ver">Oficial</span></div>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <a class="btn-download" href="Formatos/Visita 2 GFPI-F023.xlsx" download data-label="Visita 2 (F-023)">
+                            <i class="fas fa-download"></i> Descargar
+                        </a>
+                    </div>
+                </article>
+
+                <article class="file-card" data-category="f023">
+                    <div class="file-card-top">
+                        <div class="file-icon xlsx" aria-hidden="true"><i class="fas fa-file-excel"></i></div>
+                        <div class="file-meta">
+                            <div class="file-code">GFPI-F-023</div>
+                            <h3 class="file-title">Visita 3 — Seguimiento final</h3>
+                            <p class="file-desc">Cierre y evaluación de la etapa.</p>
+                            <div class="file-badges"><span class="badge">.xlsx</span><span class="badge ver">Oficial</span></div>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <a class="btn-download" href="Formatos/Visita 3 GFPI-F023.xlsx" download data-label="Visita 3 (F-023)">
+                            <i class="fas fa-download"></i> Descargar
+                        </a>
+                    </div>
+                </article>
+
+                <article class="file-card" data-category="f023">
+                    <div class="file-card-top">
+                        <div class="file-icon xlsx" aria-hidden="true"><i class="fas fa-file-excel"></i></div>
+                        <div class="file-meta">
+                            <div class="file-code">GFPI-F-023</div>
+                            <h3 class="file-title">Visita extraordinaria</h3>
+                            <p class="file-desc">Novedades o incumplimientos.</p>
+                            <div class="file-badges"><span class="badge">.xlsx</span><span class="badge ver">Oficial</span></div>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <a class="btn-download" href="Formatos/Visita Extraordinaria GFPI-F023.xlsx" download data-label="Visita Extraordinaria (F-023)">
+                            <i class="fas fa-download"></i> Descargar
+                        </a>
+                    </div>
+                </article>
+
+                <article class="file-card" data-category="f147">
+                    <div class="file-card-top">
+                        <div class="file-icon xlsx" aria-hidden="true"><i class="fas fa-file-excel"></i></div>
+                        <div class="file-meta">
+                            <div class="file-code">GFPI-F-147</div>
+                            <h3 class="file-title">Bitácora de seguimiento</h3>
+                            <p class="file-desc">Registro mensual de actividades en empresa.</p>
+                            <div class="file-badges"><span class="badge">.xlsx</span><span class="badge ver">V4</span></div>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <a class="btn-download" href="Formatos/BITACORAS GFPI-F-147V4.xlsx" download data-label="Bitácora F-147 V4">
+                            <i class="fas fa-download"></i> Descargar
+                        </a>
+                    </div>
+                </article>
+
+                <article class="file-card" data-category="f165">
+                    <div class="file-card-top">
+                        <div class="file-icon xlsx" aria-hidden="true"><i class="fas fa-file-excel"></i></div>
+                        <div class="file-meta">
+                            <div class="file-code">GFPI-F-165</div>
+                            <h3 class="file-title">Selección de alternativa</h3>
+                            <p class="file-desc">Declarar o cambiar modalidad de EP.</p>
+                            <div class="file-badges"><span class="badge">.xlsx</span><span class="badge ver">V4</span></div>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <a class="btn-download" href="Formatos/GFPI-F-165V4_Seleccion_Alternativa.xlsx" download data-label="F-165 V4">
+                            <i class="fas fa-download"></i> Descargar
+                        </a>
+                    </div>
+                </article>
+
+                <article class="file-card" data-category="apoyo">
+                    <div class="file-card-top">
+                        <div class="file-icon docx" aria-hidden="true"><i class="fas fa-file-word"></i></div>
+                        <div class="file-meta">
+                            <div class="file-code">Apoyo</div>
+                            <h3 class="file-title">Carta de intención</h3>
+                            <p class="file-desc">Para práctica laboral / pasantía.</p>
+                            <div class="file-badges"><span class="badge">.docx</span></div>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <a class="btn-download" href="Formatos/FORMATO_CARTA_DE_INTENCIÓN_PARA_LA_REALIZACIÓN_DE_PRACTICA_LABORAL.docx" download data-label="Carta de Intención">
+                            <i class="fas fa-download"></i> Descargar
+                        </a>
+                    </div>
+                </article>
+
+                <article class="file-card" data-category="apoyo">
+                    <div class="file-card-top">
+                        <div class="file-icon docx" aria-hidden="true"><i class="fas fa-file-word"></i></div>
+                        <div class="file-meta">
+                            <div class="file-code">GOR-F-084</div>
+                            <h3 class="file-title">Acta de certificación</h3>
+                            <p class="file-desc">Documento de cierre y certificación.</p>
+                            <div class="file-badges"><span class="badge">.docx</span><span class="badge ver">v2</span></div>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <a class="btn-download" href="Formatos/Formato acta certificacion aprendices GOR-F 084v2.docx" download data-label="Acta GOR-F-084">
+                            <i class="fas fa-download"></i> Descargar
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <div class="section-label guides-anchor" id="guias">
+            <div>
+                <h2><i class="fas fa-book-open" style="color:var(--neon-cyan)"></i> Guías y ejemplos</h2>
+                <p>Cómo diligenciar cada formato con ejemplos y recomendaciones.</p>
+            </div>
+            <a href="#descargas">↑ Volver a descargas</a>
+        </div>
 
         <!-- Guía F-023 Concertación -->
         <div class="guide-card">
@@ -394,8 +823,9 @@
                 </ul>
 
                 <div class="example-tabs">
-                    <button class="tab-btn active" onclick="openTab(event, 'f023-ejemplo')">Ejemplo y Descarga</button>
+                    <button class="tab-btn active" onclick="openTab(event, 'f023-ejemplo')">Ejemplo</button>
                     <button class="tab-btn" onclick="openTab(event, 'f023-consejos')">Recomendaciones</button>
+                    <button class="tab-btn" onclick="openTab(event, 'f023-descarga')">Descargas</button>
                 </div>
 
                 <div id="f023-ejemplo" class="tab-content active">
@@ -437,24 +867,6 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <!-- Dropdown Download Zone -->
-                    <div class="download-zone"
-                        style="display: flex; justify-content: flex-end; align-items: center; gap: 10px; background: rgba(57, 169, 0, 0.1); padding: 15px; border-radius: 8px;">
-                        <label for="f023-select"
-                            style="font-family: 'Share Tech Mono'; color: var(--neon-green);">SELECCIONAR
-                            FORMATO:</label>
-                        <select id="f023-select"
-                            style="background: #000; color: white; border: 1px solid var(--neon-green); padding: 8px; border-radius: 4px; font-family: 'Montserrat';">
-                            <option value="Formatos/Visita 1 GFPI-F023.xlsx">Visita 1 - Concertación</option>
-                            <option value="Formatos/Visita 2 GFPI-F023.xlsx">Visita 2 - Seguimiento Parcial</option>
-                            <option value="Formatos/Visita 3 GFPI-F023.xlsx">Visita 3 - Seguimiento Final</option>
-                            <option value="Formatos/Visita Extraordinaria GFPI-F023.xlsx">Visita Extraordinaria</option>
-                        </select>
-                        <a href="#" id="f023-btn" onclick="downloadSelectedF023(event)" class="btn-download">
-                            <i class="fas fa-file-download"></i> Descargar
-                        </a>
-                    </div>
                 </div>
 
                 <div id="f023-consejos" class="tab-content">
@@ -467,6 +879,60 @@
                         <li><strong>Firmas:</strong> Es vital que este documento tenga las 3 firmas (Tú, Jefe,
                             Instructor) desde el primer mes.</li>
                     </ul>
+                </div>
+
+                <div id="f023-descarga" class="tab-content">
+                    <p style="color: var(--text-muted); margin-bottom: 0.75rem;">Elige la visita que necesitas:</p>
+                    <div class="download-zone file-grid">
+                        <article class="file-card">
+                            <div class="file-card-top">
+                                <div class="file-icon xlsx"><i class="fas fa-file-excel"></i></div>
+                                <div class="file-meta">
+                                    <div class="file-code">Visita 1</div>
+                                    <h3 class="file-title">Concertación</h3>
+                                </div>
+                            </div>
+                            <div class="file-actions">
+                                <a class="btn-download" href="Formatos/Visita 1 GFPI-F023.xlsx" download data-label="Visita 1 (F-023)"><i class="fas fa-download"></i> Descargar</a>
+                            </div>
+                        </article>
+                        <article class="file-card">
+                            <div class="file-card-top">
+                                <div class="file-icon xlsx"><i class="fas fa-file-excel"></i></div>
+                                <div class="file-meta">
+                                    <div class="file-code">Visita 2</div>
+                                    <h3 class="file-title">Seguimiento parcial</h3>
+                                </div>
+                            </div>
+                            <div class="file-actions">
+                                <a class="btn-download" href="Formatos/Visita 2 GFPI-F023.xlsx" download data-label="Visita 2 (F-023)"><i class="fas fa-download"></i> Descargar</a>
+                            </div>
+                        </article>
+                        <article class="file-card">
+                            <div class="file-card-top">
+                                <div class="file-icon xlsx"><i class="fas fa-file-excel"></i></div>
+                                <div class="file-meta">
+                                    <div class="file-code">Visita 3</div>
+                                    <h3 class="file-title">Seguimiento final</h3>
+                                </div>
+                            </div>
+                            <div class="file-actions">
+                                <a class="btn-download" href="Formatos/Visita 3 GFPI-F023.xlsx" download data-label="Visita 3 (F-023)"><i class="fas fa-download"></i> Descargar</a>
+                            </div>
+                        </article>
+                        <article class="file-card">
+                            <div class="file-card-top">
+                                <div class="file-icon xlsx"><i class="fas fa-file-excel"></i></div>
+                                <div class="file-meta">
+                                    <div class="file-code">Extra</div>
+                                    <h3 class="file-title">Extraordinaria</h3>
+                                </div>
+                            </div>
+                            <div class="file-actions">
+                                <a class="btn-download" href="Formatos/Visita Extraordinaria GFPI-F023.xlsx" download data-label="Visita Extraordinaria"><i class="fas fa-download"></i> Descargar</a>
+                            </div>
+                        </article>
+                    </div>
                 </div>
             </div>
         </div>
@@ -521,10 +987,19 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="download-zone">
-                        <a href="Formatos/BITACORAS GFPI-F-147V4.xlsx" class="btn-download" download><i
-                                class="fas fa-file-download"></i> Descargar Bitácora
-                            F-147</a>
+                    <div class="download-zone" style="max-width: 360px; margin-left: auto;">
+                        <article class="file-card">
+                            <div class="file-card-top">
+                                <div class="file-icon xlsx"><i class="fas fa-file-excel"></i></div>
+                                <div class="file-meta">
+                                    <div class="file-code">GFPI-F-147 · V4</div>
+                                    <h3 class="file-title">Bitácora mensual</h3>
+                                </div>
+                            </div>
+                            <div class="file-actions">
+                                <a class="btn-download" href="Formatos/BITACORAS GFPI-F-147V4.xlsx" download data-label="Bitácora F-147 V4"><i class="fas fa-download"></i> Descargar</a>
+                            </div>
+                        </article>
                     </div>
                 </div>
 
@@ -568,13 +1043,20 @@
                 </div>
 
                 <div id="f165-descarga" class="tab-content">
-                    <div class="download-zone"
-                        style="text-align: center; padding: 20px; background: rgba(255,107,0,0.05); border-radius: 8px;">
-                        <p style="margin-bottom: 20px; color: var(--text-main);">Descarga el formato oficial
-                            actualizado (V4):</p>
-                        <a href="Formatos/GFPI-F-165V4_Seleccion_Alternativa.xlsx" class="btn-download" download>
-                            <i class="fas fa-file-excel"></i> Descargar F-165 V4 (.xlsx)
-                        </a>
+                    <div class="download-zone" style="max-width: 380px; margin: 0 auto;">
+                        <article class="file-card">
+                            <div class="file-card-top">
+                                <div class="file-icon xlsx"><i class="fas fa-file-excel"></i></div>
+                                <div class="file-meta">
+                                    <div class="file-code">GFPI-F-165 · V4</div>
+                                    <h3 class="file-title">Selección de alternativa</h3>
+                                    <p class="file-desc">Formato oficial actualizado.</p>
+                                </div>
+                            </div>
+                            <div class="file-actions">
+                                <a class="btn-download" href="Formatos/GFPI-F-165V4_Seleccion_Alternativa.xlsx" download data-label="F-165 V4"><i class="fas fa-download"></i> Descargar</a>
+                            </div>
+                        </article>
                     </div>
                 </div>
             </div>
@@ -588,16 +1070,33 @@
             </div>
             <div class="guide-body">
                 <p>Documentos complementarios para práctica laboral y certificación.</p>
-                <div class="download-zone"
-                    style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; padding: 20px; background: rgba(0, 243, 255, 0.05); border-radius: 8px;">
-                    <a href="Formatos/FORMATO_CARTA_DE_INTENCIÓN_PARA_LA_REALIZACIÓN_DE_PRACTICA_LABORAL.docx"
-                        class="btn-download" download>
-                        <i class="fas fa-file-word"></i> Carta de Intención (Práctica Laboral)
-                    </a>
-                    <a href="Formatos/Formato acta certificacion aprendices GOR-F 084v2.docx" class="btn-download"
-                        download>
-                        <i class="fas fa-file-word"></i> Acta de Certificación (GOR-F-084)
-                    </a>
+                <div class="download-zone file-grid">
+                    <article class="file-card">
+                        <div class="file-card-top">
+                            <div class="file-icon docx"><i class="fas fa-file-word"></i></div>
+                            <div class="file-meta">
+                                <div class="file-code">Apoyo</div>
+                                <h3 class="file-title">Carta de intención</h3>
+                                <p class="file-desc">Práctica laboral / pasantía.</p>
+                            </div>
+                        </div>
+                        <div class="file-actions">
+                            <a class="btn-download" href="Formatos/FORMATO_CARTA_DE_INTENCIÓN_PARA_LA_REALIZACIÓN_DE_PRACTICA_LABORAL.docx" download data-label="Carta de Intención"><i class="fas fa-download"></i> Descargar</a>
+                        </div>
+                    </article>
+                    <article class="file-card">
+                        <div class="file-card-top">
+                            <div class="file-icon docx"><i class="fas fa-file-word"></i></div>
+                            <div class="file-meta">
+                                <div class="file-code">GOR-F-084 · v2</div>
+                                <h3 class="file-title">Acta de certificación</h3>
+                                <p class="file-desc">Cierre y certificación.</p>
+                            </div>
+                        </div>
+                        <div class="file-actions">
+                            <a class="btn-download" href="Formatos/Formato acta certificacion aprendices GOR-F 084v2.docx" download data-label="Acta GOR-F-084"><i class="fas fa-download"></i> Descargar</a>
+                        </div>
+                    </article>
                 </div>
             </div>
         </div>
@@ -671,6 +1170,8 @@
 
     </div>
 
+    <div id="download-toast" class="toast" role="status" aria-live="polite"></div>
+
     <!-- MAYA AI AGENT -->
     <button id="ai-fab"><i class="fas fa-paw"></i></button>
     <div id="chat-window" class="chat-window hidden">
@@ -734,14 +1235,14 @@
 
                 const intents = [
                     { keys: ['hola', 'buenos', 'quien eres', 'maya'], response: "¡Guau! 🐾 Soy <b>MAYA</b>, tu Border Collie guardiana. ¿Te ayudo con los formatos?" },
-                    { keys: ['bitacora', 'f-147', 'bitácora', 'reporte', 'f147'], response: "<b>📋 Bitácora F-147:</b><br>Entrega <b>mensual</b>, firmada por tu jefe.<br><br>👆 Tienes el link de descarga arriba en esta misma página." },
-                    { keys: ['f023', 'f-023', 'planeación', 'seguimiento', 'visita'], response: "<b>📝 F-023:</b><br>Registro de tus 3 visitas técnicas.<br><br>👆 Los formatos de cada visita están arriba para descargar." },
-                    { keys: ['f165', 'f-165', 'seleccion', 'selección', 'alternativa'], response: "<b>📄 F-165 (Selección Alternativa):</b><br>Está disponible en la sección inferior de esta página para descarga." },
+                    { keys: ['bitacora', 'f-147', 'bitácora', 'reporte', 'f147'], response: "<b>📋 Bitácora F-147:</b><br>Entrega <b>mensual</b>, firmada por tu jefe.<br><br>👆 Descárgala en el <a href='#descargas' style='color:var(--neon-cyan)'>Centro de Descargas</a> (filtro Bitácora)." },
+                    { keys: ['f023', 'f-023', 'planeación', 'seguimiento', 'visita'], response: "<b>📝 F-023:</b><br>Registro de tus visitas técnicas.<br><br>👆 Usa el filtro <b>Visitas F-023</b> en el <a href='#descargas' style='color:var(--neon-cyan)'>Centro de Descargas</a>." },
+                    { keys: ['f165', 'f-165', 'seleccion', 'selección', 'alternativa'], response: "<b>📄 F-165 (Selección Alternativa):</b><br>Está en el <a href='#descargas' style='color:var(--neon-cyan)'>Centro de Descargas</a> — versión V4." },
                     { keys: ['fecha', 'termino', 'cuando', 'cuanto'], response: "📅 Usa nuestra <a href='calculadora_fechas.html' style='color:var(--neon-cyan)'><b>Calculadora de Fechas</b></a> para proyectar tu cierre." },
                     { keys: ['contrato', 'pasantia', 'vinculacion'], response: "Consulta las 5 alternativas en el <a href='manual_aprendiz.html' style='color:var(--neon-cyan)'>Manual del Aprendiz</a>." },
                     { keys: ['sofia', 'plus', 'plataforma'], response: "<a href='https://oferta.senasofiaplus.edu.co/' target='_blank' style='color:var(--neon-cyan)'>SofiaPlus</a> para estado académico y certificados." },
                     { keys: ['ayuda', 'soporte', 'zendesk', 'problema'], response: "Soporte técnico: <a href='https://sena.zendesk.com' target='_blank' style='color:var(--neon-cyan)'>Zendesk SENA</a>" },
-                    { keys: ['formato', 'formatos', 'gfpi', 'descarga'], response: "👆 ¡Estás en la página correcta! Todos los formatos GFPI están arriba para descargar." }
+                    { keys: ['formato', 'formatos', 'gfpi', 'descarga'], response: "👆 ¡Estás en la página correcta! Ve al <a href='#descargas' style='color:var(--neon-cyan)'><b>Centro de Descargas</b></a> al inicio de esta página." }
                 ];
 
                 let bestMatch = null, maxScore = 0;
@@ -826,18 +1327,6 @@
         styleSheet.innerText = aiStyles;
         document.head.appendChild(styleSheet);
 
-        function downloadSelectedF023(event) {
-            event.preventDefault();
-            const select = document.getElementById('f023-select');
-            const url = select.value;
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = url.split('/').pop();
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
         function toggleGuide(header) {
             header.classList.toggle('active');
             const body = header.nextElementSibling;
@@ -857,6 +1346,44 @@
             parent.querySelector(`#${tabName}`).style.display = "block";
             evt.currentTarget.className += " active";
         }
+
+        // Filters + download feedback
+        const toastEl = document.getElementById('download-toast');
+        let toastTimer;
+
+        function showToast(message) {
+            if (!toastEl) return;
+            toastEl.innerHTML = '<i class="fas fa-check-circle" style="color:var(--neon-green);margin-right:0.4rem;"></i>' + message;
+            toastEl.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2600);
+        }
+
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                const filter = chip.dataset.filter;
+                document.querySelectorAll('#file-grid .file-card').forEach(card => {
+                    const show = filter === 'all' || card.dataset.category === filter;
+                    card.style.display = show ? '' : 'none';
+                });
+            });
+        });
+
+        document.querySelectorAll('a.btn-download[download]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const label = btn.dataset.label || 'archivo';
+                btn.classList.add('is-downloading');
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Descargando...';
+                showToast('Descarga iniciada: <b>' + label + '</b>');
+                setTimeout(() => {
+                    btn.classList.remove('is-downloading');
+                    btn.innerHTML = original;
+                }, 1200);
+            });
+        });
     </script>
 
 
