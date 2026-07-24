@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es" data-theme="dark">
 
 <head>
@@ -9,27 +9,34 @@
     <meta name="keywords" content="SENA, Aprendiz, Etapa Productiva, Manual, SofiaPlus">
     <link rel="icon" href="https://img.icons8.com/?size=48&id=rEkHtgGbERQY&format=png" type="image/png">
     <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Outfit:wght@300;400;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Outfit:wght@300;400;600;700&family=Share+Tech+Mono&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/portal.css">
     <style>
         :root {
             /* Neon Cyberpunk Palette */
-            --bg-deep: #020617;
+            --bg-deep: #05050a;
             --glass-bg: rgba(15, 23, 42, 0.7);
             --glass-border: rgba(0, 243, 255, 0.2);
             --accent-cyan: #00f3ff;
             --accent-magenta: #ff00ff;
             --accent-emerald: #10b981;
+            --accent-orange: #ff6b00;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --glow-cyan: rgba(0, 243, 255, 0.3);
-            --glow-magenta: rgba(255, 0, 0, 0.3);
+            --glow-magenta: rgba(255, 0, 255, 0.3);
+            --glow-indigo: rgba(0, 243, 255, 0.25);
+            --glow-emerald: rgba(16, 185, 129, 0.35);
             --font-main: 'Outfit', 'Montserrat', sans-serif;
 
             /* Legacy Palette for Compatibility */
             --accent-indigo: var(--accent-cyan);
             --neon-green: #39A900;
+            --neon-orange: var(--accent-orange);
+            --radius: 8px;
+            --radius-lg: 12px;
         }
 
         * {
@@ -108,7 +115,7 @@
         .scheduler-card {
             background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(30, 41, 59, 0.85));
             border: 1px solid rgba(16, 185, 129, 0.35);
-            border-radius: 28px;
+            border-radius: 12px;
             padding: 2.5rem 2.25rem;
             display: flex;
             flex-direction: column;
@@ -175,7 +182,7 @@
             gap: 0.85rem;
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            border-radius: 28px;
+            border-radius: 12px;
             padding: 1.5rem 1.35rem;
             backdrop-filter: blur(12px);
             box-shadow: 0 0 28px var(--glow-cyan);
@@ -188,7 +195,7 @@
             padding: 14px;
             background: rgba(2, 6, 23, 0.55);
             border: 1px solid var(--glass-border);
-            border-radius: 18px;
+            border-radius: 10px;
             transition: all 0.4s ease;
         }
 
@@ -279,7 +286,7 @@
         .glass-card {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            border-radius: 30px;
+            border-radius: 12px;
             padding: 3rem 2rem;
             text-decoration: none;
             display: flex;
@@ -303,7 +310,7 @@
             width: 80px;
             height: 80px;
             background: linear-gradient(135deg, var(--accent-indigo), #312e81);
-            border-radius: 20px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -336,7 +343,7 @@
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--glass-border);
             color: white;
-            border-radius: 15px;
+            border-radius: 8px;
             font-weight: 600;
             transition: all 0.3s ease;
         }
@@ -362,171 +369,9 @@
             font-size: 0.9rem;
         }
 
-        /* --- AI ASSISTANT --- */
-        #ai-fab {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta));
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 1.8rem;
-            cursor: pointer;
-            box-shadow: 0 0 20px var(--glow-cyan);
-            z-index: 1000;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #ai-fab:hover {
-            transform: scale(1.1) rotate(15deg);
-            box-shadow: 0 0 40px var(--glow-magenta);
-        }
-
-        .chat-window {
-            position: fixed;
-            bottom: 125px;
-            right: 40px;
-            width: 380px;
-            height: 580px;
-            background: #0f172a;
-            border: 1px solid var(--accent-cyan);
-            border-radius: 20px;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            z-index: 1000;
-            transform-origin: bottom right;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(20px);
-        }
-
-        .chat-window.hidden {
-            transform: scale(0);
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .chat-header {
-            background: linear-gradient(90deg, #0f172a, #1e293b);
-            padding: 1.5rem;
-            color: var(--accent-cyan);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--accent-cyan);
-        }
-
-        .chat-header h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .close-chat {
-            background: none;
-            border: none;
-            color: var(--accent-magenta);
-            cursor: pointer;
-            font-size: 1.4rem;
-            transition: 0.3s;
-        }
-
-        .close-chat:hover {
-            transform: rotate(90deg);
-            text-shadow: 0 0 10px var(--accent-magenta);
-        }
-
-        .chat-body {
-            flex: 1;
-            padding: 1.5rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-            background: rgba(15, 23, 42, 0.9);
-        }
-
-        .msg {
-            max-width: 85%;
-            padding: 1rem;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            position: relative;
-        }
-
-        .msg.bot {
-            align-self: flex-start;
-            background: rgba(30, 41, 59, 0.8);
-            color: #e2e8f0;
-            border-left: 3px solid var(--accent-cyan);
-            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .msg.user {
-            align-self: flex-end;
-            background: var(--accent-magenta);
-            color: white;
-            border-right: 3px solid #fff;
-            box-shadow: -5px 5px 15px rgba(255, 0, 255, 0.2);
-        }
-
-        .chat-input-area {
-            padding: 1.2rem;
-            background: #1e293b;
-            display: flex;
-            gap: 0.8rem;
-            border-top: 1px solid rgba(0, 243, 255, 0.3);
-        }
-
-        .chat-input {
-            flex: 1;
-            padding: 0.8rem 1rem;
-            font-family: inherit;
-            font-size: 0.95rem;
-        }
-
-        .chat-input:focus {
-            outline: none;
-            border-color: var(--accent-indigo);
-        }
-
-        .send-btn {
-            background: var(--accent-indigo);
-            border: none;
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
 
         @media (max-width: 768px) {
-            .elegant-header h1 {
-                font-size: 2.5rem;
-            }
-
-            .chat-window {
-                width: calc(100% - 40px);
-                right: 20px;
-                left: 20px;
-            }
-
-            #ai-fab {
-                bottom: 20px;
-                right: 20px;
-            }
+            .elegant-header h1 { font-size: 2.5rem; }
         }
     </style>
 </head>
@@ -562,7 +407,6 @@
     </section>
 
     <main class="dashboard-container">
-        <!-- Manual -->
         <a href="manual_aprendiz.html" class="glass-card">
             <div class="card-icon"><i class="fas fa-book-open"></i></div>
             <h2>Manual del Aprendiz</h2>
@@ -570,15 +414,13 @@
             <div class="btn-elegant">Explorar Manual</div>
         </a>
 
-        <!-- Calculadora -->
         <a href="calculadora_fechas.html" class="glass-card orange">
             <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
-            <h2>Gestión de Fechas</h2>
+            <h2>Calculadora de Etapa Productiva</h2>
             <p>Proyecta y calcula con precisión los tiempos de finalización de tu proceso formativo.</p>
             <div class="btn-elegant">Abrir Herramienta</div>
         </a>
 
-        <!-- Formatos -->
         <a href="recursos_etapa_productiva.html" class="glass-card">
             <div class="card-icon"><i class="fas fa-folder-open"></i></div>
             <h2>Recursos y Formatos</h2>
@@ -588,159 +430,16 @@
     </main>
 
     <footer>
-        <p>&copy; 2025 SENA | Centro de Formación | Todos los derechos reservados</p>
+        <p>&copy; 2026 SENA | Centro de Servicios Financieros | Todos los derechos reservados</p>
     </footer>
 
-    <!-- MAYA AI AGENT -->
-    <button id="ai-fab"><i class="fas fa-paw"></i></button>
-    <div id="chat-window" class="chat-window hidden">
-        <div class="chat-header">
-            <h3>🐺 MAYA Assistant AI</h3>
-            <button id="close-chat" class="close-chat"><i class="fas fa-times"></i></button>
-        </div>
-        <div id="chat-body" class="chat-body">
-            <div class="msg bot">¡Auuuu! 🐺 ¡Hola, Aprendiz! Soy <b>MAYA</b>, tu Malamute guardiana de la Etapa
-                Productiva. ¿En qué proceso puedo orientarte hoy?</div>
-        </div>
-        <div class="chat-input-area">
-            <input type="text" id="chat-input" class="chat-input" placeholder="Pregunta a Maya sobre tu etapa...">
-            <button id="send-btn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
-        </div>
-    </div>
-
     <script>
-        // Update current date
         const d = new Date();
         const options = { weekday: 'long', day: 'numeric', month: 'long' };
         document.getElementById('date-badge').innerText = d.toLocaleDateString('es-ES', options).toUpperCase();
-
-        // MAYA BOT - Alaska Malamute Assistant
-        const fab = document.getElementById('ai-fab');
-        const chatWin = document.getElementById('chat-window');
-        const closeBtn = document.getElementById('close-chat');
-        const chatInput = document.getElementById('chat-input');
-        const sendBtn = document.getElementById('send-btn');
-        const chatBody = document.getElementById('chat-body');
-
-        // Maya Branding - Alaska Malamute icon
-        if (fab) {
-            fab.innerHTML = '<img src="https://img.icons8.com/?size=96&id=rEkHtgGbERQY&format=png" style="width:70%; filter: brightness(1.2);">';
-            fab.addEventListener('click', () => chatWin.classList.toggle('hidden'));
-        }
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => chatWin.classList.add('hidden'));
-        }
-
-        function addMsg(text, sender) {
-            const m = document.createElement('div');
-            m.className = `msg ${sender}`;
-            if (sender === 'user') {
-                m.textContent = text;
-            } else {
-                m.innerHTML = text;
-            }
-            chatBody.appendChild(m);
-            chatBody.scrollTop = chatBody.scrollHeight;
-        }
-
-        function showTyping() {
-            const dot = document.createElement('div');
-            dot.className = 'msg bot typing';
-            dot.innerHTML = '<i class="fas fa-paw fa-bounce"></i> Maya está rastreando la información...';
-            dot.id = 'typing-indicator';
-            chatBody.appendChild(dot);
-            chatBody.scrollTop = chatBody.scrollHeight;
-        }
-
-        function processQuery(q) {
-            const query = q.toLowerCase();
-            showTyping();
-
-            setTimeout(() => {
-                const indicator = document.getElementById('typing-indicator');
-                if (indicator) indicator.remove();
-
-                let r = "Aprendiz, mi instinto no localiza ese rastro específico en la documentación interna. ¿Deseas que rastreemos en la red global SENA?<br><br><div style='display:flex; gap:5px; flex-wrap:wrap;'><a href='https://www.google.com/search?q=SENA+etapa+productiva+" + encodeURIComponent(query) + "' target='_blank' style='background:var(--accent-cyan); color:#020617; padding:5px 10px; border-radius:5px; text-decoration:none; font-size:0.7rem; font-weight:600;'>Rastrear en Google</a></div>";
-
-                const intents = [
-                    {
-                        keys: ['hola', 'bienvenido', 'saludo', 'quien eres', 'maya', 'buenos'],
-                        response: "¡Guau! 🐾 Saludos, Aprendiz. Soy <b>MAYA</b>, tu Border Collie guardiana de la Etapa Productiva SENA.<br><br><b>Mis capacidades:</b><br>1. <b>Normativa:</b> Te guío sobre la <b>Guía 040</b> y el <b>Acuerdo 009</b>.<br>2. <b>Formatos:</b> Te indico qué documentos necesitas (F-147, F-023, F-165...).<br>3. <b>Plazos:</b> Te alerto sobre fechas y vencimientos clave.<br>4. <b>Recursos:</b> Te dirijo a las herramientas del portal.<br><br>¿En qué proceso te ayudo hoy?"
-                    },
-                    {
-                        keys: ['bitacora', 'f-147', 'bitácora', 'formato 147', 'reporte'],
-                        response: "<b>📋 Bitácora GFPI-F-147 - Tu registro mensual:</b><br><br>La <b>Bitácora (F-147)</b> es tu instrumento de seguimiento <b>MENSUAL</b> obligatorio.<br><br><b>¿Qué debes hacer?</b><br>• Llenarla <b>cada mes</b> sin excepción<br>• Describir las actividades realizadas en la empresa<br>• Obtener la firma de tu <b>jefe inmediato</b><br>• Entregar al instructor en cada visita de seguimiento<br><br><b>⚠️ Importante:</b><br>• Sin bitácoras al día = <b>riesgo de novedad académica</b><br>• Bitácoras sin firma = <b>no son válidas</b><br><br>📍 Descarga el formato en <a href='recursos_etapa_productiva.html' style='color:var(--accent-cyan)'>Recursos y Formatos</a>."
-                    },
-                    {
-                        keys: ['f023', 'f-023', 'planeación', 'planeacion', 'seguimiento', 'evaluacion', 'evaluación', 'visita'],
-                        response: "<b>📝 Formato GFPI-F-023 - Planeación y Seguimiento:</b><br><br>El <b>F-023</b> es el registro oficial de las <b>3 visitas técnicas</b> que tu instructor realiza durante tu etapa productiva.<br><br><b>Las 3 visitas:</b><br>1. <b>Visita Inicial:</b> Validación del plan de trabajo<br>2. <b>Visita de Seguimiento:</b> Revisión de avance y competencias<br>3. <b>Visita Final:</b> Evaluación y cierre de etapa<br><br><b>Tu responsabilidad:</b><br>• Estar presente en TODAS las visitas<br>• Tener bitácoras al día para cada visita<br>• Coordinar con tu empresa la agenda<br><br>📍 Descárgalo en <a href='recursos_etapa_productiva.html' style='color:var(--accent-cyan)'>Recursos y Formatos</a>."
-                    },
-                    {
-                        keys: ['alternativa', 'contrato', 'pasantia', 'pasantía', 'vinculacion', 'proyecto productivo', 'f165', 'f-165', 'monitoria', 'monitoría'],
-                        response: "<b>🔄 Las 5 Alternativas de Etapa Productiva:</b><br><br>Según la <b>Guía 040</b>, puedes realizar tu etapa productiva así:<br><br>1. <b>Contrato de Aprendizaje</b> (Ley 789/2002) - La más común<br>2. <b>Pasantía</b> - Convenio con empresa sin relación laboral<br>3. <b>Vinculación Laboral</b> - Si ya estás trabajando en tu área<br>4. <b>Proyecto Productivo</b> - Emprendimiento aprobado por el SENA<br>5. <b>Monitoría</b> - Apoyo a procesos internos<br><br>📄 La elección se formaliza con el formato <b>F-165</b>. Consulta el <a href='manual_aprendiz.html' style='color:var(--accent-cyan)'>Manual del Aprendiz</a> para más detalles."
-                    },
-                    {
-                        keys: ['acuerdo 009', 'acuerdo 9', 'reglamento', 'faltas', 'sanciones', 'sancion', 'falta'],
-                        response: "<b>📜 Acuerdo 009 de 2024 - Reglamento del Aprendiz:</b><br><br>Este acuerdo regula tus derechos y deberes como aprendiz SENA.<br><br><b>Lo más importante para ti:</b><br>• <b>Art. 9:</b> Tus deberes en etapa productiva<br>• <b>Art. 23:</b> Faltas académicas por incumplimiento<br>• <b>Art. 24:</b> Faltas disciplinarias<br>• <b>Art. 25:</b> Procedimiento para novedades<br><br><b>⚠️ Alerta Importante:</b><br>• <b>3 días hábiles sin justificación</b> = Reporte de deserción<br>• <b>Inasistencia a visitas</b> = Falta académica<br>• <b>No entregar bitácoras</b> = Novedad académica<br><br>Consulta el texto completo en el <a href='manual_aprendiz.html' style='color:var(--accent-cyan)'>Manual del Aprendiz</a>."
-                    },
-                    {
-                        keys: ['tyt', 'prueba saber', 'saber pro', 'saber tyt', 'certificacion', 'certificación', 'icfes'],
-                        response: "<b>🎓 Pruebas Saber TyT - Requisito de Certificación:</b><br><br>Las <b>Pruebas Saber TyT</b> son obligatorias para tecnólogos y pueden ser requeridas para técnicos.<br><br><b>Lo que debes saber:</b><br>• <b>Registro:</b> Te registras en el ICFES con el código de tu programa SENA<br>• <b>Plazo:</b> Debes presentarla ANTES del cierre de tu etapa productiva<br>• <b>Costo:</b> Parcialmente subsidiado por el SENA<br>• <b>Resultado:</b> NO determina si apruebas, pero es requisito para obtener tu titulación<br><br><b>⚠️ Si no la presentas, tu certificación se puede retrasar.</b><br><br>Pregunta a tu instructor sobre las fechas exactas."
-                    },
-                    {
-                        keys: ['sofia', 'plus', 'sofiaplus', 'plataforma'],
-                        response: "<b>🌐 SENA SofiaPlus - Tu plataforma académica:</b><br><br><a href='https://oferta.senasofiaplus.edu.co/' target='_blank' style='color:var(--accent-cyan)'><b>SofiaPlus</b></a> es donde puedes:<br>• Verificar tu estado académico<br>• Descargar certificados<br>• Consultar tu programa de formación<br>• Ver tus RAPs y competencias<br><br>⚠️ <b>Tip:</b> Si tienes problemas de acceso, usa <a href='https://sena.zendesk.com' target='_blank' style='color:var(--accent-magenta)'>Zendesk SENA</a> para soporte técnico."
-                    },
-                    {
-                        keys: ['fecha', 'termino', 'final', 'cuanto me falta', 'calculador', 'cuando termino'],
-                        response: "<b>📅 ¿Cuánto te falta? Usa la Calculadora:</b><br><br>Puedes proyectar tu fecha exacta de cierre de etapa productiva con nuestra herramienta.<br><br>👉 <a href='calculadora_fechas.html' style='color:var(--accent-cyan)'><b>Abrir Calculadora de Fechas</b></a><br><br>Solo necesitas ingresar tu fecha de inicio y la duración de tu programa. La calculadora te mostrará tu fecha de finalización y los días restantes."
-                    },
-                    {
-                        keys: ['formato', 'formatos', 'gfpi', 'descarga', 'documento', 'acta'],
-                        response: "<b>📂 Formatos GFPI que necesitas:</b><br><br>• <b>GFPI-F-023:</b> Planeación, seguimiento y evaluación<br>• <b>GFPI-F-147:</b> Bitácora mensual<br>• <b>GFPI-F-165:</b> Aval de alternativa de etapa productiva<br>• <b>GFPI-F-008:</b> Planeación de la evaluación<br>• <b>GFPI-F-009:</b> Juicio evaluativo<br>• <b>GFPI-F-123:</b> Acta de inicio<br><br>📍 Todos los formatos están disponibles en <a href='recursos_etapa_productiva.html' style='color:var(--accent-cyan)'><b>Recursos y Formatos</b></a>."
-                    },
-                    {
-                        keys: ['momento', '6 momento', 'seis momento', 'los 6', 'guia 040', 'momentos'],
-                        response: "<b>🐾 Los 6 Momentos de tu Etapa Productiva (Guía 040):</b><br><br><b>Momento 1 - Inicio:</b> Se valida tu plan de trabajo y empresa. Formato <b>F-023</b>.<br><b>Momento 2 - Primer Seguimiento:</b> A los 2 meses. Tu instructor verifica avance.<br><b>Momento 3 - Segundo Seguimiento:</b> A los 4 meses. Evaluación de RAPs.<br><b>Momento 4 - Tercer Seguimiento:</b> A los 6 meses. Revisión integral.<br><b>Momento 5 - Evaluación Final:</b> Cierre técnico con formato <b>F-008</b>.<br><b>Momento 6 - Certificación:</b> Validación para tu título. Formato <b>F-009</b>.<br><br>⚠️ <b>Debes tener bitácoras al día en CADA momento.</b>"
-                    },
-                    {
-                        keys: ['ayuda', 'soporte', 'zendesk', 'problema', 'error'],
-                        response: "<b>🆘 ¿Necesitas ayuda técnica?</b><br><br>• <a href='https://sena.zendesk.com' target='_blank' style='color:var(--accent-cyan)'><b>Zendesk SENA</b></a> - Soporte técnico oficial<br>• <a href='https://www.sena.edu.co' target='_blank' style='color:var(--accent-cyan)'><b>Portal SENA</b></a> - Información general<br>• <a href='https://oferta.senasofiaplus.edu.co' target='_blank' style='color:var(--accent-cyan)'><b>SofiaPlus</b></a> - Plataforma académica<br><br>Si el problema es con tu etapa productiva, contacta directamente a tu <b>instructor de seguimiento</b>."
-                    },
-                    {
-                        keys: ['fuente', 'fuentes', 'enlace', 'link', 'web', 'noticias'],
-                        response: "<b>🌐 Fuentes Oficiales SENA:</b><br><br>• <a href='https://www.sena.edu.co' target='_blank' style='color:var(--accent-cyan)'><b>Portal SENA</b></a> - Sitio oficial<br>• <a href='https://oferta.senasofiaplus.edu.co' target='_blank' style='color:var(--accent-cyan)'><b>SofiaPlus</b></a> - Gestión académica<br>• <a href='https://sena.zendesk.com' target='_blank' style='color:var(--accent-cyan)'><b>Zendesk SENA</b></a> - Soporte técnico<br>• <a href='https://compromiso.sena.edu.co' target='_blank' style='color:var(--accent-cyan)'><b>Compromiso SENA</b></a> - Sistema de Gestión<br><br>⚠️ Solo usa fuentes con dominio <b>.edu.co</b> o <b>.gov.co</b> para documentación oficial."
-                    }
-                ];
-
-                let bestMatch = null;
-                let maxScore = 0;
-                intents.forEach(intent => {
-                    let score = 0;
-                    intent.keys.forEach(key => { if (query.includes(key)) score++; });
-                    if (score > maxScore) { maxScore = score; bestMatch = intent.response; }
-                });
-
-                if (bestMatch) r = bestMatch;
-                addMsg(r, 'bot');
-            }, 1500);
-        }
-
-        if (sendBtn) {
-            sendBtn.addEventListener('click', () => {
-                if (!chatInput.value.trim()) return;
-                addMsg(chatInput.value, 'user');
-                processQuery(chatInput.value);
-                chatInput.value = '';
-            });
-        }
-
-        if (chatInput) {
-            chatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') sendBtn.click();
-            });
-        }
     </script>
+    <script src="js/portal-nav.js"></script>
+    <script src="js/maya.js"></script>
 </body>
 
 </html>

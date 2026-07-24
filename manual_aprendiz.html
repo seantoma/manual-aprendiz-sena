@@ -10,13 +10,15 @@
     <meta name="keywords" content="SENA, Aprendiz, Manual, Etapa Productiva, Bitácora, F-147">
     <link rel="icon" href="https://img.icons8.com/?size=48&id=rEkHtgGbERQY&format=png" type="image/png">
     <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&family=Share+Tech+Mono&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
+            --neon-orange: #ff6b00;
+            --accent-orange: #ff6b00;
             /* Neon Cyberpunk Palette */
             --neon-green: #39A900;
             --neon-magenta: #ff00ff;
@@ -845,20 +847,24 @@
         }
 
         .tab-btn {
-            padding: 1rem 1.5rem;
-            border: 2px solid var(--sena-verde);
-            background: white;
-            color: var(--sena-verde);
-            border-radius: 8px;
+            padding: 0.75rem 1.1rem;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            color: var(--text-muted, #94a3b8);
             cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            font-family: 'Share Tech Mono', monospace;
+            text-transform: uppercase;
+            font-size: 0.78rem;
+            border-radius: 6px;
+            transition: 0.2s;
         }
 
         .tab-btn:hover,
         .tab-btn.active {
-            background: var(--sena-verde);
-            color: white;
+            color: var(--neon-green, #39A900);
+            border-color: var(--neon-green, #39A900);
+            background: rgba(57, 169, 0, 0.12);
+            box-shadow: 0 0 12px rgba(57, 169, 0, 0.25);
         }
 
         .tab-content {
@@ -956,19 +962,103 @@
         .duties-box p {
             color: var(--text-main);
         }
+    
+        .nav-container {
+            position: sticky;
+            top: 52px;
+            z-index: 800;
+            background: rgba(5, 5, 10, 0.94);
+            border-bottom: 1px solid rgba(0, 243, 255, 0.15);
+            backdrop-filter: blur(10px);
+        }
+        .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 0.4rem;
+            overflow-x: auto;
+            padding: 0.65rem 1rem;
+            -webkit-overflow-scrolling: touch;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .nav-btn {
+            flex: 0 0 auto;
+            white-space: nowrap;
+            border-radius: 999px !important;
+            padding: 0.55rem 0.95rem !important;
+        }
+        .hub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .hub-card {
+            display: block;
+            text-align: left;
+            background: rgba(0,0,0,0.35);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            border-radius: 8px;
+            padding: 1.1rem;
+            color: inherit;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+            font: inherit;
+        }
+        .hub-card:hover {
+            border-color: var(--neon-cyan, #00f3ff);
+            box-shadow: 0 0 16px rgba(0, 243, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        .hub-card h3 { margin: 0 0 0.35rem; color: var(--neon-cyan, #00f3ff); font-size: 1.05rem; }
+        .hub-card p { margin: 0; color: #94a3b8; font-size: 0.88rem; }
+        .section-nav-bar {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin: 1.5rem 0 0.5rem;
+            flex-wrap: wrap;
+        }
+        .section-nav-bar button {
+            background: transparent;
+            border: 1px solid rgba(0, 243, 255, 0.35);
+            color: var(--neon-cyan, #00f3ff);
+            padding: 0.55rem 0.9rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+        }
+        body.print-checklist-only .header,
+        body.print-checklist-only .nav-container,
+        body.print-checklist-only .portal-nav,
+        body.print-checklist-only #ai-fab,
+        body.print-checklist-only .chat-window,
+        body.print-checklist-only .section:not(#checklist),
+        body.print-checklist-only .top-controls,
+        body.print-checklist-only .footer {
+            display: none !important;
+        }
+        body.print-checklist-only #checklist {
+            display: block !important;
+        }
+        @media print {
+            body.print-checklist-only * { box-shadow: none !important; }
+        }
+
+            #themeToggle, .theme-toggle { display: none !important; }
     </style>
+    <link rel="stylesheet" href="css/portal.css">
 </head>
 
 <body>
     <!-- Header -->
     <header class="header">
         <div class="top-controls">
-            <a href="index.html" class="nav-btn"
-                style="background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.3);"><i
-                    class="fas fa-home"></i> Volver al Portal</a>
-            <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema">
-                <i class="fas fa-moon"></i>
-            </button>
+            <a href="index.html" class="nav-btn" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(0,243,255,0.25);"><i class="fas fa-home"></i> Portal</a>
         </div>
         <h1><i class="fas fa-user-graduate"></i> Manual del Aprendiz</h1>
         <p>Tu Guía Completa para la Etapa Productiva - SENA</p>
@@ -977,41 +1067,82 @@
     </header>
 
     <!-- Navigation -->
-    <nav class="nav-container">
+    
+    <nav class="nav-container" aria-label="Secciones del manual">
         <div class="nav">
-            <button class="nav-btn active" onclick="showSection('inicio')">
+            <button type="button" class="nav-btn active" onclick="showSection('inicio')">
                 <i class="fas fa-home"></i> Inicio
             </button>
-            <button class="nav-btn" onclick="showSection('que-es')">
-                <i class="fas fa-question-circle"></i> ¿Qué es la EP?
+            <button type="button" class="nav-btn" onclick="showSection('aprende')">
+                <i class="fas fa-lightbulb"></i> Aprende
             </button>
-            <button class="nav-btn" onclick="showSection('alternativas')">
-                <i class="fas fa-tasks"></i> Alternativas
-            </button>
-            <button class="nav-btn" onclick="showSection('proceso')">
+            <button type="button" class="nav-btn" onclick="showSection('proceso')">
                 <i class="fas fa-route"></i> Mi Proceso
             </button>
-            <button class="nav-btn" onclick="showSection('bitacora')">
-                <i class="fas fa-book"></i> La Bitácora
+            <button type="button" class="nav-btn" onclick="showSection('docs-hub')">
+                <i class="fas fa-folder-open"></i> Documentos
             </button>
-            <button class="nav-btn" onclick="showSection('derechos')">
-                <i class="fas fa-balance-scale"></i> Derechos y Deberes
-            </button>
-            <button class="nav-btn" onclick="showSection('documentos')">
-                <i class="fas fa-handshake"></i> Visitas
-            </button>
-            <button class="nav-btn" onclick="showSection('quiz')">
-                <i class="fas fa-gamepad"></i> EVALUACIÓN VIDA LABORAL
-            </button>
-            <button class="nav-btn" onclick="showSection('checklist')">
-                <i class="fas fa-check-square"></i> Mi Checklist
+            <button type="button" class="nav-btn" onclick="showSection('practica')">
+                <i class="fas fa-clipboard-check"></i> Practica
             </button>
         </div>
     </nav>
 
+
     <div class="container">
 
         <!-- Section: Inicio -->
+        
+        <!-- Hubs -->
+        <section id="aprende" class="section">
+            <div class="card">
+                <h2><i class="fas fa-lightbulb"></i> Aprende</h2>
+                <p>Conceptos clave de la Etapa Productiva.</p>
+                <div class="hub-grid">
+                    <button type="button" class="hub-card" onclick="showSection('que-es')"><h3>¿Qué es la EP?</h3><p>Definición, momentos y marco normativo.</p></button>
+                    <button type="button" class="hub-card" onclick="showSection('alternativas')"><h3>Alternativas</h3><p>Contrato, pasantía, vínculo, proyecto y monitoría.</p></button>
+                    <button type="button" class="hub-card" onclick="showSection('derechos')"><h3>Derechos y Deberes</h3><p>Acuerdo 009 y responsabilidades del aprendiz.</p></button>
+                </div>
+                <div class="section-nav-bar">
+                    <button type="button" onclick="showSection('inicio')">← Inicio</button>
+                    <button type="button" onclick="showSection('proceso')">Siguiente: Mi Proceso →</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="docs-hub" class="section">
+            <div class="card">
+                <h2><i class="fas fa-folder-open"></i> Documentos</h2>
+                <p>Bitácoras, visitas y descargas oficiales.</p>
+                <div class="hub-grid">
+                    <button type="button" class="hub-card" onclick="showSection('bitacora')"><h3>La Bitácora</h3><p>Cómo diligenciar el F-147 mes a mes.</p></button>
+                    <button type="button" class="hub-card" onclick="showSection('documentos')"><h3>Visitas F-023</h3><p>Concertación, parcial y final.</p></button>
+                    <a class="hub-card" href="recursos_etapa_productiva.html#descargas"><h3>Centro de Descargas</h3><p>Todos los formatos GFPI actualizados.</p></a>
+                    <a class="hub-card" href="https://outlook.office.com/book/ReservasEtapaProductivaCSF@sena.edu.co/" target="_blank" rel="noopener"><h3>Agendar visita</h3><p>MS Bookings con tu instructor.</p></a>
+                    <a class="hub-card" href="calculadora_fechas.html"><h3>Calculadora</h3><p>Proyecta fechas de entregas y cierre.</p></a>
+                </div>
+                <div class="section-nav-bar">
+                    <button type="button" onclick="showSection('proceso')">← Mi Proceso</button>
+                    <button type="button" onclick="showSection('practica')">Siguiente: Practica →</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="practica" class="section">
+            <div class="card">
+                <h2><i class="fas fa-clipboard-check"></i> Practica</h2>
+                <p>Evalúa tu comprensión y verifica tu avance.</p>
+                <div class="hub-grid">
+                    <button type="button" class="hub-card" onclick="showSection('quiz')"><h3>Evaluación vida laboral</h3><p>Caso práctico y quiz.</p></button>
+                    <button type="button" class="hub-card" onclick="showSection('checklist')"><h3>Mi Checklist</h3><p>Lista de verificación para certificar.</p></button>
+                </div>
+                <div class="section-nav-bar">
+                    <button type="button" onclick="showSection('docs-hub')">← Documentos</button>
+                    <button type="button" onclick="showSection('checklist')">Ir al Checklist →</button>
+                </div>
+            </div>
+        </section>
+
         <section id="inicio" class="section active">
             <div class="card">
                 <h2><i class="fas fa-hand-peace"></i> ¡Bienvenido Aprendiz SENA!</h2>
@@ -1104,6 +1235,10 @@
                                 completar tu EP</li>
                         </ul>
                     </div>
+                </div>
+                <div class="section-nav-bar">
+                    <span></span>
+                    <button type="button" onclick="showSection('aprende')">Siguiente: Aprende →</button>
                 </div>
             </div>
         </section>
@@ -2061,6 +2196,10 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="section-nav-bar">
+                    <button type="button" onclick="showSection('aprende')">← Aprende</button>
+                    <button type="button" onclick="showSection('docs-hub')">Siguiente: Documentos →</button>
+                </div>
             </div>
         </section>
 
@@ -2512,6 +2651,14 @@
 
             <div class="card">
                 <h3><i class="fas fa-cloud-download-alt"></i> Descarga de Formatos</h3>
+                <div class="info-box" style="margin-bottom:1rem;">
+                    <i class="fas fa-link"></i>
+                    <div>
+                        <strong>Fuente oficial del portal:</strong>
+                        <p style="margin:0.4rem 0 0.8rem;">Usa el Centro de Descargas para la versión más reciente.</p>
+                        <a class="btn btn-primary" href="recursos_etapa_productiva.html#descargas"><i class="fas fa-cloud-download-alt"></i> Ir al Centro de Descargas</a>
+                    </div>
+                </div>
                 <p>Descarga aquí los formatos oficiales que necesitarás durante tu etapa productiva:</p>
 
                 <div class="two-col">
@@ -3015,7 +3162,7 @@
                 <button class="btn btn-primary" onclick="resetChecklist()">
                     <i class="fas fa-redo"></i> Reiniciar Mi Checklist
                 </button>
-                <button class="btn btn-secondary" onclick="window.print()">
+                <button class="btn btn-secondary" onclick="printChecklist()">
                     <i class="fas fa-print"></i> Imprimir Mi Checklist
                 </button>
             </div>
@@ -3026,8 +3173,7 @@
     <footer class="footer"
         style="padding: 4rem 2rem; border-top: 1px solid var(--neon-green); background: #0a0a0f; text-align: center;">
         <p style="font-family: 'Share Tech Mono', monospace; color: var(--neon-green); margin-bottom: 1rem;">
-            <i class="fas fa-terminal"></i> ACCESO_SISTEMA: SERGIO_ANDRES_TORRES_MARTINEZ
-        </p>
+            <i class="fas fa-terminal"></i> ACCESO_SISTEMA: Portal del Aprendiz SENA</p>
         <p style="text-transform: uppercase; letter-spacing: 2px; font-weight: 800;">Manual del Aprendiz - Etapa
             Productiva</p>
         <p style="opacity: 0.6; font-size: 0.9rem;">Basado en Acuerdo 009 de 2024 // Acuerdo 007 de 2012 // Guía
@@ -3045,40 +3191,49 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <!-- MAYA AI AGENT -->
-    <button id="ai-fab"><i class="fas fa-paw"></i></button>
-    <div id="chat-window" class="chat-window hidden">
-        <div class="chat-header">
-            <h3>🐺 MAYA Assistant AI</h3>
-            <button id="close-chat" class="close-chat"><i class="fas fa-times"></i></button>
-        </div>
-        <div id="chat-body" class="chat-body">
-            <div class="msg bot">¡Auuuu! 🐺 ¡Hola, Aprendiz! Soy <b>MAYA</b>, tu Malamute guardiana. ¿Dudas sobre el
-                manual?</div>
-        </div>
-        <div class="chat-input-area">
-            <input type="text" id="chat-input" class="chat-input" placeholder="Pregunta a Maya...">
-            <button id="send-btn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
-        </div>
-    </div>
-    <script>
+<script>
         // Navigation Logic
+        
+        function printChecklist() {
+            showSection('checklist');
+            document.body.classList.add('print-checklist-only');
+            setTimeout(() => {
+                window.print();
+                document.body.classList.remove('print-checklist-only');
+            }, 200);
+        }
+
+        const PRIMARY_FLOW = ['inicio', 'aprende', 'proceso', 'docs-hub', 'practica'];
+        const HUB_MAP = {
+            inicio: 'inicio',
+            aprende: 'aprende',
+            'que-es': 'aprende',
+            alternativas: 'aprende',
+            derechos: 'aprende',
+            proceso: 'proceso',
+            'docs-hub': 'docs-hub',
+            bitacora: 'docs-hub',
+            documentos: 'docs-hub',
+            guias: 'docs-hub',
+            practica: 'practica',
+            quiz: 'practica',
+            checklist: 'practica'
+        };
+
         function showSection(sectionId) {
-            // Remove active from all sections
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('active');
             });
 
-            // Show target section
             const targetSection = document.getElementById(sectionId);
             if (targetSection) targetSection.classList.add('active');
 
-            // Update nav buttons
-            document.querySelectorAll('.nav-btn').forEach(btn => {
+            try { history.replaceState(null, '', '#' + sectionId); } catch (e) { location.hash = sectionId; }
+
+            const navId = HUB_MAP[sectionId] || sectionId;
+            document.querySelectorAll('.nav-container .nav-btn').forEach(btn => {
                 btn.classList.remove('active');
-                // Check if the button's onclick contains the sectionId
-                if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(sectionId)) {
+                if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("'" + navId + "'")) {
                     btn.classList.add('active');
                 }
             });
@@ -3511,6 +3666,12 @@
         // Initialize on Load
         document.addEventListener('DOMContentLoaded', () => {
             loadQuestion('main');
+            const hash = (location.hash || '').replace('#', '');
+            if (hash) {
+                const el = document.getElementById(hash);
+                if (el) showSection(hash);
+            }
+
 
             const savedTheme = localStorage.getItem('theme_app');
             if (savedTheme === 'dark') {
@@ -3524,179 +3685,9 @@
 
             updateProgress();
         });
-        // MAYA BOT - Alaska Malamute Assistant
-        const mayaFab = document.getElementById('ai-fab');
-        const mayaChat = document.getElementById('chat-window');
-        const mayaClose = document.getElementById('close-chat');
-        const mayaInput = document.getElementById('chat-input');
-        const mayaSend = document.getElementById('send-btn');
-        const mayaBody = document.getElementById('chat-body');
-
-        if (mayaFab) {
-            mayaFab.innerHTML = '<img src="https://img.icons8.com/?size=96&id=rEkHtgGbERQY&format=png" style="width:70%; filter: brightness(1.2);">';
-            mayaFab.addEventListener('click', () => mayaChat.classList.toggle('hidden'));
-        }
-        if (mayaClose) {
-            mayaClose.addEventListener('click', () => mayaChat.classList.add('hidden'));
-        }
-
-        function mayaAddMsg(text, sender) {
-            const m = document.createElement('div');
-            m.className = `msg ${sender}`;
-            if (sender === 'user') {
-                m.textContent = text;
-            } else {
-                m.innerHTML = text;
-            }
-            mayaBody.appendChild(m);
-            mayaBody.scrollTop = mayaBody.scrollHeight;
-        }
-
-        function mayaShowTyping() {
-            const dot = document.createElement('div');
-            dot.className = 'msg bot typing';
-            dot.innerHTML = '<i class="fas fa-paw fa-bounce"></i> Maya está rastreando la información...';
-            dot.id = 'typing-indicator';
-            mayaBody.appendChild(dot);
-            mayaBody.scrollTop = mayaBody.scrollHeight;
-        }
-
-        function mayaRespond(q) {
-            const query = q.toLowerCase();
-            mayaShowTyping();
-
-            setTimeout(() => {
-                const indicator = document.getElementById('typing-indicator');
-                if (indicator) indicator.remove();
-
-                let r = "Aprendiz, mi instinto no localiza ese rastro específico en la documentación interna. ¿Deseas que rastreemos en la red global SENA?<br><br><div style='display:flex; gap:5px; flex-wrap:wrap;'><a href='https://www.google.com/search?q=SENA+etapa+productiva+" + encodeURIComponent(query) + "' target='_blank' style='background:var(--neon-cyan); color:#020617; padding:5px 10px; border-radius:5px; text-decoration:none; font-size:0.7rem; font-weight:600;'>Rastrear en Google</a></div>";
-
-                const intents = [
-                    { keys: ['hola', 'bienvenido', 'saludo', 'quien eres', 'maya', 'buenos'], response: "¡Guau! 🐾 Saludos, Aprendiz. Soy <b>MAYA</b>, tu Border Collie guardiana de la Etapa Productiva SENA.<br><br><b>Mis capacidades:</b><br>1. <b>Normativa:</b> Te guío sobre la <b>Guía 040</b> y el <b>Acuerdo 009</b>.<br>2. <b>Formatos:</b> Te indico qué documentos necesitas.<br>3. <b>Plazos:</b> Te alerto sobre fechas clave.<br>4. <b>Recursos:</b> Te dirijo a las herramientas del portal.<br><br>¿En qué proceso te ayudo hoy?" },
-                    { keys: ['bitacora', 'f-147', 'bitácora', 'formato 147', 'reporte'], response: "<b>📋 Bitácora GFPI-F-147:</b><br><br>La <b>Bitácora (F-147)</b> es tu registro <b>MENSUAL</b> obligatorio.<br><br><b>¿Qué debes hacer?</b><br>• Llenarla <b>cada mes</b><br>• Describir actividades realizadas<br>• Obtener firma de tu <b>jefe inmediato</b><br>• Entregar al instructor en cada visita<br><br>⚠️ Sin bitácoras al día = <b>riesgo de novedad académica</b><br><br>📍 Descarga en <a href='recursos_etapa_productiva.html' style='color:var(--neon-cyan)'>Recursos y Formatos</a>." },
-                    { keys: ['f023', 'f-023', 'planeación', 'planeacion', 'seguimiento', 'evaluacion', 'evaluación', 'visita'], response: "<b>📝 Formato GFPI-F-023:</b><br><br>Registro oficial de las <b>3 visitas técnicas</b> de tu instructor.<br><br><b>Las 3 visitas:</b><br>1. <b>Inicial:</b> Validación del plan<br>2. <b>Seguimiento:</b> Revisión de avance<br>3. <b>Final:</b> Evaluación y cierre<br><br>📍 Descárgalo en <a href='recursos_etapa_productiva.html' style='color:var(--neon-cyan)'>Recursos</a>." },
-                    { keys: ['alternativa', 'contrato', 'pasantia', 'pasantía', 'vinculacion', 'f165', 'f-165', 'monitoria', 'monitoría'], response: "<b>🔄 Las 5 Alternativas de Etapa Productiva:</b><br><br>1. <b>Contrato de Aprendizaje</b><br>2. <b>Pasantía</b><br>3. <b>Vinculación Laboral</b><br>4. <b>Proyecto Productivo</b><br>5. <b>Monitoría</b><br><br>📄 Se formaliza con formato <b>F-165</b>." },
-                    { keys: ['acuerdo 009', 'acuerdo 9', 'reglamento', 'faltas', 'sanciones', 'falta'], response: "<b>📜 Acuerdo 009 de 2024:</b><br><br>⚠️ <b>Alerta:</b><br>• <b>3 días hábiles sin justificación</b> = Reporte de deserción<br>• <b>Inasistencia a visitas</b> = Falta académica<br>• <b>No entregar bitácoras</b> = Novedad académica" },
-                    { keys: ['tyt', 'prueba saber', 'saber tyt', 'certificacion', 'certificación', 'icfes'], response: "<b>🎓 Pruebas Saber TyT:</b><br><br>Obligatorias para tecnólogos.<br>• Registro en ICFES con código SENA<br>• Antes del cierre de etapa productiva<br>• ⚠️ Si no la presentas, tu certificación se retrasa." },
-                    { keys: ['sofia', 'plus', 'sofiaplus', 'plataforma'], response: "<b>🌐 SofiaPlus:</b><br><br><a href='https://oferta.senasofiaplus.edu.co/' target='_blank' style='color:var(--neon-cyan)'>SofiaPlus</a> para verificar estado académico y certificados.<br><br>Problemas técnicos: <a href='https://sena.zendesk.com' target='_blank' style='color:var(--neon-magenta)'>Zendesk SENA</a>" },
-                    { keys: ['fecha', 'termino', 'final', 'cuanto me falta', 'cuando termino'], response: "<b>📅 Calculadora de Fechas:</b><br><br>👉 <a href='calculadora_fechas.html' style='color:var(--neon-cyan)'><b>Abrir Calculadora</b></a><br><br>Ingresa tu fecha de inicio y duración del programa para saber cuándo terminas." },
-                    { keys: ['formato', 'formatos', 'gfpi', 'descarga', 'documento'], response: "<b>📂 Formatos GFPI:</b><br><br>• F-023: Planeación y seguimiento<br>• F-147: Bitácora mensual<br>• F-165: Aval de alternativa<br>• F-008: Planeación evaluación<br>• F-009: Juicio evaluativo<br><br>📍 En <a href='recursos_etapa_productiva.html' style='color:var(--neon-cyan)'>Recursos y Formatos</a>." },
-                    { keys: ['momento', '6 momento', 'los 6', 'guia 040', 'momentos'], response: "<b>🐾 Los 6 Momentos (Guía 040):</b><br><br>1. <b>Inicio:</b> Plan de trabajo (F-023)<br>2. <b>1er Seguimiento:</b> A los 2 meses<br>3. <b>2do Seguimiento:</b> A los 4 meses<br>4. <b>3er Seguimiento:</b> A los 6 meses<br>5. <b>Evaluación Final:</b> (F-008)<br>6. <b>Certificación:</b> (F-009)" },
-                    { keys: ['ayuda', 'soporte', 'zendesk', 'problema', 'error'], response: "<b>🆘 Soporte:</b><br><br>• <a href='https://sena.zendesk.com' target='_blank' style='color:var(--neon-cyan)'>Zendesk SENA</a><br>• <a href='https://www.sena.edu.co' target='_blank' style='color:var(--neon-cyan)'>Portal SENA</a><br>• <a href='https://oferta.senasofiaplus.edu.co' target='_blank' style='color:var(--neon-cyan)'>SofiaPlus</a>" },
-                    { keys: ['fuente', 'fuentes', 'enlace', 'link', 'web', 'noticias'], response: "<b>🌐 Fuentes Oficiales:</b><br><br>• <a href='https://www.sena.edu.co' target='_blank' style='color:var(--neon-cyan)'>Portal SENA</a><br>• <a href='https://oferta.senasofiaplus.edu.co' target='_blank' style='color:var(--neon-cyan)'>SofiaPlus</a><br>• <a href='https://sena.zendesk.com' target='_blank' style='color:var(--neon-cyan)'>Zendesk</a>" }
-                ];
-
-                let bestMatch = null;
-                let maxScore = 0;
-                intents.forEach(intent => {
-                    let score = 0;
-                    intent.keys.forEach(key => { if (query.includes(key)) score++; });
-                    if (score > maxScore) { maxScore = score; bestMatch = intent.response; }
-                });
-
-                if (bestMatch) r = bestMatch;
-                mayaAddMsg(r, 'bot');
-            }, 1500);
-        }
-
-        if (mayaSend) {
-            mayaSend.addEventListener('click', () => {
-                if (!mayaInput.value.trim()) return;
-                mayaAddMsg(mayaInput.value, 'user');
-                mayaRespond(mayaInput.value);
-                mayaInput.value = '';
-            });
-        }
-
-        if (mayaInput) {
-            mayaInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') mayaSend.click();
-            });
-        }
-
-        // AI styles injected dynamically
-        const aiStyles = `
-        #ai-fab {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            width: 65px;
-            height: 65px;
-            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta));
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 1.6rem;
-            cursor: pointer;
-            box-shadow: 0 0 20px var(--glow-cyan);
-            z-index: 10000;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        #ai-fab:hover { transform: scale(1.1) rotate(15deg); box-shadow: 0 0 40px var(--glow-magenta); }
-        .chat-window {
-            position: fixed;
-            bottom: 115px;
-            right: 40px;
-            width: 350px;
-            height: 500px;
-            background: #05050a;
-            border: 1px solid var(--neon-cyan);
-            border-radius: 15px;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            z-index: 10000;
-            transform-origin: bottom right;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(20px);
-        }
-        .chat-window.hidden { transform: scale(0); opacity: 0; pointer-events: none; }
-        .chat-header {
-            background: #0a0a14;
-            padding: 1.2rem;
-            color: var(--neon-cyan);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--neon-cyan);
-        }
-        .close-chat { background: none; border: none; color: var(--neon-magenta); cursor: pointer; font-size: 1.2rem; }
-        .chat-body { flex: 1; padding: 1.2rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; background: rgba(5, 5, 10, 0.9); }
-        .msg { max-width: 85%; padding: 0.8rem; border-radius: 10px; font-size: 0.85rem; line-height: 1.4; }
-        .msg.bot { align-self: flex-start; background: rgba(30, 41, 59, 0.5); color: #e2e8f0; border-left: 2px solid var(--neon-cyan); }
-        .msg.user { align-self: flex-end; background: var(--neon-magenta); color: white; border-right: 2px solid #fff; }
-        .chat-input-area { padding: 1rem; background: #0a0a14; display: flex; gap: 0.5rem; border-top: 1px solid rgba(0, 243, 255, 0.2); }
-        .chat-input { flex: 1; background: #000; border: 1px solid var(--neon-cyan); border-radius: 5px; padding: 0.6rem; color: white; }
-        .send-btn { background: var(--neon-cyan); border: none; color: #000; width: 35px; height: 35px; border-radius: 5px; cursor: pointer; }
-        `;
-        const styleSheet = document.createElement("style");
-        styleSheet.innerText = aiStyles;
-        document.head.appendChild(styleSheet);
-    </script>
-
-
-    <button id="btn-back-to-top" title="Volver arriba">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <script>
-        // Scroll to top logic
-        const btnTopo = document.getElementById("btn-back-to-top");
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 1000) {
-                btnTopo.style.display = "flex";
-            } else {
-                btnTopo.style.display = "none";
-            }
-        });
-        btnTopo.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    </script>
+</script>
+    <script src="js/portal-nav.js"></script>
+    <script src="js/maya.js"></script>
 </body>
 
 </html>
