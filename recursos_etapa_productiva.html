@@ -313,10 +313,12 @@
         .file-actions {
             margin-top: auto;
             display: flex;
+            flex-direction: column;
             gap: 0.5rem;
         }
 
-        .btn-download {
+        .btn-download,
+        .btn-tutorial {
             background: transparent;
             border: 2px solid var(--neon-green);
             color: var(--neon-green);
@@ -336,13 +338,25 @@
             cursor: pointer;
         }
 
+        .btn-tutorial {
+            border-color: var(--neon-cyan);
+            color: var(--neon-cyan);
+        }
+
         .btn-download:hover {
             background: var(--neon-green);
             color: #041000;
             box-shadow: 0 0 18px rgba(57, 169, 0, 0.45);
         }
 
-        .btn-download:focus-visible {
+        .btn-tutorial:hover {
+            background: var(--neon-cyan);
+            color: #041018;
+            box-shadow: 0 0 18px rgba(0, 243, 255, 0.4);
+        }
+
+        .btn-download:focus-visible,
+        .btn-tutorial:focus-visible {
             outline: 2px solid var(--neon-cyan);
             outline-offset: 2px;
         }
@@ -352,6 +366,202 @@
             opacity: 0.75;
             border-color: var(--neon-cyan);
             color: var(--neon-cyan);
+        }
+
+        .badge.seen {
+            color: var(--neon-cyan);
+            border-color: rgba(0, 243, 255, 0.45);
+            background: rgba(0, 243, 255, 0.1);
+        }
+
+        /* --- VIDEO GATE MODAL --- */
+        .video-gate {
+            position: fixed;
+            inset: 0;
+            z-index: 10050;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: rgba(2, 6, 14, 0.82);
+            backdrop-filter: blur(8px);
+        }
+
+        .video-gate.is-open {
+            display: flex;
+        }
+
+        .video-gate-dialog {
+            width: min(720px, 100%);
+            max-height: min(92vh, 900px);
+            overflow: auto;
+            background: #0a0f1a;
+            border: 1px solid rgba(0, 243, 255, 0.28);
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.18);
+            padding: 1.25rem 1.35rem 1.4rem;
+        }
+
+        .video-gate-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 0.85rem;
+        }
+
+        .video-gate-header h3 {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.15rem;
+            color: var(--text-main);
+            line-height: 1.35;
+        }
+
+        .video-gate-header .vg-code {
+            display: block;
+            margin-top: 0.25rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--neon-cyan);
+            letter-spacing: 0.04em;
+        }
+
+        .vg-close {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-muted);
+            width: 2.2rem;
+            height: 2.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .vg-close:hover {
+            color: #fff;
+            border-color: var(--neon-magenta);
+        }
+
+        .vg-player-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 243, 255, 0.15);
+        }
+
+        .vg-player-wrap iframe,
+        .vg-player-wrap #vg-player {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .vg-notice {
+            margin: 0.9rem 0 0.7rem;
+            padding: 0.75rem 0.9rem;
+            border-left: 3px solid var(--neon-orange);
+            background: rgba(255, 107, 0, 0.08);
+            color: #cbd5e1;
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        .vg-progress {
+            margin-bottom: 0.85rem;
+        }
+
+        .vg-progress-meta {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.75rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+        }
+
+        .vg-progress-meta strong {
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        .vg-bar-track {
+            height: 8px;
+            border-radius: 99px;
+            background: rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+        }
+
+        .vg-bar-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-cyan));
+            transition: width 0.25s ease;
+        }
+
+        .vg-ack {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.65rem;
+            margin: 0.9rem 0 1rem;
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            line-height: 1.45;
+            cursor: pointer;
+        }
+
+        .vg-ack input {
+            margin-top: 0.2rem;
+            accent-color: var(--neon-green);
+            width: 1.05rem;
+            height: 1.05rem;
+            flex-shrink: 0;
+        }
+
+        .vg-ack.is-locked {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        .vg-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .vg-actions .btn-download {
+            flex: 1 1 220px;
+        }
+
+        .vg-actions .btn-download:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            box-shadow: none;
+            background: transparent;
+            color: var(--text-muted);
+            border-color: rgba(148, 163, 184, 0.35);
+        }
+
+        body.video-gate-open {
+            overflow: hidden;
+        }
+
+        @media (max-width: 640px) {
+            .video-gate-dialog {
+                padding: 1rem;
+            }
+
+            .video-gate-header h3 {
+                font-size: 1rem;
+            }
         }
 
         .download-zone {
@@ -662,52 +872,55 @@
             </div>
 
             <div class="file-grid" id="file-grid">
-                <article class="file-card" data-category="f023">
+                <article class="file-card" data-category="f023" data-video-key="visita1">
                     <div class="file-card-top">
                         <div class="file-icon xlsx" aria-hidden="true"><i class="fas fa-file-excel"></i></div>
                         <div class="file-meta">
                             <div class="file-code">GFPI-F-023</div>
                             <h3 class="file-title">Visita 1 — Concertación</h3>
                             <p class="file-desc">Plan de trabajo al inicio de la etapa.</p>
-                            <div class="file-badges"><span class="badge">.xlsx</span><span class="badge ver">Oficial</span></div>
+                            <div class="file-badges"><span class="badge">.xlsx</span><span class="badge ver">Oficial</span><span class="badge seen video-seen-badge" hidden>Video visto</span></div>
                         </div>
                     </div>
                     <div class="file-actions">
-                        <a class="btn-download" href="Formatos/Visita 1 GFPI-F023.xlsx" download data-label="Visita 1 (F-023)">
+                        <button type="button" class="btn-tutorial" data-video-key="visita1"><i class="fas fa-play-circle"></i> Ver tutorial</button>
+                        <a class="btn-download" href="Formatos/Visita 1 GFPI-F023.xlsx" download data-label="Visita 1 (F-023)" data-video-key="visita1">
                             <i class="fas fa-download"></i> Descargar
                         </a>
                     </div>
                 </article>
 
-                <article class="file-card" data-category="f023">
+                <article class="file-card" data-category="f023" data-video-key="visita2">
                     <div class="file-card-top">
                         <div class="file-icon xlsx" aria-hidden="true"><i class="fas fa-file-excel"></i></div>
                         <div class="file-meta">
                             <div class="file-code">GFPI-F-023</div>
                             <h3 class="file-title">Visita 2 — Seguimiento parcial</h3>
                             <p class="file-desc">Avance a mitad de la etapa productiva.</p>
-                            <div class="file-badges"><span class="badge">.xlsx</span><span class="badge ver">Oficial</span></div>
+                            <div class="file-badges"><span class="badge">.xlsx</span><span class="badge ver">Oficial</span><span class="badge seen video-seen-badge" hidden>Video visto</span></div>
                         </div>
                     </div>
                     <div class="file-actions">
-                        <a class="btn-download" href="Formatos/Visita 2 GFPI-F023.xlsx" download data-label="Visita 2 (F-023)">
+                        <button type="button" class="btn-tutorial" data-video-key="visita2"><i class="fas fa-play-circle"></i> Ver tutorial</button>
+                        <a class="btn-download" href="Formatos/Visita 2 GFPI-F023.xlsx" download data-label="Visita 2 (F-023)" data-video-key="visita2">
                             <i class="fas fa-download"></i> Descargar
                         </a>
                     </div>
                 </article>
 
-                <article class="file-card" data-category="f023">
+                <article class="file-card" data-category="f023" data-video-key="visita3">
                     <div class="file-card-top">
                         <div class="file-icon xlsx" aria-hidden="true"><i class="fas fa-file-excel"></i></div>
                         <div class="file-meta">
                             <div class="file-code">GFPI-F-023</div>
                             <h3 class="file-title">Visita 3 — Seguimiento final</h3>
                             <p class="file-desc">Cierre y evaluación de la etapa.</p>
-                            <div class="file-badges"><span class="badge">.xlsx</span><span class="badge ver">Oficial</span></div>
+                            <div class="file-badges"><span class="badge">.xlsx</span><span class="badge ver">Oficial</span><span class="badge seen video-seen-badge" hidden>Video visto</span></div>
                         </div>
                     </div>
                     <div class="file-actions">
-                        <a class="btn-download" href="Formatos/Visita 3 GFPI-F023.xlsx" download data-label="Visita 3 (F-023)">
+                        <button type="button" class="btn-tutorial" data-video-key="visita3"><i class="fas fa-play-circle"></i> Ver tutorial</button>
+                        <a class="btn-download" href="Formatos/Visita 3 GFPI-F023.xlsx" download data-label="Visita 3 (F-023)" data-video-key="visita3">
                             <i class="fas fa-download"></i> Descargar
                         </a>
                     </div>
@@ -730,18 +943,19 @@
                     </div>
                 </article>
 
-                <article class="file-card" data-category="f147">
+                <article class="file-card" data-category="f147" data-video-key="bitacora">
                     <div class="file-card-top">
                         <div class="file-icon xlsx" aria-hidden="true"><i class="fas fa-file-excel"></i></div>
                         <div class="file-meta">
                             <div class="file-code">GFPI-F-147</div>
                             <h3 class="file-title">Bitácora de seguimiento</h3>
                             <p class="file-desc">Registro mensual de actividades en empresa.</p>
-                            <div class="file-badges"><span class="badge">.xlsx</span><span class="badge ver">V4</span></div>
+                            <div class="file-badges"><span class="badge">.xlsx</span><span class="badge ver">V4</span><span class="badge seen video-seen-badge" hidden>Video visto</span></div>
                         </div>
                     </div>
                     <div class="file-actions">
-                        <a class="btn-download" href="Formatos/BITACORAS GFPI-F-147V4.xlsx" download data-label="Bitácora F-147 V4">
+                        <button type="button" class="btn-tutorial" data-video-key="bitacora"><i class="fas fa-play-circle"></i> Ver tutorial</button>
+                        <a class="btn-download" href="Formatos/BITACORAS GFPI-F-147V4.xlsx" download data-label="Bitácora F-147 V4" data-video-key="bitacora">
                             <i class="fas fa-download"></i> Descargar
                         </a>
                     </div>
@@ -883,42 +1097,48 @@
                 </div>
 
                 <div id="f023-descarga" class="tab-content">
-                    <p style="color: var(--text-muted); margin-bottom: 0.75rem;">Elige la visita que necesitas:</p>
+                    <p style="color: var(--text-muted); margin-bottom: 0.75rem;">Elige la visita que necesitas. Las visitas 1, 2 y 3 requieren ver el tutorial la primera vez.</p>
                     <div class="download-zone file-grid">
-                        <article class="file-card">
+                        <article class="file-card" data-video-key="visita1">
                             <div class="file-card-top">
                                 <div class="file-icon xlsx"><i class="fas fa-file-excel"></i></div>
                                 <div class="file-meta">
                                     <div class="file-code">Visita 1</div>
                                     <h3 class="file-title">Concertación</h3>
+                                    <div class="file-badges"><span class="badge seen video-seen-badge" hidden>Video visto</span></div>
                                 </div>
                             </div>
                             <div class="file-actions">
-                                <a class="btn-download" href="Formatos/Visita 1 GFPI-F023.xlsx" download data-label="Visita 1 (F-023)"><i class="fas fa-download"></i> Descargar</a>
+                                <button type="button" class="btn-tutorial" data-video-key="visita1"><i class="fas fa-play-circle"></i> Ver tutorial</button>
+                                <a class="btn-download" href="Formatos/Visita 1 GFPI-F023.xlsx" download data-label="Visita 1 (F-023)" data-video-key="visita1"><i class="fas fa-download"></i> Descargar</a>
                             </div>
                         </article>
-                        <article class="file-card">
+                        <article class="file-card" data-video-key="visita2">
                             <div class="file-card-top">
                                 <div class="file-icon xlsx"><i class="fas fa-file-excel"></i></div>
                                 <div class="file-meta">
                                     <div class="file-code">Visita 2</div>
                                     <h3 class="file-title">Seguimiento parcial</h3>
+                                    <div class="file-badges"><span class="badge seen video-seen-badge" hidden>Video visto</span></div>
                                 </div>
                             </div>
                             <div class="file-actions">
-                                <a class="btn-download" href="Formatos/Visita 2 GFPI-F023.xlsx" download data-label="Visita 2 (F-023)"><i class="fas fa-download"></i> Descargar</a>
+                                <button type="button" class="btn-tutorial" data-video-key="visita2"><i class="fas fa-play-circle"></i> Ver tutorial</button>
+                                <a class="btn-download" href="Formatos/Visita 2 GFPI-F023.xlsx" download data-label="Visita 2 (F-023)" data-video-key="visita2"><i class="fas fa-download"></i> Descargar</a>
                             </div>
                         </article>
-                        <article class="file-card">
+                        <article class="file-card" data-video-key="visita3">
                             <div class="file-card-top">
                                 <div class="file-icon xlsx"><i class="fas fa-file-excel"></i></div>
                                 <div class="file-meta">
                                     <div class="file-code">Visita 3</div>
                                     <h3 class="file-title">Seguimiento final</h3>
+                                    <div class="file-badges"><span class="badge seen video-seen-badge" hidden>Video visto</span></div>
                                 </div>
                             </div>
                             <div class="file-actions">
-                                <a class="btn-download" href="Formatos/Visita 3 GFPI-F023.xlsx" download data-label="Visita 3 (F-023)"><i class="fas fa-download"></i> Descargar</a>
+                                <button type="button" class="btn-tutorial" data-video-key="visita3"><i class="fas fa-play-circle"></i> Ver tutorial</button>
+                                <a class="btn-download" href="Formatos/Visita 3 GFPI-F023.xlsx" download data-label="Visita 3 (F-023)" data-video-key="visita3"><i class="fas fa-download"></i> Descargar</a>
                             </div>
                         </article>
                         <article class="file-card">
@@ -989,16 +1209,18 @@
                         </table>
                     </div>
                     <div class="download-zone" style="max-width: 360px; margin-left: auto;">
-                        <article class="file-card">
+                        <article class="file-card" data-video-key="bitacora">
                             <div class="file-card-top">
                                 <div class="file-icon xlsx"><i class="fas fa-file-excel"></i></div>
                                 <div class="file-meta">
                                     <div class="file-code">GFPI-F-147 · V4</div>
                                     <h3 class="file-title">Bitácora mensual</h3>
+                                    <div class="file-badges"><span class="badge seen video-seen-badge" hidden>Video visto</span></div>
                                 </div>
                             </div>
                             <div class="file-actions">
-                                <a class="btn-download" href="Formatos/BITACORAS GFPI-F-147V4.xlsx" download data-label="Bitácora F-147 V4"><i class="fas fa-download"></i> Descargar</a>
+                                <button type="button" class="btn-tutorial" data-video-key="bitacora"><i class="fas fa-play-circle"></i> Ver tutorial</button>
+                                <a class="btn-download" href="Formatos/BITACORAS GFPI-F-147V4.xlsx" download data-label="Bitácora F-147 V4" data-video-key="bitacora"><i class="fas fa-download"></i> Descargar</a>
                             </div>
                         </article>
                     </div>
@@ -1156,13 +1378,25 @@
                     <div class="video-wrapper">
                         <div class="video-label"><i class="fas fa-play-circle"></i> Diligenciamiento de Bitácora (F-147)</div>
                         <div class="video-container">
-                            <iframe width="100%" height="200" src="https://www.youtube.com/embed/70PyhEDiyK0" title="Diligenciamiento Formato GFPI-147" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            <iframe width="100%" height="200" src="https://www.youtube.com/embed/yeeg2A8GfUs" title="Diligenciamiento Formato GFPI-147" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                         </div>
                     </div>
                     <div class="video-wrapper">
-                        <div class="video-label"><i class="fas fa-play-circle"></i> Planeación y Seguimiento (F-023)</div>
+                        <div class="video-label"><i class="fas fa-play-circle"></i> Visita 1 — Concertación (F-023)</div>
                         <div class="video-container">
-                            <iframe width="100%" height="200" src="https://www.youtube.com/embed/viVpQ_j1aII" title="Diligenciamiento Formato GFPI-F-023" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            <iframe width="100%" height="200" src="https://www.youtube.com/embed/Dx1i688dGDM" title="Diligenciamiento Visita 1 GFPI-F-023" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="video-wrapper">
+                        <div class="video-label"><i class="fas fa-play-circle"></i> Visita 2 — Seguimiento parcial (F-023)</div>
+                        <div class="video-container">
+                            <iframe width="100%" height="200" src="https://www.youtube.com/embed/fLQKb5Wrk1I" title="Diligenciamiento Visita 2 GFPI-F-023" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="video-wrapper">
+                        <div class="video-label"><i class="fas fa-play-circle"></i> Visita 3 — Seguimiento final (F-023)</div>
+                        <div class="video-container">
+                            <iframe width="100%" height="200" src="https://www.youtube.com/embed/dVk1YM7Z-Yw" title="Diligenciamiento Visita 3 GFPI-F-023" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                         </div>
                     </div>
                 </div>
@@ -1173,8 +1407,45 @@
 
     <div id="download-toast" class="toast" role="status" aria-live="polite"></div>
 
+    <div id="video-gate" class="video-gate" aria-hidden="true">
+        <div class="video-gate-dialog" role="dialog" aria-modal="true" aria-labelledby="vg-title">
+            <div class="video-gate-header">
+                <div>
+                    <h3 id="vg-title">Tutorial de diligenciamiento</h3>
+                    <span class="vg-code" id="vg-code">GFPI</span>
+                </div>
+                <button type="button" class="vg-close" id="vg-close" aria-label="Cerrar"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="vg-player-wrap">
+                <div id="vg-player"></div>
+            </div>
+            <p class="vg-notice">
+                Este video es la orientación oficial de diligenciamiento. Debes ver al menos
+                <strong>25 segundos</strong> y confirmar que conoces el proceso antes de descargar el formato.
+            </p>
+            <div class="vg-progress">
+                <div class="vg-progress-meta">
+                    <span>Progreso mínimo del tutorial</span>
+                    <strong id="vg-progress-text">0 / 25 s</strong>
+                </div>
+                <div class="vg-bar-track" aria-hidden="true">
+                    <div class="vg-bar-fill" id="vg-bar-fill"></div>
+                </div>
+            </div>
+            <label class="vg-ack is-locked" id="vg-ack-label" for="vg-ack">
+                <input type="checkbox" id="vg-ack" disabled>
+                <span>Declaro que conozco el diligenciamiento de este formato y asumo la responsabilidad de completarlo correctamente.</span>
+            </label>
+            <div class="vg-actions">
+                <button type="button" class="btn-download" id="vg-download" disabled>
+                    <i class="fas fa-download"></i> Descargar formato
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
-function toggleGuide(header) {
+        function toggleGuide(header) {
             header.classList.toggle('active');
             const body = header.nextElementSibling;
             body.classList.toggle('show');
@@ -1194,7 +1465,7 @@ function toggleGuide(header) {
             evt.currentTarget.className += " active";
         }
 
-        // Filters + download feedback
+        // Filters + download feedback + video gate
         const toastEl = document.getElementById('download-toast');
         let toastTimer;
 
@@ -1218,9 +1489,291 @@ function toggleGuide(header) {
             });
         });
 
+        const VIDEO_GATE = {
+            storageKey: 'ep-video-ack-v1',
+            minSeconds: 25,
+            catalog: {
+                visita1: {
+                    id: 'Dx1i688dGDM',
+                    title: 'Visita 1 — Concertación',
+                    code: 'GFPI-F-023 · Visita 1',
+                    file: 'Formatos/Visita 1 GFPI-F023.xlsx',
+                    label: 'Visita 1 (F-023)'
+                },
+                visita2: {
+                    id: 'fLQKb5Wrk1I',
+                    title: 'Visita 2 — Seguimiento parcial',
+                    code: 'GFPI-F-023 · Visita 2',
+                    file: 'Formatos/Visita 2 GFPI-F023.xlsx',
+                    label: 'Visita 2 (F-023)'
+                },
+                visita3: {
+                    id: 'dVk1YM7Z-Yw',
+                    title: 'Visita 3 — Seguimiento final',
+                    code: 'GFPI-F-023 · Visita 3',
+                    file: 'Formatos/Visita 3 GFPI-F023.xlsx',
+                    label: 'Visita 3 (F-023)'
+                },
+                bitacora: {
+                    id: 'yeeg2A8GfUs',
+                    title: 'Bitácora de seguimiento',
+                    code: 'GFPI-F-147 · V4',
+                    file: 'Formatos/BITACORAS GFPI-F-147V4.xlsx',
+                    label: 'Bitácora F-147 V4'
+                }
+            }
+        };
+
+        const gateEl = document.getElementById('video-gate');
+        const vgTitle = document.getElementById('vg-title');
+        const vgCode = document.getElementById('vg-code');
+        const vgAck = document.getElementById('vg-ack');
+        const vgAckLabel = document.getElementById('vg-ack-label');
+        const vgDownload = document.getElementById('vg-download');
+        const vgClose = document.getElementById('vg-close');
+        const vgBarFill = document.getElementById('vg-bar-fill');
+        const vgProgressText = document.getElementById('vg-progress-text');
+        const vgPlayerWrap = document.querySelector('.vg-player-wrap');
+
+        let ytApiReady = false;
+        let ytApiLoading = false;
+        let ytPlayer = null;
+        let watchTimer = null;
+        let fallbackTimer = null;
+        let watchedSeconds = 0;
+        let activeKey = null;
+        let activeHref = null;
+        let lastFocusedEl = null;
+        let apiWaitTimer = null;
+
+        function readAcks() {
+            try {
+                return JSON.parse(localStorage.getItem(VIDEO_GATE.storageKey) || '{}') || {};
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function writeAck(key) {
+            const acks = readAcks();
+            acks[key] = { at: new Date().toISOString() };
+            localStorage.setItem(VIDEO_GATE.storageKey, JSON.stringify(acks));
+        }
+
+        function hasAck(key) {
+            return Boolean(readAcks()[key]);
+        }
+
+        function refreshSeenBadges() {
+            document.querySelectorAll('[data-video-key]').forEach(el => {
+                const key = el.dataset.videoKey;
+                if (!key || !VIDEO_GATE.catalog[key]) return;
+                const seen = hasAck(key);
+                el.querySelectorAll('.video-seen-badge').forEach(badge => {
+                    badge.hidden = !seen;
+                });
+            });
+        }
+
+        function loadYouTubeApi() {
+            if (ytApiReady || ytApiLoading) return;
+            ytApiLoading = true;
+            const tag = document.createElement('script');
+            tag.src = 'https://www.youtube.com/iframe_api';
+            document.head.appendChild(tag);
+            const prev = window.onYouTubeIframeAPIReady;
+            window.onYouTubeIframeAPIReady = function () {
+                ytApiReady = true;
+                ytApiLoading = false;
+                if (typeof prev === 'function') prev();
+            };
+        }
+
+        function clearWatchTimers() {
+            if (watchTimer) {
+                clearInterval(watchTimer);
+                watchTimer = null;
+            }
+            if (fallbackTimer) {
+                clearInterval(fallbackTimer);
+                fallbackTimer = null;
+            }
+            if (apiWaitTimer) {
+                clearTimeout(apiWaitTimer);
+                apiWaitTimer = null;
+            }
+        }
+
+        function destroyPlayer() {
+            clearWatchTimers();
+            if (ytPlayer && typeof ytPlayer.destroy === 'function') {
+                try { ytPlayer.destroy(); } catch (e) { /* ignore */ }
+            }
+            ytPlayer = null;
+            if (vgPlayerWrap) {
+                vgPlayerWrap.innerHTML = '<div id="vg-player"></div>';
+            }
+        }
+
+        function updateProgressUI() {
+            const needed = VIDEO_GATE.minSeconds;
+            const current = Math.min(watchedSeconds, needed);
+            const pct = Math.round((current / needed) * 100);
+            vgBarFill.style.width = pct + '%';
+            vgProgressText.textContent = Math.floor(current) + ' / ' + needed + ' s';
+            const unlocked = watchedSeconds >= needed;
+            vgAck.disabled = !unlocked;
+            vgAckLabel.classList.toggle('is-locked', !unlocked);
+            if (!unlocked) {
+                vgAck.checked = false;
+            }
+            syncDownloadButton();
+        }
+
+        function syncDownloadButton() {
+            vgDownload.disabled = !(watchedSeconds >= VIDEO_GATE.minSeconds && vgAck.checked);
+        }
+
+        function tickWatch(amount) {
+            watchedSeconds = Math.min(VIDEO_GATE.minSeconds, watchedSeconds + amount);
+            updateProgressUI();
+        }
+
+        function startFallbackTimer() {
+            if (fallbackTimer || watchedSeconds >= VIDEO_GATE.minSeconds) return;
+            fallbackTimer = setInterval(() => {
+                if (!gateEl.classList.contains('is-open')) return;
+                tickWatch(1);
+                if (watchedSeconds >= VIDEO_GATE.minSeconds) {
+                    clearInterval(fallbackTimer);
+                    fallbackTimer = null;
+                }
+            }, 1000);
+        }
+
+        function startYtWatchPolling() {
+            if (watchTimer) return;
+            watchTimer = setInterval(() => {
+                if (!ytPlayer || typeof ytPlayer.getPlayerState !== 'function') return;
+                const state = ytPlayer.getPlayerState();
+                // 1 = playing
+                if (state === 1) {
+                    tickWatch(0.5);
+                }
+                if (watchedSeconds >= VIDEO_GATE.minSeconds) {
+                    clearInterval(watchTimer);
+                    watchTimer = null;
+                }
+            }, 500);
+        }
+
+        function mountPlayer(videoId) {
+            destroyPlayer();
+            watchedSeconds = hasAck(activeKey) ? VIDEO_GATE.minSeconds : 0;
+            updateProgressUI();
+
+            if (ytApiReady && window.YT && window.YT.Player) {
+                ytPlayer = new YT.Player('vg-player', {
+                    videoId: videoId,
+                    width: '100%',
+                    height: '100%',
+                    playerVars: {
+                        rel: 0,
+                        modestbranding: 1,
+                        playsinline: 1
+                    },
+                    events: {
+                        onReady: function () {
+                            startYtWatchPolling();
+                        },
+                        onStateChange: function (event) {
+                            if (event.data === 1) startYtWatchPolling();
+                            if (event.data === 0) {
+                                watchedSeconds = VIDEO_GATE.minSeconds;
+                                updateProgressUI();
+                            }
+                        },
+                        onError: function () {
+                            startFallbackTimer();
+                        }
+                    }
+                });
+            } else {
+                const host = document.getElementById('vg-player');
+                if (host) {
+                    host.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?rel=0" title="Tutorial de diligenciamiento" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>';
+                }
+                loadYouTubeApi();
+                apiWaitTimer = setTimeout(() => {
+                    if (!ytPlayer && gateEl.classList.contains('is-open')) {
+                        startFallbackTimer();
+                    }
+                }, 3500);
+            }
+        }
+
+        function openVideoGate(key, href) {
+            const item = VIDEO_GATE.catalog[key];
+            if (!item) return;
+            activeKey = key;
+            activeHref = href || item.file;
+            lastFocusedEl = document.activeElement;
+            vgTitle.textContent = item.title;
+            vgCode.textContent = item.code;
+            vgAck.checked = false;
+            gateEl.classList.add('is-open');
+            gateEl.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('video-gate-open');
+            loadYouTubeApi();
+            mountPlayer(item.id);
+            vgClose.focus();
+        }
+
+        function closeVideoGate() {
+            gateEl.classList.remove('is-open');
+            gateEl.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('video-gate-open');
+            destroyPlayer();
+            activeKey = null;
+            activeHref = null;
+            if (lastFocusedEl && typeof lastFocusedEl.focus === 'function') {
+                lastFocusedEl.focus();
+            }
+        }
+
+        function triggerDownload(href, label, sourceBtn) {
+            const a = document.createElement('a');
+            a.href = href;
+            a.setAttribute('download', '');
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+
+            if (sourceBtn) {
+                sourceBtn.classList.add('is-downloading');
+                const original = sourceBtn.innerHTML;
+                sourceBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Descargando...';
+                setTimeout(() => {
+                    sourceBtn.classList.remove('is-downloading');
+                    sourceBtn.innerHTML = original;
+                }, 1200);
+            }
+
+            showToast('Descarga iniciada: <b>' + (label || 'archivo') + '</b>');
+        }
+
         document.querySelectorAll('a.btn-download[download]').forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', (event) => {
+                const key = btn.dataset.videoKey;
                 const label = btn.dataset.label || 'archivo';
+
+                if (key && VIDEO_GATE.catalog[key] && !hasAck(key)) {
+                    event.preventDefault();
+                    openVideoGate(key, btn.getAttribute('href'));
+                    return;
+                }
+
                 btn.classList.add('is-downloading');
                 const original = btn.innerHTML;
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Descargando...';
@@ -1231,6 +1784,39 @@ function toggleGuide(header) {
                 }, 1200);
             });
         });
+
+        document.querySelectorAll('.btn-tutorial[data-video-key]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const key = btn.dataset.videoKey;
+                if (!VIDEO_GATE.catalog[key]) return;
+                openVideoGate(key, VIDEO_GATE.catalog[key].file);
+            });
+        });
+
+        vgAck.addEventListener('change', syncDownloadButton);
+
+        vgDownload.addEventListener('click', () => {
+            if (vgDownload.disabled || !activeKey) return;
+            writeAck(activeKey);
+            refreshSeenBadges();
+            const item = VIDEO_GATE.catalog[activeKey];
+            const href = activeHref || item.file;
+            triggerDownload(href, item.label, vgDownload);
+            closeVideoGate();
+        });
+
+        vgClose.addEventListener('click', closeVideoGate);
+        gateEl.addEventListener('click', (event) => {
+            if (event.target === gateEl) closeVideoGate();
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && gateEl.classList.contains('is-open')) {
+                closeVideoGate();
+            }
+        });
+
+        refreshSeenBadges();
+        loadYouTubeApi();
     </script>
 
 
