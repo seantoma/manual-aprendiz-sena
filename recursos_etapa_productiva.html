@@ -363,12 +363,6 @@
             color: var(--neon-cyan);
         }
 
-        .badge.seen {
-            color: var(--neon-cyan);
-            border-color: rgba(0, 243, 255, 0.45);
-            background: rgba(0, 243, 255, 0.1);
-        }
-
         /* --- VIDEO GATE MODAL --- */
         .video-gate {
             position: fixed;
@@ -874,7 +868,7 @@
                             <div class="file-code">GFPI-F-023</div>
                             <h3 class="file-title">Visita 1 — Concertación</h3>
                             <p class="file-desc">Plan de trabajo al inicio de la etapa.</p>
-                            <div class="file-badges"><span class="badge">.xlsx</span><span class="badge seen video-seen-badge" hidden>Video visto</span></div>
+                            <div class="file-badges"><span class="badge">.xlsx</span></div>
                         </div>
                     </div>
                     <div class="file-actions">
@@ -889,7 +883,7 @@
                             <div class="file-code">GFPI-F-023</div>
                             <h3 class="file-title">Visita 2 — Seguimiento parcial</h3>
                             <p class="file-desc">Avance a mitad de la etapa productiva.</p>
-                            <div class="file-badges"><span class="badge">.xlsx</span><span class="badge seen video-seen-badge" hidden>Video visto</span></div>
+                            <div class="file-badges"><span class="badge">.xlsx</span></div>
                         </div>
                     </div>
                     <div class="file-actions">
@@ -904,7 +898,7 @@
                             <div class="file-code">GFPI-F-023</div>
                             <h3 class="file-title">Visita 3 — Seguimiento final</h3>
                             <p class="file-desc">Cierre y evaluación de la etapa.</p>
-                            <div class="file-badges"><span class="badge">.xlsx</span><span class="badge seen video-seen-badge" hidden>Video visto</span></div>
+                            <div class="file-badges"><span class="badge">.xlsx</span></div>
                         </div>
                     </div>
                     <div class="file-actions">
@@ -936,7 +930,7 @@
                             <div class="file-code">GFPI-F-147</div>
                             <h3 class="file-title">Bitácora de seguimiento</h3>
                             <p class="file-desc">Registro mensual de actividades en empresa.</p>
-                            <div class="file-badges"><span class="badge">.xlsx</span><span class="badge seen video-seen-badge" hidden>Video visto</span></div>
+                            <div class="file-badges"><span class="badge">.xlsx</span></div>
                         </div>
                     </div>
                     <div class="file-actions">
@@ -1088,7 +1082,6 @@
                                 <div class="file-meta">
                                     <div class="file-code">Visita 1</div>
                                     <h3 class="file-title">Concertación</h3>
-                                    <div class="file-badges"><span class="badge seen video-seen-badge" hidden>Video visto</span></div>
                                 </div>
                             </div>
                             <div class="file-actions">
@@ -1101,7 +1094,6 @@
                                 <div class="file-meta">
                                     <div class="file-code">Visita 2</div>
                                     <h3 class="file-title">Seguimiento parcial</h3>
-                                    <div class="file-badges"><span class="badge seen video-seen-badge" hidden>Video visto</span></div>
                                 </div>
                             </div>
                             <div class="file-actions">
@@ -1114,7 +1106,6 @@
                                 <div class="file-meta">
                                     <div class="file-code">Visita 3</div>
                                     <h3 class="file-title">Seguimiento final</h3>
-                                    <div class="file-badges"><span class="badge seen video-seen-badge" hidden>Video visto</span></div>
                                 </div>
                             </div>
                             <div class="file-actions">
@@ -1195,7 +1186,6 @@
                                 <div class="file-meta">
                                     <div class="file-code">GFPI-F-147</div>
                                     <h3 class="file-title">Bitácora mensual</h3>
-                                    <div class="file-badges"><span class="badge seen video-seen-badge" hidden>Video visto</span></div>
                                 </div>
                             </div>
                             <div class="file-actions">
@@ -1469,7 +1459,6 @@
         });
 
         const VIDEO_GATE = {
-            storageKey: 'ep-video-ack-v1',
             minSeconds: 10,
             catalog: {
                 visita1: {
@@ -1524,35 +1513,6 @@
         let activeHref = null;
         let lastFocusedEl = null;
         let apiWaitTimer = null;
-
-        function readAcks() {
-            try {
-                return JSON.parse(localStorage.getItem(VIDEO_GATE.storageKey) || '{}') || {};
-            } catch (e) {
-                return {};
-            }
-        }
-
-        function writeAck(key) {
-            const acks = readAcks();
-            acks[key] = { at: new Date().toISOString() };
-            localStorage.setItem(VIDEO_GATE.storageKey, JSON.stringify(acks));
-        }
-
-        function hasAck(key) {
-            return Boolean(readAcks()[key]);
-        }
-
-        function refreshSeenBadges() {
-            document.querySelectorAll('[data-video-key]').forEach(el => {
-                const key = el.dataset.videoKey;
-                if (!key || !VIDEO_GATE.catalog[key]) return;
-                const seen = hasAck(key);
-                el.querySelectorAll('.video-seen-badge').forEach(badge => {
-                    badge.hidden = !seen;
-                });
-            });
-        }
 
         function loadYouTubeApi() {
             if (ytApiReady || ytApiLoading) return;
@@ -1648,7 +1608,7 @@
 
         function mountPlayer(videoId) {
             destroyPlayer();
-            watchedSeconds = hasAck(activeKey) ? VIDEO_GATE.minSeconds : 0;
+            watchedSeconds = 0;
             updateProgressUI();
 
             if (ytApiReady && window.YT && window.YT.Player) {
@@ -1747,7 +1707,7 @@
                 const key = btn.dataset.videoKey;
                 const label = btn.dataset.label || 'archivo';
 
-                if (key && VIDEO_GATE.catalog[key] && !hasAck(key)) {
+                if (key && VIDEO_GATE.catalog[key]) {
                     event.preventDefault();
                     openVideoGate(key, btn.getAttribute('href'));
                     return;
@@ -1769,15 +1729,7 @@
                 const key = btn.dataset.videoKey;
                 const item = VIDEO_GATE.catalog[key];
                 if (!item) return;
-                const href = btn.dataset.file || item.file;
-                const label = btn.dataset.label || item.label;
-
-                if (hasAck(key)) {
-                    triggerDownload(href, label, btn);
-                    return;
-                }
-
-                openVideoGate(key, href);
+                openVideoGate(key, btn.dataset.file || item.file);
             });
         });
 
@@ -1785,8 +1737,6 @@
 
         vgDownload.addEventListener('click', () => {
             if (vgDownload.disabled || !activeKey) return;
-            writeAck(activeKey);
-            refreshSeenBadges();
             const item = VIDEO_GATE.catalog[activeKey];
             const href = activeHref || item.file;
             triggerDownload(href, item.label, vgDownload);
@@ -1803,7 +1753,6 @@
             }
         });
 
-        refreshSeenBadges();
         loadYouTubeApi();
     </script>
 
