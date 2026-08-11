@@ -451,6 +451,18 @@
             border: 0;
         }
 
+
+        .vg-error {
+            margin: 0.75rem 0 0;
+            padding: 0.65rem 0.8rem;
+            border-radius: 8px;
+            background: rgba(220, 38, 38, 0.12);
+            border: 1px solid rgba(220, 38, 38, 0.35);
+            color: #fecaca;
+            font-size: 0.92rem;
+            line-height: 1.4;
+        }
+
         .vg-notice {
             margin: 0.9rem 0 0.7rem;
             padding: 0.75rem 0.9rem;
@@ -1074,7 +1086,7 @@
                 </div>
 
                 <div id="f023-descarga" class="tab-content">
-                    <p style="color: var(--text-muted); margin-bottom: 0.75rem;">Elige la visita que necesitas. Las visitas 1, 2 y 3 requieren ver el tutorial la primera vez.</p>
+                    <p style="color: var(--text-muted); margin-bottom: 0.75rem;">Elige la visita que necesitas. Las visitas 1, 2 y 3 requieren ver el tutorial completo (sin adelantar) antes de descargar.</p>
                     <div class="download-zone file-grid">
                         <article class="file-card" data-video-key="visita1">
                             <div class="file-card-top">
@@ -1389,18 +1401,19 @@
                 <div id="vg-player"></div>
             </div>
             <p class="vg-notice">
-                Este video es la orientación oficial de diligenciamiento. Debes ver al menos
-                <strong>10 segundos</strong> y confirmar que conoces el proceso antes de descargar el formato.
+                Este video es la orientación oficial de diligenciamiento. Debes ver el
+                <strong>video completo</strong> (sin adelantar) y confirmar que conoces el proceso antes de descargar el formato.
             </p>
             <div class="vg-progress">
                 <div class="vg-progress-meta">
-                    <span>Progreso mínimo del tutorial</span>
-                    <strong id="vg-progress-text">0 / 10 s</strong>
+                    <span>Progreso del tutorial</span>
+                    <strong id="vg-progress-text">0 / — s</strong>
                 </div>
                 <div class="vg-bar-track" aria-hidden="true">
                     <div class="vg-bar-fill" id="vg-bar-fill"></div>
                 </div>
             </div>
+            <p class="vg-error" id="vg-error" hidden></p>
             <label class="vg-ack is-locked" id="vg-ack-label" for="vg-ack">
                 <input type="checkbox" id="vg-ack" disabled>
                 <span>Declaro que conozco el diligenciamiento de este formato y asumo la responsabilidad de completarlo correctamente.</span>
@@ -1459,7 +1472,9 @@
         });
 
         const VIDEO_GATE = {
-            minSeconds: 10,
+            seekGraceSeconds: 1.25,
+            endEpsilonSeconds: 1.0,
+            persistKeys: { bitacora: 'vg-completed-bitacora' },
             catalog: {
                 visita1: {
                     id: 'Dx1i688dGDM',
@@ -1502,17 +1517,55 @@
         const vgBarFill = document.getElementById('vg-bar-fill');
         const vgProgressText = document.getElementById('vg-progress-text');
         const vgPlayerWrap = document.querySelector('.vg-player-wrap');
+        const vgError = document.getElementById('vg-error');
 
         let ytApiReady = false;
         let ytApiLoading = false;
         let ytPlayer = null;
         let watchTimer = null;
-        let fallbackTimer = null;
-        let watchedSeconds = 0;
+        let videoDuration = 0;
+        let maxAllowedTime = 0;
+        let completedWatch = false;
         let activeKey = null;
         let activeHref = null;
         let lastFocusedEl = null;
         let apiWaitTimer = null;
+        let pendingVideoId = null;
+        let seekingBack = false;
+
+        function storageKeyFor(key) {
+            return VIDEO_GATE.persistKeys[key] || null;
+        }
+
+        function hasPersistedCompletion(key) {
+            const sk = storageKeyFor(key);
+            if (!sk) return false;
+            try {
+                return localStorage.getItem(sk) === '1';
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function persistCompletion(key) {
+            const sk = storageKeyFor(key);
+            if (!sk) return;
+            try {
+                localStorage.setItem(sk, '1');
+            } catch (e) { /* ignore quota / private mode */ }
+        }
+
+        function clearVgError() {
+            if (!vgError) return;
+            vgError.hidden = true;
+            vgError.textContent = '';
+        }
+
+        function showVgError(message) {
+            if (!vgError) return;
+            vgError.hidden = false;
+            vgError.textContent = message;
+        }
 
         function loadYouTubeApi() {
             if (ytApiReady || ytApiLoading) return;
@@ -1525,6 +1578,11 @@
                 ytApiReady = true;
                 ytApiLoading = false;
                 if (typeof prev === 'function') prev();
+                if (pendingVideoId && gateEl.classList.contains('is-open')) {
+                    const id = pendingVideoId;
+                    pendingVideoId = null;
+                    mountPlayer(id);
+                }
             };
         }
 
@@ -1532,10 +1590,6 @@
             if (watchTimer) {
                 clearInterval(watchTimer);
                 watchTimer = null;
-            }
-            if (fallbackTimer) {
-                clearInterval(fallbackTimer);
-                fallbackTimer = null;
             }
             if (apiWaitTimer) {
                 clearTimeout(apiWaitTimer);
@@ -1545,6 +1599,7 @@
 
         function destroyPlayer() {
             clearWatchTimers();
+            seekingBack = false;
             if (ytPlayer && typeof ytPlayer.destroy === 'function') {
                 try { ytPlayer.destroy(); } catch (e) { /* ignore */ }
             }
@@ -1554,13 +1609,47 @@
             }
         }
 
+        function isWatchComplete() {
+            if (completedWatch) return true;
+            if (videoDuration > 0 && maxAllowedTime >= Math.max(0, videoDuration - VIDEO_GATE.endEpsilonSeconds)) {
+                return true;
+            }
+            return false;
+        }
+
+        function markWatchComplete() {
+            if (completedWatch) {
+                updateProgressUI();
+                return;
+            }
+            completedWatch = true;
+            if (videoDuration > 0) {
+                maxAllowedTime = videoDuration;
+            }
+            if (activeKey) persistCompletion(activeKey);
+            updateProgressUI();
+        }
+
+        function formatSeconds(value) {
+            const n = Math.max(0, Math.floor(value || 0));
+            return String(n);
+        }
+
         function updateProgressUI() {
-            const needed = VIDEO_GATE.minSeconds;
-            const current = Math.min(watchedSeconds, needed);
-            const pct = Math.round((current / needed) * 100);
+            const needed = videoDuration > 0 ? videoDuration : 0;
+            const current = needed > 0 ? Math.min(maxAllowedTime, needed) : maxAllowedTime;
+            const pct = needed > 0
+                ? Math.min(100, Math.round((current / needed) * 100))
+                : (completedWatch ? 100 : 0);
             vgBarFill.style.width = pct + '%';
-            vgProgressText.textContent = Math.floor(current) + ' / ' + needed + ' s';
-            const unlocked = watchedSeconds >= needed;
+            if (needed > 0) {
+                vgProgressText.textContent = formatSeconds(current) + ' / ' + formatSeconds(needed) + ' s';
+            } else if (completedWatch) {
+                vgProgressText.textContent = 'Completado';
+            } else {
+                vgProgressText.textContent = formatSeconds(current) + ' / — s';
+            }
+            const unlocked = isWatchComplete();
             vgAck.disabled = !unlocked;
             vgAckLabel.classList.toggle('is-locked', !unlocked);
             if (!unlocked) {
@@ -1570,24 +1659,45 @@
         }
 
         function syncDownloadButton() {
-            vgDownload.disabled = !(watchedSeconds >= VIDEO_GATE.minSeconds && vgAck.checked);
+            vgDownload.disabled = !(isWatchComplete() && vgAck.checked);
         }
 
-        function tickWatch(amount) {
-            watchedSeconds = Math.min(VIDEO_GATE.minSeconds, watchedSeconds + amount);
-            updateProgressUI();
+        function syncDurationFromPlayer() {
+            if (!ytPlayer || typeof ytPlayer.getDuration !== 'function') return;
+            const d = Number(ytPlayer.getDuration());
+            if (Number.isFinite(d) && d > 0) {
+                videoDuration = d;
+            }
         }
 
-        function startFallbackTimer() {
-            if (fallbackTimer || watchedSeconds >= VIDEO_GATE.minSeconds) return;
-            fallbackTimer = setInterval(() => {
-                if (!gateEl.classList.contains('is-open')) return;
-                tickWatch(1);
-                if (watchedSeconds >= VIDEO_GATE.minSeconds) {
-                    clearInterval(fallbackTimer);
-                    fallbackTimer = null;
-                }
-            }, 1000);
+        function enforceAntiSeek(playerState) {
+            if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
+            if (seekingBack || completedWatch) return;
+            const current = Number(ytPlayer.getCurrentTime());
+            if (!Number.isFinite(current) || current < 0) return;
+
+            const grace = playerState === 1
+                ? VIDEO_GATE.seekGraceSeconds
+                : Math.min(0.4, VIDEO_GATE.seekGraceSeconds);
+
+            // Jump ahead beyond the watched frontier → snap back (stricter while paused)
+            if (current > maxAllowedTime + grace) {
+                seekingBack = true;
+                try {
+                    ytPlayer.seekTo(maxAllowedTime, true);
+                } catch (e) { /* ignore */ }
+                setTimeout(() => { seekingBack = false; }, 250);
+            } else if (playerState === 1) {
+                // Only extend the frontier during real playback (not scrubbing while paused)
+                maxAllowedTime = Math.max(maxAllowedTime, current);
+            }
+
+            syncDurationFromPlayer();
+            if (isWatchComplete()) {
+                markWatchComplete();
+            } else {
+                updateProgressUI();
+            }
         }
 
         function startYtWatchPolling() {
@@ -1595,20 +1705,25 @@
             watchTimer = setInterval(() => {
                 if (!ytPlayer || typeof ytPlayer.getPlayerState !== 'function') return;
                 const state = ytPlayer.getPlayerState();
-                // 1 = playing
-                if (state === 1) {
-                    tickWatch(0.5);
+                // 1 = playing, 2 = paused, 3 = buffering — always police seeks
+                if (state === 1 || state === 2 || state === 3) {
+                    enforceAntiSeek(state);
                 }
-                if (watchedSeconds >= VIDEO_GATE.minSeconds) {
+                if (completedWatch && watchTimer) {
                     clearInterval(watchTimer);
                     watchTimer = null;
                 }
-            }, 500);
+            }, 400);
         }
 
         function mountPlayer(videoId) {
             destroyPlayer();
-            watchedSeconds = 0;
+            clearVgError();
+            videoDuration = 0;
+            maxAllowedTime = 0;
+            completedWatch = false;
+            pendingVideoId = null;
+            vgAck.checked = false;
             updateProgressUI();
 
             if (ytApiReady && window.YT && window.YT.Player) {
@@ -1619,35 +1734,46 @@
                     playerVars: {
                         rel: 0,
                         modestbranding: 1,
-                        playsinline: 1
+                        playsinline: 1,
+                        controls: 0,
+                        disablekb: 1,
+                        fs: 0,
+                        iv_load_policy: 3
                     },
                     events: {
                         onReady: function () {
+                            syncDurationFromPlayer();
+                            updateProgressUI();
                             startYtWatchPolling();
                         },
                         onStateChange: function (event) {
-                            if (event.data === 1) startYtWatchPolling();
-                            if (event.data === 0) {
-                                watchedSeconds = VIDEO_GATE.minSeconds;
-                                updateProgressUI();
+                            if (event.data === YT.PlayerState.PLAYING || event.data === 1) {
+                                syncDurationFromPlayer();
+                                startYtWatchPolling();
+                            }
+                            if (event.data === YT.PlayerState.ENDED || event.data === 0) {
+                                syncDurationFromPlayer();
+                                markWatchComplete();
                             }
                         },
                         onError: function () {
-                            startFallbackTimer();
+                            clearWatchTimers();
+                            showVgError('No se pudo cargar el video tutorial. Cierra e intenta de nuevo, o revisa tu conexión.');
                         }
                     }
                 });
             } else {
                 const host = document.getElementById('vg-player');
                 if (host) {
-                    host.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?rel=0" title="Tutorial de diligenciamiento" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>';
+                    host.innerHTML = '<div class="vg-player-loading" style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);padding:1rem;text-align:center;">Cargando reproductor…</div>';
                 }
+                pendingVideoId = videoId;
                 loadYouTubeApi();
                 apiWaitTimer = setTimeout(() => {
                     if (!ytPlayer && gateEl.classList.contains('is-open')) {
-                        startFallbackTimer();
+                        showVgError('No se pudo inicializar el reproductor de YouTube. Cierra e intenta de nuevo.');
                     }
-                }, 3500);
+                }, 8000);
             }
         }
 
@@ -1660,6 +1786,7 @@
             vgTitle.textContent = item.title;
             vgCode.textContent = item.code;
             vgAck.checked = false;
+            clearVgError();
             gateEl.classList.add('is-open');
             gateEl.setAttribute('aria-hidden', 'false');
             document.body.classList.add('video-gate-open');
@@ -1673,6 +1800,8 @@
             gateEl.setAttribute('aria-hidden', 'true');
             document.body.classList.remove('video-gate-open');
             destroyPlayer();
+            clearVgError();
+            pendingVideoId = null;
             activeKey = null;
             activeHref = null;
             if (lastFocusedEl && typeof lastFocusedEl.focus === 'function') {
@@ -1702,6 +1831,17 @@
             showToast('Descarga iniciada: <b>' + (label || 'archivo') + '</b>');
         }
 
+        function maybeDirectDownload(key, href, label, sourceBtn) {
+            const item = VIDEO_GATE.catalog[key];
+            if (!item) return false;
+            // Solo bitácora: si ya se completó el video, descarga directa sin modal
+            if (key === 'bitacora' && hasPersistedCompletion(key)) {
+                triggerDownload(href || item.file, label || item.label, sourceBtn);
+                return true;
+            }
+            return false;
+        }
+
         document.querySelectorAll('a.btn-download[download]').forEach(btn => {
             btn.addEventListener('click', (event) => {
                 const key = btn.dataset.videoKey;
@@ -1709,6 +1849,7 @@
 
                 if (key && VIDEO_GATE.catalog[key]) {
                     event.preventDefault();
+                    if (maybeDirectDownload(key, btn.getAttribute('href'), label, btn)) return;
                     openVideoGate(key, btn.getAttribute('href'));
                     return;
                 }
@@ -1729,7 +1870,9 @@
                 const key = btn.dataset.videoKey;
                 const item = VIDEO_GATE.catalog[key];
                 if (!item) return;
-                openVideoGate(key, btn.dataset.file || item.file);
+                const href = btn.dataset.file || item.file;
+                if (maybeDirectDownload(key, href, item.label, btn)) return;
+                openVideoGate(key, href);
             });
         });
 
@@ -1739,6 +1882,7 @@
             if (vgDownload.disabled || !activeKey) return;
             const item = VIDEO_GATE.catalog[activeKey];
             const href = activeHref || item.file;
+            if (isWatchComplete()) persistCompletion(activeKey);
             triggerDownload(href, item.label, vgDownload);
             closeVideoGate();
         });
